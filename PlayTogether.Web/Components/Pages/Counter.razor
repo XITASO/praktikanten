@@ -1,0 +1,38 @@
+﻿@page "/counter"
+@using PlayTogether.Web.Services
+
+@inject CounterService CounterService
+
+@inherits DisposablePage
+
+<PageTitle>Shared Counter</PageTitle>
+
+<h1>Shared Counter</h1>
+
+<p role="status">Current count: @CounterService.CurrentCount</p>
+
+<button class="btn btn-primary" @onclick="CounterService.IncrementCount">Click me</button>
+
+@code {
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Call the CountChangedHandler if the CountChanged event is invoked
+            CounterService.CountChanged += CountChangedHandler;
+            DisposeActions.Add(() =>
+            {
+                // DisposeActions are used to clean up subscriptions to events
+                // if the user navigates to another page for example.
+                CounterService.CountChanged -= CountChangedHandler;
+            });
+        }
+    }
+
+    private void CountChangedHandler(object? _, object __)
+    {
+        // InvokeAsync(StateHasChanged) forces the UI to rerender and
+        // use the new count value present in the CounterService
+        InvokeAsync(StateHasChanged);
+    }
+}
