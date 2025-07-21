@@ -23,7 +23,18 @@ public class CounterService
     public void IncrementCount()
     {
         // Increment the count
-        CurrentCount++;
+        // CurrentCount++;
+        CurrentCount = CurrentCount + 1;
+        
+        // Notify all subscribers of the CountChanged event about the change of CurrentCount
+        CountChanged?.Invoke(this, EventArgs.Empty);
+    }
+    
+    public void DecrementCount()
+    {
+        // Increment the count
+        // CurrentCount++;
+        CurrentCount = CurrentCount - 1;
         
         // Notify all subscribers of the CountChanged event about the change of CurrentCount
         CountChanged?.Invoke(this, EventArgs.Empty);

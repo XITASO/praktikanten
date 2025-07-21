@@ -11,7 +11,9 @@
 
 <p role="status">Current count: @CounterService.CurrentCount</p>
 
-<button class="btn btn-primary" @onclick="CounterService.IncrementCount">Click me</button>
+<button class="btn btn-primary" @onclick="CounterService.IncrementCount">+1</button>
+
+<button class="btn btn-primary" @onclick="CounterService.DecrementCount">-1</button>
 
 @code {
     protected override void OnAfterRender(bool firstRender)
