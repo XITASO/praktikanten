@@ -17,6 +17,31 @@
 
 @code{
     private string[,] board = new string[3, 3];
-    private void MakeMove(int row, int col)
+    private void MakeMove(int reihe, int spalte)
     {}
 }
+<style>
+    .spiel-flaeche {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .bord-reihe {
+        display: flex;
+        gap: 10px;
+    }
+
+    .zelle {
+        width: 90px;
+        height: 90px;
+        font-size: 2rem;
+        background-color: #f0f0f0;
+        border: 2px solid #333;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+</style>
+
+
