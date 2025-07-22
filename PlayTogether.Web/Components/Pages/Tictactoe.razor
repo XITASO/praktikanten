@@ -19,6 +19,51 @@
     private string[,] board = new string[3, 3];
     private void MakeMove(int reihe, int spalte)
     {}
+
+    private void GewinnerErmitteln()
+    {
+        string feld1 = board [0,0];
+        string feld2 = board [0,1];
+        string feld3 = board [0,2];
+        string feld4 = board [1,0];
+        string feld5 = board [1,1];
+        string feld6 = board [1,2];
+        string feld7 = board [2,0];
+        string feld8 = board [2,1];
+        string feld9 = board [2,2];
+
+        if (feld1 == "x" && feld2 == "x" && feld3  == "x"
+            || feld1 == "x" && feld5 == "x" && feld9 == "x"
+            || feld1 == "x" && feld4 == "x" && feld7 == "x"
+            || feld2 == "x" && feld5 == "x" && feld8 == "x"
+            || feld3 == "x" && feld6 == "x" && feld9 == "x"
+            || feld4 == "x" && feld5 == "x" && feld6 == "x"
+            || feld7 == "x" && feld8 == "x" && feld9 == "x"
+            || feld3 == "x" && feld5 == "x" && feld7 == "x")
+        {
+            Console.WriteLine("Game over");
+            Console.Write("Palyer X Won");
+        }
+        else
+        { 
+        }
+
+        {
+            if (feld1 == "o" && feld2 == "o" && feld3  == "o"
+                || feld1 == "o" && feld5== "o" && feld9 == "o"
+                || feld1 == "o" && feld4== "o" && feld7 == "o"
+                || feld2 == "o" && feld5== "o" && feld8 == "o"
+                || feld3 == "o" && feld6== "o" && feld9 == "o"
+                || feld4 == "o" && feld5== "o" && feld6 == "o"
+                || feld7 == "o" && feld8== "o" && feld9 == "o"
+                || feld3 == "o" && feld5== "o" && feld7 == "o")
+            {
+                Console.WriteLine("Game over");
+                Console.Write("Palyer O Won");
+            }
+        }
+    }
+    
 }
 <style>
     .spiel-flaeche {
@@ -43,5 +88,3 @@
         cursor: pointer;
     }
 </style>
-
-
