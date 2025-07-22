@@ -1,14 +1,14 @@
 ﻿@page "/tictactoe"
+@using System.Net.Mime
 <h3>Tic-Tac-Toe Game</h3>
+
 <div class="spiel-flaeche">
     @for (int reihe = 0; reihe < 3; reihe++)
-    { reihefest = reihe;
-        reihefest2 = reihefest;
+    {
         <div class="bord-reihe">
-            @for (int spalte = 0; spalte < 3; spalte++)
-            {spaltefest = spalte;
-                spaltefest2 = spaltefest;
-                <button class="zelle"@onclick="() => MakeMove(reihe, spalte)">
+            @for (int spalte = 0; spalte < 3; spalte++)//Für jedes Feld in einer der 3 Reihen, 3 Felder werden generiert
+            {
+                <button class="zelle" @onclick="() => MakeMove(reihe, spalte)">
                     @board[reihe, spalte]
                 </button>
             }
@@ -17,32 +17,74 @@
 </div>
 
 @code{
-    private string currentplayer = "X";
-    private bool WasLastMoveX = false;
+
+    Boolean WasLastMoveX = true;
     private string[,] board = new string[3, 3];
-    private int spaltefest2;
-    private int reihefest2;
-    private int reihefest;
-    private int spaltefest;
+
     private void MakeMove(int reihe, int spalte)
     {
-
-
         
-           if(WasLastMoveX = false)
-            {
-                board[reihefest2, spaltefest2] = "X";
-                WasLastMoveX = true; // Wechsel zu O
-            }
-            
-            if(WasLastMoveX = true)
-            {
-                board[reihefest2, spaltefest2] = "O";
-                WasLastMoveX = false; // Wechsel zu X
-            }
-        
+       
+                if (board[reihe, spalte] != null)
+                return;
+                if (WasLastMoveX == true)
+                {
+                    board[reihe, spalte] = "o";
+                    WasLastMoveX = false;
+                }
+                else
+                {
+                    board[reihe, spalte] = "x";
+                     WasLastMoveX = true;
+                 }
+        GewinnerErmitteln();
+ 
+           
     }
 
+    private void GewinnerErmitteln()
+    {
+        string feld1 = board [0,0];
+        string feld2 = board [0,1];
+        string feld3 = board [0,2];
+        string feld4 = board [1,0];
+        string feld5 = board [1,1];
+        string feld6 = board [1,2];
+        string feld7 = board [2,0];
+        string feld8 = board [2,1];
+        string feld9 = board [2,2];
+
+        if (feld1 == "x" && feld2 == "x" && feld3  == "x"
+            || feld1 == "x" && feld5 == "x" && feld9 == "x"
+            || feld1 == "x" && feld4 == "x" && feld7 == "x"
+            || feld2 == "x" && feld5 == "x" && feld8 == "x"
+            || feld3 == "x" && feld6 == "x" && feld9 == "x"
+            || feld4 == "x" && feld5 == "x" && feld6 == "x"
+            || feld7 == "x" && feld8 == "x" && feld9 == "x"
+            || feld3 == "x" && feld5 == "x" && feld7 == "x")
+        {
+            Console.WriteLine("Game over");
+            Console.Write("Palyer X Won");
+        }
+        else
+        { 
+        }
+
+        {
+            if (feld1 == "o" && feld2 == "o" && feld3  == "o"
+                || feld1 == "o" && feld5== "o" && feld9 == "o"
+                || feld1 == "o" && feld4== "o" && feld7 == "o"
+                || feld2 == "o" && feld5== "o" && feld8 == "o"
+                || feld3 == "o" && feld6== "o" && feld9 == "o"
+                || feld4 == "o" && feld5== "o" && feld6 == "o"
+                || feld7 == "o" && feld8== "o" && feld9 == "o"
+                || feld3 == "o" && feld5== "o" && feld7 == "o")
+            {
+                Console.WriteLine("Game over");
+                Console.Write("Palyer O Won");
+            }
+        }
+    }
     
 }
 <style>
@@ -66,31 +108,5 @@
         border: 2px solid #333;
         border-radius: 8px;
         cursor: pointer;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-weight: bold;
-       
     }
-    .zelle.x {
-        font-size: 4rem;    
-        font-weight: bold;  
-        color: red;         
-        display: flex;
-        justify-content: center; 
-        align-items: center;     
-    }
-
-   
-    .zelle.o {
-        font-size: 4rem;    
-        font-weight: bold;  
-        color: blue;        
-        display: flex;
-        justify-content: center;  
-        align-items: center;    
-    }
-
 </style>
-
-
