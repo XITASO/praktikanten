@@ -1,4 +1,5 @@
 ﻿@page "/tictactoe"
+@using System.Net.Mime
 <h3>Tic-Tac-Toe Game</h3>
 
 <div class="spiel-flaeche">
@@ -16,9 +17,30 @@
 </div>
 
 @code{
+
+    Boolean WasLastMoveX = true;
     private string[,] board = new string[3, 3];
+
     private void MakeMove(int reihe, int spalte)
-    {}
+    {
+        
+       
+                if (board[reihe, spalte] != null)
+                return;
+                if (WasLastMoveX == true)
+                {
+                    board[reihe, spalte] = "o";
+                    WasLastMoveX = false;
+                }
+                else
+                {
+                    board[reihe, spalte] = "x";
+                     WasLastMoveX = true;
+                 }
+        GewinnerErmitteln();
+ 
+           
+    }
 
     private void GewinnerErmitteln()
     {
