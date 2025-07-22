@@ -1,14 +1,15 @@
 ﻿@page "/tictactoe"
 @using System.Net.Mime
 <h3>Tic-Tac-Toe Game</h3>
-
 <div class="spiel-flaeche">
     @for (int reihe = 0; reihe < 3; reihe++)
-    {
+    { 
+        int reihefest = reihe;
         <div class="bord-reihe">
-            @for (int spalte = 0; spalte < 3; spalte++)//Für jedes Feld in einer der 3 Reihen, 3 Felder werden generiert
+            @for (int spalte = 0; spalte < 3; spalte++)
             {
-                <button class="zelle" @onclick="() => MakeMove(reihe, spalte)">
+                int spaltefest = spalte;
+                <button class="zelle"@onclick="() => MakeMove(reihefest, spaltefest)">
                     @board[reihe, spalte]
                 </button>
             }
@@ -17,8 +18,8 @@
 </div>
 
 @code{
-
-    Boolean WasLastMoveX = true;
+    private string currentplayer = "X";
+    private bool WasLastMoveX = false;
     private string[,] board = new string[3, 3];
 
     private void MakeMove(int reihe, int spalte)
@@ -85,7 +86,6 @@
             }
         }
     }
-    
 }
 <style>
     .spiel-flaeche {
@@ -108,5 +108,10 @@
         border: 2px solid #333;
         border-radius: 8px;
         cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+       
     }
 </style>
