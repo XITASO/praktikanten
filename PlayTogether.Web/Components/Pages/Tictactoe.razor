@@ -1,11 +1,15 @@
 ﻿@page "/tictactoe"
 @using System.Net.Mime
 <h3>Tic-Tac-Toe Game</h3>
+<p>Score: Player X: @xWins / Player O: @oWins</p>
 @if (!string.IsNullOrEmpty(winnerMessage))
 {
 <div class="winner-text">@winnerMessage</div>
 }
-<button class="restart-button" @onclick="ResetGame">RESTART</button>
+<div class="button-container">
+    <button class="restart-button" @onclick="ResetGame">RESTART</button>
+    <button class="reset-score-button" @onclick="ResetScore">RESET SCORE</button> 
+</div>
 <div class="spiel-flaeche">
     @for (int reihe = 0; reihe < 3; reihe++)
                         { 
@@ -28,6 +32,9 @@
     private string[,] board = new string[3, 3];
     private string winnerMessage = string.Empty;
     private bool gameOver = false;
+    private int xWins = 0; 
+    private int oWins = 0; 
+
     protected override void OnInitialized()
  
     {
@@ -93,8 +100,8 @@
             || feld7 == "x" && feld8 == "x" && feld9 == "x"
             || feld3 == "x" && feld5 == "x" && feld7 == "x")
         {
- 
-            winnerMessage = "Player X Won";
+            winnerMessage = "Player X wins!";
+            xWins++;
             gameOver = true;
  
         }
@@ -109,8 +116,8 @@
                 || feld7 == "o" && feld8 == "o" && feld9 == "o"
                 || feld3 == "o" && feld5 == "o" && feld7 == "o")
             {
-                winnerMessage = "Player O Won";
- 
+                oWins++;
+                winnerMessage = "Player O wins!";
                 gameOver = true;
  
             }
@@ -123,6 +130,12 @@
         gameOver = false;
         winnerMessage = string.Empty;
         WasLastMoveX = false;
+    }
+    private void ResetScore()
+    {
+        xWins = 0;
+        oWins = 0;
+        ResetGame();
     }
 }
  
@@ -177,7 +190,15 @@
     }
  
  
-        .restart-button:hover {
-            background-color: #0056b3;
-        }
+    .restart-button:hover {
+        background-color: #0056b3;
+    }
+
+    .reset-score-button {
+        background-color: #dc3545;
+    }
+
+    .reset-score-button:hover {
+        background-color: #a71d2a;
+    }
 </style>
