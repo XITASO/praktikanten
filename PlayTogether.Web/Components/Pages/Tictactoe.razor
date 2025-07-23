@@ -1,6 +1,10 @@
 ﻿@page "/tictactoe"
 @using System.Net.Mime
 <h3>Tic-Tac-Toe Game</h3>
+@if (!string.IsNullOrEmpty(winnerMessage))
+{
+    <div class="winner-text">@winnerMessage</div>
+}
 <div class="spiel-flaeche">
     @for (int reihe = 0; reihe < 3; reihe++)
     { 
@@ -145,4 +149,12 @@
         font-weight: bold;
        
     }
+    .winner-text {
+        margin-top: 20px;
+        font-size: 1.8rem;
+        color: green;
+        font-weight: bold;
+        text-align: center;
+    }
+    
 </style>
