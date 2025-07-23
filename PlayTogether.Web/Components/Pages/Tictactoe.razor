@@ -1,11 +1,20 @@
 ﻿@page "/tictactoe"
 @using System.Net.Mime
 <h3>Tic-Tac-Toe Game</h3>
-<p>Score: Player X: @xWins / Player O: @oWins</p>
-@if (!string.IsNullOrEmpty(winnerMessage))
-{
+<div class="name-inputs">
+    <!-- *** CHANGE: Added inputs for player names -->
+    <label>
+        Player X Name:
+        <input type="text" @bind="playerXName" placeholder="Enter name for X" />
+    </label>
+    <label>
+        Player O Name:
+        <input type="text" @bind="playerOName" placeholder="Enter name for O" />
+    </label>
+</div>
+
+<p>Score: @playerXName (@xWins) / @playerOName (@oWins)</p>  
 <div class="winner-text">@winnerMessage</div>
-}
 <div class="button-container">
     <button class="restart-button" @onclick="ResetGame">RESTART</button>
     <button class="reset-score-button" @onclick="ResetScore">RESET SCORE</button> 
@@ -34,6 +43,9 @@
     private bool gameOver = false;
     private int xWins = 0; 
     private int oWins = 0; 
+    private string playerXName = "Player X"; 
+    private string playerOName = "Player O"; 
+
 
     protected override void OnInitialized()
  
@@ -87,7 +99,7 @@
                 (feld9 == "x" || feld9 == "o")
             )
         {
-            winnerMessage = "It's a draw!";
+            winnerMessage = $"It's a draw!";
             gameOver = true;
  
         }
@@ -100,7 +112,7 @@
             || feld7 == "x" && feld8 == "x" && feld9 == "x"
             || feld3 == "x" && feld5 == "x" && feld7 == "x")
         {
-            winnerMessage = "Player X wins!";
+            winnerMessage = $"{playerXName} Wins!"; 
             xWins++;
             gameOver = true;
  
@@ -117,7 +129,7 @@
                 || feld3 == "o" && feld5 == "o" && feld7 == "o")
             {
                 oWins++;
-                winnerMessage = "Player O wins!";
+                winnerMessage = $"{playerOName} Wins!";  
                 gameOver = true;
  
             }
@@ -196,9 +208,36 @@
 
     .reset-score-button {
         background-color: #dc3545;
+        border:none;
+        transition: background-color 0.3s ease;
+        border-radius: 6px;
+
     }
 
     .reset-score-button:hover {
         background-color: #a71d2a;
+        border:none;
+        transition: background-color 0.3s ease;
     }
+
+    .name-inputs {
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+        .name-inputs label {
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .name-inputs input {
+            margin-left: 6px;
+            padding: 6px 8px;
+            font-size: 1rem;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            width: 140px;
+        }
 </style>
