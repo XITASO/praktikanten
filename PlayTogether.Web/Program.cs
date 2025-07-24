@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 //    * AddTransient: Is always created from scratch when injected in constructors or pages
 //    * AddScoped: Is created once for each tab (or browser). Each new tab (or browser) gets a separate instance.
 builder.Services.AddSingleton<CounterService>();
+builder.Services.AddSingleton<Tictactoeservice>();
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();

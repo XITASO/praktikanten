@@ -1,5 +1,7 @@
 ﻿@page "/tictactoe"
 @using System.Net.Mime
+@using PlayTogether.Web.Services
+@inject Tictactoeservice Tictactoeservice 
 <h3>Tic-Tac-Toe Game</h3>
 <div class="name-inputs">
     <!-- *** CHANGE: Added inputs for player names -->
@@ -27,7 +29,7 @@
             @for (int spalte = 0; spalte < 3; spalte++)
             {
                 int spaltefest = spalte;
-<button class="zelle"@onclick="() => MakeMove(reihefest, spaltefest)">
+<button class="zelle"@onclick="() => MakeMove2(reihefest, spaltefest)">
                     @board[reihe, spalte]
 </button>
             }
@@ -44,37 +46,28 @@
     private int xWins = 0; 
     private int oWins = 0; 
     private string playerXName = "Player X"; 
-    private string playerOName = "Player O"; 
+    private string playerOName = "Player O";
+    private void rerender()
+    {
+        InvokeAsync(StateHasChanged);
+    }
 
 
     protected override void OnInitialized()
- 
     {
  
         ResetGame();
  
     }
- 
- 
-    private void MakeMove(int reihe, int spalte)
-    {
-        if (board[reihe, spalte] != null || gameOver) 
-            return;
 
-        if (WasLastMoveX == true)
-        {
-            board[reihe, spalte] = "o";
-            WasLastMoveX = false;
-        }
-        else
-        {
-            board[reihe, spalte] = "x";
-            WasLastMoveX = true;
-        }
-        GewinnerErmitteln();
- 
- 
+    private void MakeMove2(int reihe, int spalte)
+    {
+        Tictactoeservice.MakeMove(reihe, spalte);
+        
     }
+ 
+ 
+    
  
     private void GewinnerErmitteln()
     {
@@ -134,6 +127,7 @@
  
             }
         }  
+        rerender();
     }
 
     private void ResetGame() 
@@ -142,12 +136,14 @@
         gameOver = false;
         winnerMessage = string.Empty;
         WasLastMoveX = false;
+        rerender();
     }
     private void ResetScore()
     {
         xWins = 0;
         oWins = 0;
         ResetGame();
+        rerender();
     }
 }
  
