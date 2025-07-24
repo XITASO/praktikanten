@@ -1,6 +1,6 @@
 ﻿@page "/tictactoe"
 @using PlayTogether.Web.Services
-@inject GameService GameService 
+@inject GameService GameService
 
 <h3>Tic-Tac-Toe Game</h3>
 
@@ -9,17 +9,12 @@
     <div class="winner-text">@GameService.WinnerMessage</div>
 }
 
-<div class="name-inputs"> 
-    <input placeholder="Player X name" @bind="GameService.PlayerXName" />
-    <input placeholder="Player O name" @bind="GameService.PlayerOName" />
-</div>
-
-<div class="score-text"> 
-    Score: @GameService.PlayerXName (@GameService.ScoreX) - @GameService.PlayerOName (@GameService.ScoreO)
-</div>
-
 <button class="restart-button" @onclick="GameService.ResetGame">RESTART GAME</button>
-<button class="restart-button" @onclick="GameService.ResetScore">RESET SCORE</button> 
+<button class="restart-button" @onclick="GameService.ResetScore">RESET SCORE</button>
+
+<div class="scoreboard" style="margin: 10px 0;">
+    <strong>@GameService.PlayerXName</strong>: @GameService.ScoreX / <strong>@GameService.PlayerOName</strong>: @GameService.ScoreO
+</div>
 
 <div class="spiel-flaeche">
     @for (int row = 0; row < 3; row++)
@@ -37,23 +32,73 @@
     }
 </div>
 
+<div style="margin-top: 15px;">
+    <input placeholder="Player X Name" @bind="playerXInput" />
+    <input placeholder="Player O Name" @bind="playerOInput" style="margin-left: 10px;" />
+    <button class="restart-button" @onclick="SetPlayerNames" style="margin-left: 10px;">Set Player Names</button>
+</div>
+
+<div class="spectator-section" style="margin-top: 20px;">
+    <input placeholder="Enter spectator name" @bind="spectatorInput" />
+    <button class="restart-button" @onclick="SetSpectator" style="margin-left: 10px;">Set Spectator</button>
+    <button class="restart-button" @onclick="ClearSpectator" style="margin-left: 10px;">Clear Spectator</button>
+</div>
+
+@if (!string.IsNullOrEmpty(GameService.SpectatorName))
+{
+    <div class="spectator-info" style="margin-top: 10px; font-weight: bold; color: darkorange;">
+        Spectator: @GameService.SpectatorName is watching the game!
+    </div>
+}
+
 @code {
-    protected override void OnInitialized()  
+    private string playerXInput = "";
+    private string playerOInput = "";
+
+    private string spectatorInput = "";
+
+
+    private void SetPlayerNames()
+    {
+        if (!string.IsNullOrWhiteSpace(playerXInput))
+            GameService.PlayerXName = playerXInput.Trim();
+
+        if (!string.IsNullOrWhiteSpace(playerOInput))
+            GameService.PlayerOName = playerOInput.Trim();
+
+        GameService.ResetScore();
+    }
+
+    
+    private void SetSpectator()
+    {
+        GameService.SetSpectatorName(spectatorInput);
+        spectatorInput = "";
+    }
+
+   
+    private void ClearSpectator()
+    {
+        GameService.ClearSpectator();
+    }
+
+    protected override void OnInitialized()
     {
         GameService.StateChanged += OnGameStateChanged;
     }
 
-    private void OnGameStateChanged(object? sender, EventArgs e) 
+    private void OnGameStateChanged(object? sender, EventArgs e)
     {
         InvokeAsync(StateHasChanged);
     }
 
-    public void Dispose() 
+    public void Dispose()
     {
         GameService.StateChanged -= OnGameStateChanged;
     }
 }
-@implements IDisposable 
+
+@implements IDisposable
 
 <style>
     .spiel-flaeche {
@@ -118,6 +163,18 @@
     .name-inputs input {
         margin: 10px;
         padding: 10px;
+        font-size: 1rem;
+    }
+
+    .spectator-section input {
+        padding: 8px;
+        margin-right: 8px;
+        font-size: 1rem;
+    }
+
+    .spectator-section button {
+        padding: 8px 16px;
+        margin-right: 8px;
         font-size: 1rem;
     }
 </style>
