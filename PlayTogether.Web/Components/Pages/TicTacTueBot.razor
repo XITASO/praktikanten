@@ -51,15 +51,15 @@ return;
 
 if (WasLastMoveX == true)
 {
-string feld1 = board [0,0];
-string feld2 = board [0,1];
-string feld3 = board [0,2];
-string feld4 = board [1,0];
-string feld5 = board [1,1];
-string feld6 = board [1,2];
-string feld7 = board [2,0];
-string feld8 = board [2,1];
-string feld9 = board [2,2];
+string feld1 = board[0,0];
+string feld2 = board[0,1];
+string feld3 = board[0,2];
+string feld4 = board[1,0];
+string feld5 = board[1,1];
+string feld6 = board[1,2];
+string feld7 = board[2,0];
+string feld8 = board[2,1];
+string feld9 = board[2,2];
 
 
 
@@ -1228,6 +1228,42 @@ if (feld8 == "x" && feld9 == "x" && feld6 == "x")
   reihe = 0;
   spalte = 0;
 }
+if (feld9 == "x" && feld1 == "x" && feld6 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld9 == "x" && feld2 == "x" && feld4 == "x")
+{
+  reihe = 2;
+  spalte = 0;
+}
+if (feld9 == "x" && feld3 == "x" && feld4 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld9 == "x" && feld4 == "x" && feld2 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld9 == "x" && feld6 == "x" && feld7 == "x")
+{
+  reihe = 2;
+  spalte = 1;
+}
+if (feld9 == "x" && feld7 == "x" && feld2 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld9 == "x" && feld8 == "x" && feld3 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+
 
 
 
@@ -1240,12 +1276,10 @@ WasLastMoveX = false;
 else
 {
 
-
 board[reihe, spalte] = "x";
 WasLastMoveX = true;
 }
 GewinnerErmitteln();
-
 
 }
 
@@ -1380,10 +1414,17 @@ ResetGame();
   }
 
   .reset-score-button {
-    background-color: #dc3545;
-  }
-
-  .reset-score-button:hover {
-    background-color: #a71d2a;
+    margin: 15px auto;
+    padding: 16px 32px;
+    font-size: 1.4rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block;
+    max-width: 300px;
+    text-align: center;
   }
 </style>
