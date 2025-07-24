@@ -22,8 +22,6 @@ namespace PlayTogether.Web.Services
 
         public void MakeMove(int row, int col)
         {
-            if (Board[row, col] != null || GameOver)
-                return;
 
             Board[row, col] = CurrentPlayer;
 
