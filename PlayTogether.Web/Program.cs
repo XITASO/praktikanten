@@ -11,10 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 //    * AddScoped: Is created once for each tab (or browser). Each new tab (or browser) gets a separate instance.
 
 builder.Services.AddSingleton<CounterService>();
-builder.Services.AddSingleton<Tictactoeservice>();
 
 // ? ADDED: Register GameService as a singleton so all users share the same game state
 builder.Services.AddSingleton<GameService>();
+builder.Services.AddSingleton<GameService2>();
+builder.Services.AddSingleton<GameService3>();
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();

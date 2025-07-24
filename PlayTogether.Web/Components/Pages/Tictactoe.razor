@@ -18,7 +18,7 @@
 
 @if (!string.IsNullOrEmpty(GameService.WinnerMessage))
 {
-    <div class="winner-text">@GameService.WinnerMessage</div>
+<div class="winner-text">@GameService.WinnerMessage</div>
 }
 
 <button class="restart-button" @onclick="GameService.ResetGame" disabled="@IsSpectator">RESTART GAME</button>
@@ -30,87 +30,87 @@
 <div class="spiel-flaeche">
     @for (int row = 0; row < 3; row++)
     {
-        int fixedRow = row;
-        <div class="bord-reihe">
-            @for (int col = 0; col < 3; col++)
-            {
-                int fixedCol = col;
-                <button class="zelle"
-                        @onclick="() => MakeMoveIfAllowed(fixedRow, fixedCol)"
-                        disabled="@(!CanPlay)">
-                    @GameService.Board[fixedRow, fixedCol]
-                </button>
-            }
-        </div>
+    int fixedRow = row;
+    <div class="bord-reihe">
+        @for (int col = 0; col < 3; col++)
+        {
+        int fixedCol = col;
+        <button class="zelle"
+                @onclick="() => MakeMoveIfAllowed(fixedRow, fixedCol)"
+                disabled="@(!CanPlay)">
+            @GameService.Board[fixedRow, fixedCol]
+        </button>
+        }
+    </div>
     }
 </div>
 
 @if (!string.IsNullOrEmpty(GameService.SpectatorName))
 {
-    <div class="spectator-info" style="margin-top: 10px; font-weight: bold; color: darkorange;">
-        Spectator: @GameService.SpectatorName is watching the game!
-    </div>
+<div class="spectator-info" style="margin-top: 10px; font-weight: bold; color: darkorange;">
+    Spectator: @GameService.SpectatorName is watching the game!
+</div>
 }
 
 @code {
-    private string playerXInput = "";
-    private string playerOInput = "";
-    private string spectatorInput = "";
+private string playerXInput = "";
+private string playerOInput = "";
+private string spectatorInput = "";
 
-    private bool IsSpectator => !string.IsNullOrWhiteSpace(GameService.SpectatorName);
+private bool IsSpectator => !string.IsNullOrWhiteSpace(GameService.SpectatorName);
 
-    private bool CanPlay =>
-        !IsSpectator &&
-        !string.IsNullOrWhiteSpace(GameService.PlayerXName) &&
-        !string.IsNullOrWhiteSpace(GameService.PlayerOName);
+private bool CanPlay =>
+!IsSpectator &&
+!string.IsNullOrWhiteSpace(GameService.PlayerXName) &&
+!string.IsNullOrWhiteSpace(GameService.PlayerOName);
 
-    private void SetPlayerNames()
-    {
-        if (!string.IsNullOrWhiteSpace(playerXInput))
-            GameService.PlayerXName = playerXInput.Trim();
+private void SetPlayerNames()
+{
+if (!string.IsNullOrWhiteSpace(playerXInput))
+GameService.PlayerXName = playerXInput.Trim();
 
-        if (!string.IsNullOrWhiteSpace(playerOInput))
-            GameService.PlayerOName = playerOInput.Trim();
+if (!string.IsNullOrWhiteSpace(playerOInput))
+GameService.PlayerOName = playerOInput.Trim();
 
-        GameService.ResetScore();
-    }
+GameService.ResetScore();
+}
 
-    private void SetSpectator()
-    {
-        if (!string.IsNullOrWhiteSpace(spectatorInput))
-        {
-            GameService.SetSpectatorName(spectatorInput);
-            spectatorInput = "";
-        }
-    }
+private void SetSpectator()
+{
+if (!string.IsNullOrWhiteSpace(spectatorInput))
+{
+GameService.SetSpectatorName(spectatorInput);
+spectatorInput = "";
+}
+}
 
-    private void ClearSpectator()
-    {
-        GameService.ClearSpectator();
-    }
+private void ClearSpectator()
+{
+GameService.ClearSpectator();
+}
 
-    private void MakeMoveIfAllowed(int row, int col)
-    {
-        if (CanPlay)
-        {
-            GameService.MakeMove(row, col);
-        }
-    }
+private void MakeMoveIfAllowed(int row, int col)
+{
+if (CanPlay)
+{
+GameService.MakeMove(row, col);
+}
+}
 
-    protected override void OnInitialized()
-    {
-        GameService.StateChanged += OnGameStateChanged;
-    }
+protected override void OnInitialized()
+{
+GameService.StateChanged += OnGameStateChanged;
+}
 
-    private void OnGameStateChanged(object? sender, EventArgs e)
-    {
-        InvokeAsync(StateHasChanged);
-    }
+private void OnGameStateChanged(object? sender, EventArgs e)
+{
+InvokeAsync(StateHasChanged);
+}
 
-    public void Dispose()
-    {
-        GameService.StateChanged -= OnGameStateChanged;
-    }
+public void Dispose()
+{
+GameService.StateChanged -= OnGameStateChanged;
+}
 }
 
 @implements IDisposable
@@ -142,10 +142,10 @@
         font-weight: bold;
     }
 
-        .zelle:disabled {
-            cursor: not-allowed;
-            background-color: #ddd;
-        }
+    .zelle:disabled {
+        cursor: not-allowed;
+        background-color: #ddd;
+    }
 
     .winner-text {
         margin-top: 20px;
@@ -168,14 +168,14 @@
         display: inline-block;
     }
 
-        .restart-button:disabled {
-            cursor: not-allowed;
-            background-color: #a0a0a0;
-        }
+    .restart-button:disabled {
+        cursor: not-allowed;
+        background-color: #a0a0a0;
+    }
 
-        .restart-button:hover:not(:disabled) {
-            background-color: #0056b3;
-        }
+    .restart-button:hover:not(:disabled) {
+        background-color: #0056b3;
+    }
 
     .spectator-section input {
         padding: 8px;
