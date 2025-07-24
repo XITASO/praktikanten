@@ -1,8 +1,12 @@
-﻿@page "/tictactoe1"
+﻿@page "/tictactoe"
 @using PlayTogether.Web.Services
 @inject GameService GameService
 
-<h3>Tic-Tac-Toe Game(Room 1)</h3>
+<h3>Tic-Tac-Toe Game</h3>
+
+<div style="margin-bottom: 15px;">
+    <input placeholder="Your Name" @bind="localPlayerName" />
+</div>
 
 <div style="margin-bottom: 15px;">
     <input placeholder="Player X Name" @bind="playerXInput" />
@@ -12,8 +16,8 @@
 
 <div class="spectator-section" style="margin-bottom: 20px;">
     <input placeholder="Enter spectator name" @bind="spectatorInput" />
-    <button class="restart-button" @onclick="SetSpectator" style="margin-left: 10px;">Set Spectator</button>
-    <button class="restart-button" @onclick="ClearSpectator" style="margin-left: 10px;">Clear Spectator</button>
+    <button class="restart-button" @onclick="BecomeSpectator" style="margin-left: 10px;">Set Spectator</button>
+    <button class="restart-button" @onclick="LeaveSpectator" style="margin-left: 10px;">Clear Spectator</button>
 </div>
 
 @if (!string.IsNullOrEmpty(GameService.WinnerMessage))
@@ -27,6 +31,21 @@
 <div class="scoreboard" style="margin: 10px 0;">
     <strong>@GameService.PlayerXName</strong>: @GameService.ScoreX / <strong>@GameService.PlayerOName</strong>: @GameService.ScoreO
 </div>
+
+@if (!string.IsNullOrWhiteSpace(localRole))
+{
+    <div style="margin-top: 10px; font-weight: bold;">
+        You are playing as: @localRole (@localPlayerName)
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(GameService.SpectatorName))
+{
+    <div class="spectator-info" style="margin-top: 10px; font-weight: bold; color: darkorange;">
+        Spectator: @GameService.SpectatorName is watching the game!
+    </div>
+}
+
 <div class="spiel-flaeche">
     @for (int row = 0; row < 3; row++)
     {
@@ -37,7 +56,7 @@
                 int fixedCol = col;
                 <button class="zelle"
                         @onclick="() => MakeMoveIfAllowed(fixedRow, fixedCol)"
-                        disabled="@(!CanPlay)">
+                        disabled="@(!CanPlay || GameService.Board[fixedRow, fixedCol] != null)">
                     @GameService.Board[fixedRow, fixedCol]
                 </button>
             }
@@ -45,48 +64,57 @@
     }
 </div>
 
-@if (!string.IsNullOrEmpty(GameService.SpectatorName))
-{
-    <div class="spectator-info" style="margin-top: 10px; font-weight: bold; color: darkorange;">
-        Spectator: @GameService.SpectatorName is watching the game!
-    </div>
-}
-
 @code {
     private string playerXInput = "";
     private string playerOInput = "";
     private string spectatorInput = "";
-
+    private string localPlayerName = "";
+    private string localRole = "";
     private bool isSpectator = false;
 
     private bool CanPlay =>
-    !isSpectator &&
-    !string.IsNullOrWhiteSpace(GameService.PlayerXName) &&
-    !string.IsNullOrWhiteSpace(GameService.PlayerOName);
+        (localRole == GameService.CurrentPlayer) &&
+        !string.IsNullOrWhiteSpace(GameService.PlayerXName) &&
+        !string.IsNullOrWhiteSpace(GameService.PlayerOName) &&
+        !isSpectator &&
+        !GameService.GameOver;
 
-private void SetPlayerNames()
-{
-if (!string.IsNullOrWhiteSpace(playerXInput))
-GameService.PlayerXName = playerXInput.Trim();
+    private void SetPlayerNames()
+    {
+        if (!string.IsNullOrWhiteSpace(playerXInput))
+        {
+            GameService.PlayerXName = playerXInput.Trim();
+            if (playerXInput.Trim() == localPlayerName)
+                localRole = "X";
+        }
 
-if (!string.IsNullOrWhiteSpace(playerOInput))
-GameService.PlayerOName = playerOInput.Trim();
+        if (!string.IsNullOrWhiteSpace(playerOInput))
+        {
+            GameService.PlayerOName = playerOInput.Trim();
+            if (playerOInput.Trim() == localPlayerName)
+                localRole = "O";
+        }
 
-GameService.ResetScore();
-}
+        GameService.ResetScore();
+    }
 
-    private void SetSpectator()
+    private void BecomeSpectator()
     {
         if (!string.IsNullOrWhiteSpace(spectatorInput))
         {
+            localPlayerName = spectatorInput.Trim();
+            localRole = "Spectator";
             isSpectator = true;
+            GameService.SetSpectatorName(spectatorInput);
             spectatorInput = "";
         }
     }
 
-    private void ClearSpectator()
+    private void LeaveSpectator()
     {
         isSpectator = false;
+        localRole = "";
+        GameService.ClearSpectator();
     }
 
     private void MakeMoveIfAllowed(int row, int col)
