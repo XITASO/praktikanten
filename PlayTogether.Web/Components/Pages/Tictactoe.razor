@@ -1,8 +1,8 @@
-﻿@page "/tictactoe"
+﻿@page "/tictactoe1"
 @using PlayTogether.Web.Services
 @inject GameService GameService
 
-<h3>Tic-Tac-Toe Game</h3>
+<h3>Tic-Tac-Toe (Gametoom 3)</h3>
 
 <div style="margin-bottom: 15px;">
     <input placeholder="Player X Name" @bind="playerXInput" />
@@ -64,16 +64,16 @@
     !string.IsNullOrWhiteSpace(GameService.PlayerXName) &&
     !string.IsNullOrWhiteSpace(GameService.PlayerOName);
 
-    private void SetPlayerNames()
-    {
-        if (!string.IsNullOrWhiteSpace(playerXInput))
-            GameService.PlayerXName = playerXInput.Trim();
+private void SetPlayerNames()
+{
+if (!string.IsNullOrWhiteSpace(playerXInput))
+GameService.PlayerXName = playerXInput.Trim();
 
-        if (!string.IsNullOrWhiteSpace(playerOInput))
-            GameService.PlayerOName = playerOInput.Trim();
+if (!string.IsNullOrWhiteSpace(playerOInput))
+GameService.PlayerOName = playerOInput.Trim();
 
-        GameService.ResetScore();
-    }
+GameService.ResetScore();
+}
 
     private void SetSpectator()
     {

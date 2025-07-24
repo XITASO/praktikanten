@@ -2,7 +2,7 @@ using System;
 
 namespace PlayTogether.Web.Services
 {
-    public class GameService
+    public class GameService2
     {
         public string[,] Board { get; private set; } = new string[3, 3];
 
@@ -22,6 +22,8 @@ namespace PlayTogether.Web.Services
 
         public void MakeMove(int row, int col)
         {
+            if (Board[row, col] != null || GameOver)
+                return;
 
             Board[row, col] = CurrentPlayer;
 

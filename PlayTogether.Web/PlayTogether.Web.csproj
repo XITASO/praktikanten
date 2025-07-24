@@ -12,4 +12,8 @@
       <Folder Include="Services\NewFolder\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="NavigationManagerUtils" Version="0.0.2" />
+    </ItemGroup>
+
 </Project>

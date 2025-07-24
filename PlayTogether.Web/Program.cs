@@ -14,6 +14,8 @@ builder.Services.AddSingleton<CounterService>();
 
 // ? ADDED: Register GameService as a singleton so all users share the same game state
 builder.Services.AddSingleton<GameService>();
+builder.Services.AddSingleton<GameService2>();
+builder.Services.AddSingleton<GameService3>();
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
