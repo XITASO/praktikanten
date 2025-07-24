@@ -14,6 +14,7 @@
     <input placeholder="Enter spectator name" @bind="spectatorInput" />
     <button class="restart-button" @onclick="SetSpectator" style="margin-left: 10px;">Set Spectator</button>
     <button class="restart-button" @onclick="ClearSpectator" style="margin-left: 10px;">Clear Spectator</button>
+    @* <button class = "restart-buttontoom" onclick = "location.href='/tictactoe3toom'" style="margin-left: 100px;">Gt3</button> *@
 </div>
 
 @if (!string.IsNullOrEmpty(GameService.WinnerMessage))
@@ -146,6 +147,18 @@ GameService.ResetScore();
             cursor: not-allowed;
             background-color: #ddd;
         }
+    .restart-buttontoom {
+        margin: 5px 3px 5px 0;
+        padding: 5px 4px;
+        font-size: 1.1rem;
+        background-color: #ffffff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        display: inline-block;
+    }
 
     .winner-text {
         margin-top: 20px;
