@@ -1,0 +1,1563 @@
+﻿@page "/Tictactoebot"
+@using System.Net.Mime
+<h3>Tic-Tac-Toe Game</h3>
+<p>Score: Player X: @xWins / BOT: @oWins</p>
+@if (!string.IsNullOrEmpty(winnerMessage))
+{
+<div class="winner-text">@winnerMessage</div>
+}
+<div class="button-container">
+  <button class="restart-button" @onclick="ResetGame">RESTART</button>
+  <button class="reset-score-button" @onclick="ResetScore">RESET SCORE</button>
+</div>
+<div class="spiel-flaeche">
+  @for (int reihe = 0; reihe < 3; reihe++)
+  {
+  int reihefest = reihe;
+  <div class="bord-reihe">
+    @for (int spalte = 0; spalte < 3; spalte++)
+    {
+    int spaltefest = spalte;
+    <button class="zelle"@onclick="() => MakeMove(reihefest, spaltefest)">
+      @board[reihe, spalte]
+    </button>
+    }
+  </div>
+  }
+</div>
+
+@code{
+private string currentplayer = "X";
+private bool WasLastMoveX = false;
+private string[,] board = new string[3, 3];
+private string winnerMessage = string.Empty;
+private bool gameOver = false;
+private int xWins = 0;
+private int oWins = 0;
+
+protected override void OnInitialized()
+
+{
+
+ResetGame();
+
+}
+
+
+private void MakeMove(int reihe, int spalte)
+{
+if (board[reihe, spalte] != null || gameOver)
+return;
+
+if (WasLastMoveX == true)
+{
+string feld1 = board[0,0];
+string feld2 = board[0,1];
+string feld3 = board[0,2];
+string feld4 = board[1,0];
+string feld5 = board[1,1];
+string feld6 = board[1,2];
+string feld7 = board[2,0];
+string feld8 = board[2,1];
+string feld9 = board[2,2];
+
+
+
+if (feld9 == "x")
+{
+reihe = 1;
+spalte = 1;
+}
+if (feld8 == "x")
+{
+reihe = 2;
+spalte = 0;
+}
+if (feld7 == "x")
+{
+reihe = 1;
+spalte = 1;
+}
+if (feld6 == "x")
+{
+reihe = 0;
+spalte = 2;
+}
+if (feld5 == "x")
+{
+reihe = 0;
+spalte = 2;
+}
+if (feld4 == "x")
+{
+reihe = 0;
+spalte = 0;
+}
+if (feld3 == "x")
+{
+reihe = 1;
+spalte = 1;
+}
+if (feld2 == "x")
+{
+reihe = 0;
+spalte = 0;
+}
+if (feld1 == "x")
+{
+reihe = 1;
+spalte = 1;
+}
+if (feld1 == "x" && feld2 == "x")
+{
+reihe = 0;
+spalte = 2;
+}
+if (feld1 == "x" && feld3 == "x")
+{
+reihe = 0;
+spalte = 1;
+}
+if (feld1 == "x" && feld4 == "x")
+{
+reihe = 2;
+spalte = 0;
+}
+if (feld1 == "x" && feld6 == "x")
+{
+reihe = 2;
+spalte = 2;
+}
+if (feld1 == "x" && feld7 == "x")
+{
+reihe = 1;
+spalte = 0;
+}
+if (feld1 == "x" && feld8 == "x")
+{
+reihe = 2;
+spalte = 2;
+}
+if (feld1 == "x" && feld9 == "x")
+{
+reihe = 2;
+spalte = 1;
+}
+if (feld2 == "x" && feld3 == "x")
+{
+reihe = 0;
+spalte = 0;
+}
+if (feld2 == "x" && feld4 == "x")
+{
+reihe = 0;
+spalte = 0;
+}
+if (feld2 == "x" && feld5 == "x")
+{
+  reihe = 2;
+  spalte = 1;
+}
+if (feld2 == "x" && feld6 == "x")
+{
+reihe = 0;
+spalte = 2;
+}
+if (feld2 == "x" && feld7 == "x")
+{
+reihe = 0;
+spalte = 2;
+}
+if (feld2 == "x" && feld8 == "x")
+{
+reihe = 0;
+spalte = 0;
+}
+if (feld2 == "x" && feld9 == "x")
+{
+  reihe = 2;
+  spalte = 0;
+}
+if (feld3 == "x" && feld1 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld3 == "x" && feld2 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld3 == "x" && feld4 == "x")
+{
+reihe = 2;
+spalte = 0;
+}
+if (feld3 == "x" && feld6 == "x")
+{
+reihe = 2;
+spalte = 2;
+}
+if (feld3 == "x" && feld7 == "x")
+{
+reihe = 2;
+spalte = 1;
+}
+if (feld3 == "x" && feld8 == "x")
+{
+reihe = 2;
+spalte = 0;
+}
+if (feld3 == "x" && feld9 == "x")
+{
+reihe = 1;
+spalte = 2;
+}
+if (feld4 == "x" && feld2 == "x")
+{
+  reihe = 2;
+  spalte = 1;
+}
+if (feld4 == "x" && feld3 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld4 == "x" && feld5 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld4 == "x" && feld6 == "x")
+{
+reihe = 0;
+spalte = 0;
+}
+if (feld4 == "x" && feld7 == "x")
+{
+reihe = 0;
+spalte = 0;
+}
+if (feld4 == "x" && feld8 == "x")
+{
+reihe = 2;
+spalte = 0;
+}
+if (feld4 == "x" && feld9 == "x")
+{
+reihe = 0;
+spalte = 0;
+}
+if (feld5 == "x" && feld2 == "x")
+{
+  reihe = 2;
+  spalte = 1;
+}
+if (feld5 == "x" && feld3 == "x")
+{
+  reihe = 2;
+  spalte = 0;
+}
+if (feld5 == "x" && feld4 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld5 == "x" && feld6 == "x")
+{
+reihe = 1;
+spalte = 0;
+}
+if (feld5 == "x" && feld7 == "x")
+{
+reihe = 0;
+spalte = 2;
+}
+if (feld5 == "x" && feld8 == "x")
+{
+reihe = 0;
+spalte = 1;
+}
+if (feld5 == "x" && feld9 == "x")
+{
+reihe = 0;
+spalte = 0;
+}
+if (feld6 == "x" && feld1 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld6 == "x" && feld2 == "x")
+{
+  reihe = 2;
+  spalte = 1;
+}
+if (feld6 == "x" && feld4 == "x")
+{
+  reihe = 1;
+  spalte = 1;
+}
+if (feld6 == "x" && feld5 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld6 == "x" && feld7 == "x")
+{
+reihe = 0;
+spalte = 0;
+}
+if (feld6 == "x" && feld8 == "x")
+{
+reihe = 0;
+spalte = 0;
+}
+if (feld6 == "x" && feld9 == "x")
+{
+reihe = 0;
+spalte = 1;
+}
+if (feld7 == "x" && feld1 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld7 == "x" && feld2 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld7 == "x" && feld3 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld7 == "x" && feld4 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld7 == "x" && feld6 == "x")
+{
+  reihe = 2;
+  spalte = 1;
+}
+if (feld7 == "x" && feld8 == "x")
+{
+reihe = 2;
+spalte = 2;
+}
+if (feld7 == "x" && feld9 == "x")
+{
+reihe = 2;
+spalte = 1;
+}
+if (feld8 == "x" && feld1 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld8 == "x" && feld2 == "x")
+{
+  reihe = 1;
+  spalte = 1;
+}
+if (feld8 == "x" && feld3 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld8 == "x" && feld4 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld8 == "x" && feld5 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld8 == "x" && feld6 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld8 == "x" && feld9 == "x")
+{
+reihe = 2;
+spalte = 0;
+}
+if (feld9 == "x" && feld1 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld9 == "x" && feld2 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld9 == "x" && feld3 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld9 == "x" && feld4 == "x")
+{
+  reihe = 2;
+  spalte = 1;
+}
+if (feld9 == "x" && feld1 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld1 == "x" && feld2 == "x" && feld7 == "x")
+{
+reihe = 1;
+spalte = 0;
+}
+if (feld1 == "x" && feld3 == "x" && feld8 == "x")
+{
+reihe = 2;
+spalte = 1;
+}
+if (feld1 == "x" && feld4 == "x" && feld3 == "x")
+{
+reihe = 0;
+spalte = 1;
+}
+if (feld1 == "x" && feld6 == "x" && feld2 == "x")
+{
+reihe = 0;
+spalte = 2;
+}
+if (feld1 == "x" && feld6 == "x" && feld3 == "x")
+{
+reihe = 0;
+spalte = 1;
+}
+if (feld1 == "x" && feld6 == "x" && feld4 == "x")
+{
+reihe = 2;
+spalte = 0;
+}
+if (feld1 == "x" && feld6 == "x" && feld7 == "x")
+{
+reihe = 1;
+spalte = 0;
+}
+if (feld1 == "x" && feld6 == "x" && feld8 == "x")
+{
+reihe = 1;
+spalte = 0;
+}
+if (feld1 == "x" && feld7 == "x" && feld6 == "x")
+{
+reihe = 2;
+spalte = 1;
+}
+if (feld1 == "x" && feld8 == "x" && feld2 == "x")
+{
+reihe = 0;
+spalte = 2;
+}
+if (feld1 == "x" && feld8 == "x" && feld3 == "x")
+{
+reihe = 0;
+spalte = 1;
+}
+if (feld1 == "x" && feld8 == "x" && feld4 == "x")
+{
+reihe = 2;
+spalte = 0;
+}
+if (feld1 == "x" && feld8 == "x" && feld6 == "x")
+{
+reihe = 1;
+spalte = 0;
+}
+if (feld1 == "x" && feld8 == "x" && feld7 == "x")
+{
+reihe = 1;
+spalte = 0;
+}
+if (feld1 == "x" && feld9 == "x" && feld2 == "x")
+{
+reihe = 0;
+spalte = 2;
+}
+if (feld2 == "x" && feld3 == "x" && feld9 == "x")
+{
+reihe = 1;
+spalte = 2;
+}
+if (feld2 == "x" && feld4 == "x" && feld9 == "x")
+{
+reihe = 1;
+spalte = 2;
+}
+if (feld2 == "x" && feld6 == "x" && feld7 == "x")
+{
+reihe = 1;
+spalte = 0;
+}
+if (feld2 == "x" && feld7 == "x" && feld4 == "x")
+{
+reihe = 0;
+spalte = 0;
+}
+if (feld2 == "x" && feld7 == "x" && feld6 == "x")
+{
+reihe = 1;
+spalte = 0;
+}
+if (feld2 == "x" && feld7 == "x" && feld8 == "x")
+{
+reihe = 2;
+spalte = 2;
+}
+if (feld2 == "x" && feld7 == "x" && feld9 == "x")
+{
+reihe = 2;
+spalte = 1;
+}
+if (feld3 == "x" && feld4 == "x" && feld6 == "x")
+{
+reihe = 2;
+spalte = 2;
+}
+if (feld3 == "x" && feld4 == "x" && feld8 == "x")
+{
+reihe = 1;
+spalte = 2;
+}
+if (feld3 == "x" && feld4 == "x" && feld9 == "x")
+{
+reihe = 1;
+spalte = 2;
+}
+if (feld3 == "x" && feld6 == "x" && feld1 == "x")
+{
+reihe = 0;
+spalte = 1;
+}
+if (feld3 == "x" && feld7 == "x" && feld2 == "x")
+{
+reihe = 0;
+spalte = 0;
+}
+if (feld3 == "x" && feld8 == "x" && feld1 == "x")
+{
+reihe = 0;
+spalte = 1;
+}
+if (feld3 == "x" && feld8 == "x" && feld2 == "x")
+{
+reihe = 0;
+spalte = 0;
+}
+if (feld3 == "x" && feld8 == "x" && feld4 == "x")
+{
+reihe = 1;
+spalte = 2;
+}
+if (feld3 == "x" && feld8 == "x" && feld6 == "x")
+{
+reihe = 2;
+spalte = 2;
+}
+if (feld3 == "x" && feld8 == "x" && feld9 == "x")
+{
+reihe = 1;
+spalte = 2;
+}
+if (feld3 == "x" && feld9 == "x" && feld4 == "x")
+{
+reihe = 2;
+spalte = 1;
+}
+if (feld4 == "x" && feld1 == "x" && feld3 == "x")
+{
+  reihe = 2;
+  spalte = 0;
+}
+if (feld4 == "x" && feld1 == "x" && feld8 == "x")
+{
+reihe = 2;
+spalte = 0;
+}
+if (feld4 == "x" && feld2 == "x" && feld3 == "x")
+{
+reihe = 2;
+spalte = 1;
+}
+if (feld4 == "x" && feld2 == "x" && feld5 == "x")
+{
+reihe = 2;
+spalte = 1;
+}
+if (feld4 == "x" && feld2 == "x" && feld7 == "x")
+{
+reihe = 2;
+spalte = 2;
+}
+if (feld4 == "x" && feld2 == "x" && feld8 == "x")
+{
+reihe = 1;
+spalte = 1;
+}
+if (feld4 == "x" && feld2 == "x" && feld9 == "x")
+{
+reihe = 2;
+spalte = 0;
+}
+if (feld4 == "x" && feld3 == "x" && feld2 == "x")
+{
+reihe = 2;
+spalte = 1;
+}
+if (feld4 == "x" && feld3 == "x" && feld5 == "x")
+{
+reihe = 2;
+spalte = 0;
+}
+if (feld4 == "x" && feld3 == "x" && feld7 == "x")
+{
+reihe = 1;
+spalte = 1;
+}
+if (feld4 == "x" && feld3 == "x" && feld8 == "x")
+{
+reihe = 1;
+spalte = 1;
+}
+if (feld4 == "x" && feld3 == "x" && feld9 == "x")
+{
+reihe = 2;
+spalte = 1;
+}
+if (feld4 == "x" && feld5 == "x" && feld2 == "x")
+{
+reihe = 2;
+spalte = 1;
+}
+if (feld4 == "x" && feld5 == "x" && feld3 == "x")
+{
+reihe = 2;
+spalte = 0;
+}
+if (feld4 == "x" && feld5 == "x" && feld7 == "x")
+{
+reihe = 0;
+spalte = 2;
+}
+if (feld4 == "x" && feld5 == "x" && feld8 == "x")
+{
+reihe = 0;
+spalte = 1;
+}
+if (feld4 == "x" && feld5 == "x" && feld9 == "x")
+{
+reihe = 0;
+spalte = 2;
+}
+if (feld4 == "x" && feld6 == "x" && feld9 == "x")
+{
+reihe = 0;
+spalte = 2;
+}
+if (feld4 == "x" && feld7 == "x" && feld3 == "x")
+{
+reihe = 1;
+spalte = 1;
+}
+if (feld4 == "x" && feld8 == "x" && feld2 == "x")
+{
+reihe = 1;
+spalte = 1;
+}
+if (feld4 == "x" && feld9 == "x" && feld2 == "x")
+{
+reihe = 2;
+spalte = 1;
+}
+if (feld5 == "x" && feld2 == "x" && feld3 == "x")
+{
+reihe = 2;
+spalte = 0;
+}
+if (feld5 == "x" && feld2 == "x" && feld4 == "x")
+{
+reihe = 1;
+spalte = 2;
+}
+if (feld5 == "x" && feld2 == "x" && feld6 == "x")
+{
+reihe = 1;
+spalte = 0;
+}
+if (feld5 == "x" && feld2 == "x" && feld7 == "x")
+{
+reihe = 0;
+spalte = 2;
+}
+if (feld5 == "x" && feld2 == "x" && feld9 == "x")
+{
+reihe = 2;
+spalte = 0;
+}
+if (feld5 == "x" && feld3 == "x" && feld4 == "x")
+{
+reihe = 1;
+spalte = 2;
+}
+if (feld5 == "x" && feld4 == "x" && feld2 == "x")
+{
+reihe = 1;
+spalte = 2;
+}
+if (feld5 == "x" && feld4 == "x" && feld2 == "x")
+{
+reihe = 1;
+spalte = 2;
+}
+if (feld5 == "x" && feld4 == "x" && feld2 == "x")
+{
+reihe = 1;
+spalte = 2;
+}
+if (feld5 == "x" && feld4 == "x" && feld2 == "x")
+{
+reihe = 2;
+spalte = 1;
+}
+if (feld5 == "x" && feld4 == "x" && feld3 == "x")
+{
+reihe = 2;
+spalte = 0;
+}
+if (feld5 == "x" && feld4 == "x" && feld7 == "x")
+{
+reihe = 0;
+spalte = 2;
+}
+if (feld5 == "x" && feld4 == "x" && feld8 == "x")
+{
+reihe = 0;
+spalte = 1;
+}
+if (feld5 == "x" && feld4 == "x" && feld9 == "x")
+{
+reihe = 0;
+spalte = 2;
+}
+if (feld5 == "x" && feld6 == "x" && feld7 == "x")
+{
+reihe = 0;
+spalte = 2;
+}
+if (feld5 == "x" && feld7 == "x" && feld2 == "x")
+{
+reihe = 2;
+spalte = 1;
+}
+if (feld5 == "x" && feld8 == "x" && feld3 == "x")
+{
+reihe = 2;
+spalte = 0;
+}
+if (feld5 == "x" && feld9 == "x" && feld2 == "x")
+{
+reihe = 2;
+spalte = 1;
+}
+if (feld6 == "x" && feld1 == "x" && feld2 == "x")
+{
+reihe = 1;
+spalte = 1;
+}
+if (feld6 == "x" && feld1 == "x" && feld5 == "x")
+{
+reihe = 2;
+spalte = 2;
+}
+if (feld6 == "x" && feld1 == "x" && feld7 == "x")
+{
+reihe = 2;
+spalte = 1;
+}
+if (feld6 == "x" && feld1 == "x" && feld8 == "x")
+{
+reihe = 1;
+spalte = 1;
+}
+if (feld6 == "x" && feld1 == "x" && feld9 == "x")
+{
+reihe =1;
+spalte = 1;
+}
+if (feld6 == "x" && feld2 == "x" && feld1 == "x")
+{
+reihe = 2;
+spalte = 0;
+}
+if (feld6 == "x" && feld2 == "x" && feld4 == "x")
+{
+reihe = 1;
+spalte = 1;
+}
+if (feld6 == "x" && feld2 == "x" && feld5 == "x")
+{
+reihe = 1;
+spalte = 0;
+}
+if (feld6 == "x" && feld2 == "x" && feld7 == "x")
+{
+reihe = 0;
+spalte = 0;
+}
+if (feld6 == "x" && feld2 == "x" && feld9 == "x")
+{
+reihe = 1;
+spalte = 1;
+}
+if (feld6 == "x" && feld4 == "x" && feld7 == "x")
+{
+reihe = 0;
+spalte = 0;
+}
+if (feld6 == "x" && feld5 == "x" && feld1 == "x")
+{
+reihe = 2;
+spalte = 2;
+}
+if (feld6 == "x" && feld5 == "x" && feld2 == "x")
+{
+reihe = 2;
+spalte = 1;
+}
+if (feld6 == "x" && feld5 == "x" && feld7 == "x")
+{
+reihe = 0;
+spalte = 0;
+}
+if (feld6 == "x" && feld5 == "x" && feld8 == "x")
+{
+reihe = 0;
+spalte = 1;
+}
+if (feld6 == "x" && feld5 == "x" && feld9 == "x")
+{
+reihe = 0;
+spalte = 0;
+}
+if (feld6 == "x" && feld7 == "x" && feld2 == "x")
+{
+reihe = 2;
+spalte = 1;
+}
+if (feld6 == "x" && feld9 == "x" && feld1 == "x")
+{
+  reihe = 1;
+  spalte = 1;
+}
+if (feld6 == "x" && feld8 == "x" && feld2 == "x")
+{
+reihe = 1;
+spalte = 1;
+}
+if (feld6 == "x" && feld9 == "x" && feld4 == "x")
+{
+reihe = 0;
+spalte = 0;
+}
+if (feld6 == "x" && feld9 == "x" && feld5 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld6 == "x" && feld9 == "x" && feld7 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld6 == "x" && feld9 == "x" && feld8 == "x")
+{
+  reihe = 1;
+  spalte = 1;
+}
+if (feld7 == "x" && feld1 == "x" && feld2 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld7 == "x" && feld1 == "x" && feld3 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+} 
+if (feld7 == "x" && feld1 == "x" && feld6 == "x")
+{
+reihe = 0;
+spalte = 2;
+}
+if (feld7 == "x" && feld1 == "x" && feld8 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld7 == "x" && feld1 == "x" && feld3 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld7 == "x" && feld2 == "x" && feld1 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld7 == "x" && feld2 == "x" && feld3 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld7 == "x" && feld2 == "x" && feld6 == "x")
+{
+reihe = 0;
+spalte = 2;
+}
+if (feld7 == "x" && feld2 == "x" && feld8 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld7 == "x" && feld2 == "x" && feld9 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld7 == "x" && feld3 == "x" && feld1 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld7 == "x" && feld3 == "x" && feld2 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld7 == "x" && feld3 == "x" && feld6 == "x")
+{
+reihe = 0;
+spalte = 2;
+}
+if (feld7 == "x" && feld3 == "x" && feld8 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld7 == "x" && feld3 == "x" && feld9 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld7 == "x" && feld4 == "x" && feld2 == "x")
+{
+  reihe = 2;
+  spalte = 2;
+}
+if (feld7 == "x" && feld4 == "x" && feld3 == "x")
+{
+  reihe = 2;
+  spalte = 2;
+}
+if (feld7 == "x" && feld4 == "x" && feld6 == "x")
+{
+  reihe = 2;
+  spalte = 2;
+}
+if (feld7 == "x" && feld4 == "x" && feld8 == "x")
+{
+  reihe = 2;
+  spalte = 2;
+}
+if (feld7 == "x" && feld4 == "x" && feld9 == "x")
+{
+  reihe = 2;
+  spalte = 1;
+}
+if (feld7 == "x" && feld6 == "x" && feld1 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld7 == "x" && feld6 == "x" && feld2 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld7 == "x" && feld6 == "x" && feld3 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld7 == "x" && feld6 == "x" && feld4 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld7 == "x" && feld6 == "x" && feld9 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld7 == "x" && feld6 == "x" && feld2 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld7 == "x" && feld6 == "x" && feld3 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld7 == "x" && feld6 == "x" && feld4 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld7 == "x" && feld6 == "x" && feld9 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld7 == "x" && feld8 == "x" && feld1 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld7 == "x" && feld8 == "x" && feld2 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld7 == "x" && feld8 == "x" && feld3 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld7 == "x" && feld8 == "x" && feld4 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld8 == "x" && feld1 == "x" && feld3 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld8 == "x" && feld1 == "x" && feld4 == "x")
+{
+  reihe = 1;
+  spalte = 1;
+}
+if (feld8 == "x" && feld1 == "x" && feld5 == "x")
+{
+  reihe = 2;
+  spalte = 2;
+}
+if (feld8 == "x" && feld1 == "x" && feld6 == "x")
+{
+  reihe = 1;
+  spalte = 1;
+}
+if (feld8 == "x" && feld1 == "x" && feld9 == "x")
+{
+  reihe = 1;
+  spalte = 1;
+}
+if (feld8 == "x" && feld2 == "x" && feld1 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld8 == "x" && feld2 == "x" && feld3 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld8 == "x" && feld2 == "x" && feld4 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld8 == "x" && feld2 == "x" && feld6 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld8 == "x" && feld2 == "x" && feld9 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld8 == "x" && feld3 == "x" && feld2 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld8 == "x" && feld3 == "x" && feld4 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld8 == "x" && feld3 == "x" && feld5 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld8 == "x" && feld3 == "x" && feld6 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld8 == "x" && feld3 == "x" && feld9 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld8 == "x" && feld4 == "x" && feld1 == "x")
+{
+  reihe = 1;
+  spalte = 1;
+}
+if (feld8 == "x" && feld4 == "x" && feld3 == "x")
+{
+  reihe = 2;
+  spalte = 2;
+}
+if (feld8 == "x" && feld4 == "x" && feld5 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld8 == "x" && feld4 == "x" && feld6 == "x")
+{
+  reihe = 1;
+  spalte = 1;
+}
+if (feld8 == "x" && feld4 == "x" && feld9 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld8 == "x" && feld5 == "x" && feld1 == "x")
+{
+  reihe = 2;
+  spalte = 2;
+}
+if (feld8 == "x" && feld5 == "x" && feld3 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld8 == "x" && feld5 == "x" && feld4 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld8 == "x" && feld5 == "x" && feld6 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld8 == "x" && feld5 == "x" && feld9 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld8 == "x" && feld6 == "x" && feld2 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld8 == "x" && feld6 == "x" && feld3 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld8 == "x" && feld6 == "x" && feld4 == "x")
+{
+  reihe = 1;
+  spalte = 1;
+}
+if (feld8 == "x" && feld6 == "x" && feld5 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld8 == "x" && feld6 == "x" && feld9 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld8 == "x" && feld9 == "x" && feld1 == "x")
+{
+  reihe = 1;
+  spalte = 1;
+}
+if (feld8 == "x" && feld9 == "x" && feld2 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld8 == "x" && feld9 == "x" && feld3 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld8 == "x" && feld9 == "x" && feld5 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld8 == "x" && feld9 == "x" && feld6 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld9 == "x" && feld1 == "x" && feld2 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld9 == "x" && feld1 == "x" && feld3 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld9 == "x" && feld1 == "x" && feld4 == "x")
+{
+  reihe = 2;
+  spalte = 0;
+}
+if (feld9 == "x" && feld1 == "x" && feld7 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld9 == "x" && feld1 == "x" && feld8 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld9 == "x" && feld2 == "x" && feld1 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld9 == "x" && feld2 == "x" && feld3 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld9 == "x" && feld2 == "x" && feld4 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld9 == "x" && feld2 == "x" && feld7 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld9 == "x" && feld2 == "x" && feld8 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld9 == "x" && feld3 == "x" && feld1 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld9 == "x" && feld3 == "x" && feld2 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld9 == "x" && feld3 == "x" && feld4 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld9 == "x" && feld3 == "x" && feld7 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld9 == "x" && feld3 == "x" && feld8 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld9 == "x" && feld4 == "x" && feld1 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld9 == "x" && feld4 == "x" && feld2 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld9 == "x" && feld4 == "x" && feld3 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld9 == "x" && feld4 == "x" && feld6 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld9 == "x" && feld4 == "x" && feld7 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld9 == "x" && feld6 == "x" && feld1 == "x")
+{
+  reihe = 2;
+  spalte = 2;
+}
+if (feld9 == "x" && feld6 == "x" && feld2 == "x")
+{
+  reihe = 2;
+  spalte = 2;
+}
+if (feld9 == "x" && feld6 == "x" && feld4 == "x")
+{
+  reihe = 2;
+  spalte = 2;
+}
+if (feld9 == "x" && feld6 == "x" && feld7 == "x")
+{
+  reihe = 2;
+  spalte = 1;
+}
+if (feld9 == "x" && feld6 == "x" && feld8 == "x")
+{
+  reihe = 2;
+  spalte = 2;
+}
+if (feld9 == "x" && feld7 == "x" && feld1 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld9 == "x" && feld7 == "x" && feld2 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld9 == "x" && feld7 == "x" && feld3 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld9 == "x" && feld7 == "x" && feld4 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld9 == "x" && feld7 == "x" && feld6 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld9 == "x" && feld8 == "x" && feld1 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld9 == "x" && feld8 == "x" && feld2 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld9 == "x" && feld8 == "x" && feld3 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld9 == "x" && feld8 == "x" && feld4 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld9 == "x" && feld8 == "x" && feld6 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+board[reihe, spalte] = "o";
+WasLastMoveX = false;
+}
+else
+{
+
+board[reihe, spalte] = "x";
+WasLastMoveX = true;
+}
+GewinnerErmitteln();
+
+}
+
+private void GewinnerErmitteln()
+{
+string feld1 = board [0,0];
+string feld2 = board [0,1];
+string feld3 = board [0,2];
+string feld4 = board [1,0];
+string feld5 = board [1,1];
+string feld6 = board [1,2];
+string feld7 = board [2,0];
+string feld8 = board [2,1];
+string feld9 = board [2,2];
+if (
+(feld1 == "x" || feld1 == "o") &&
+(feld2 == "x" || feld2 == "o") &&
+(feld3 == "x" || feld3 == "o") &&
+(feld4 == "x" || feld4 == "o") &&
+(feld5 == "x" || feld5 == "o") &&
+(feld6 == "x" || feld6 == "o") &&
+(feld7 == "x" || feld7 == "o") &&
+(feld8 == "x" || feld8 == "o") &&
+(feld9 == "x" || feld9 == "o")
+)
+{
+winnerMessage = "It's a draw!";
+gameOver = true;
+
+}
+if (feld1 == "x" && feld2 == "x" && feld3 == "x"
+|| feld1 == "x" && feld5 == "x" && feld9 == "x"
+|| feld1 == "x" && feld4 == "x" && feld7 == "x"
+|| feld2 == "x" && feld5 == "x" && feld8 == "x"
+|| feld3 == "x" && feld6 == "x" && feld9 == "x"
+|| feld4 == "x" && feld5 == "x" && feld6 == "x"
+|| feld7 == "x" && feld8 == "x" && feld9 == "x"
+|| feld3 == "x" && feld5 == "x" && feld7 == "x")
+{
+winnerMessage = "Player X wins!";
+xWins++;
+gameOver = true;
+
+}
+else { }
+{
+if (feld1 == "o" && feld2 == "o" && feld3 == "o"
+|| feld1 == "o" && feld5 == "o" && feld9 == "o"
+|| feld1 == "o" && feld4 == "o" && feld7 == "o"
+|| feld2 == "o" && feld5 == "o" && feld8 == "o"
+|| feld3 == "o" && feld6 == "o" && feld9 == "o"
+|| feld4 == "o" && feld5 == "o" && feld6 == "o"
+|| feld7 == "o" && feld8 == "o" && feld9 == "o"
+|| feld3 == "o" && feld5 == "o" && feld7 == "o")
+{
+oWins++;
+winnerMessage = "The one and only BOT wins!";
+gameOver = true;
+
+}
+}
+}
+
+private void ResetGame()
+{
+board = new string[3, 3];
+gameOver = false;
+winnerMessage = string.Empty;
+WasLastMoveX = false;
+}
+private void ResetScore()
+{
+xWins = 0;
+oWins = 0;
+ResetGame();
+}
+}
+
+<style>
+  .spiel-flaeche {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .bord-reihe {
+    display: flex;
+    gap: 10px;
+  }
+
+  .zelle {
+    width: 90px;
+    height: 90px;
+    font-size: 2rem;
+    background-color: #f0f0f0;
+    border: 2px solid #333;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+  }
+
+  .winner-text {
+    margin-top: 20px;
+    font-size: 1.8rem;
+    color: green;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .restart-button {
+    margin: 15px auto;
+    padding: 16px 32px;
+    font-size: 1.4rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block;
+    max-width: 300px;
+    text-align: center;
+  }
+
+
+  .restart-button:hover {
+    background-color: #0056b3;
+  }
+
+  .reset-score-button {
+    margin: 15px auto;
+    padding: 16px 32px;
+    font-size: 1.4rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block;
+    max-width: 300px;
+    text-align: center;
+  }
+</style>
