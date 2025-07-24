@@ -428,7 +428,7 @@ if (feld1 == "x" && feld2 == "x" && feld9 == "x")
   reihe = 2;
   spalte = 0;
 }
-if (feld1 == "x" && feld3 == "x" && feld8 == "x")
+if (feld1 == "x" && feld3 == "x" && feld8 == "x" && feld2 == "o" && feld5 == "o")
 {
 reihe = 2;
 spalte = 0;
@@ -473,15 +473,15 @@ if (feld1 == "x" && feld8 == "x" && feld2 == "x")
 reihe = 0;
 spalte = 2;
 }
-if (feld1 == "x" && feld8 == "x" && feld3 == "x")
+if (feld1 == "x" && feld8 == "x" && feld3 == "x" && feld4 == "o" && feld5 == "o")
 {
-reihe = 0;
-spalte = 1;
+reihe = 1;
+spalte = 2;
 }
-if (feld1 == "x" && feld8 == "x" && feld4 == "x")
+if (feld1 == "x" && feld8 == "x" && feld6 == "x" && feld4 == "o" && feld5 == "o")
 {
 reihe = 2;
-spalte = 0;
+spalte = 2;
 }
 if (feld1 == "x" && feld8 == "x" && feld6 == "x")
 {
@@ -675,7 +675,7 @@ spalte = 2;
 }
 if (feld4 == "x" && feld6 == "x" && feld9 == "x")
 {
-reihe = 0;
+reihe = 2;
 spalte = 2;
 }
 if (feld4 == "x" && feld7 == "x" && feld3 == "x")
@@ -1485,6 +1485,8 @@ if (feld1 == "x" && feld2 == "x" && feld6 == "x" && feld5 == "o" && feld3 == "o"
   reihe = 2;
   spalte = 0;
 }
+
+
 
 board[reihe, spalte] = "o";
 WasLastMoveX = false;
