@@ -8,4 +8,8 @@
         <RootNamespace>PlayTogether.Web</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Services\NewFolder\" />
+    </ItemGroup>
+
 </Project>
