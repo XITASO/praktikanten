@@ -1,0 +1,25 @@
+@page "/Lobby"
+@using PlayTogether.Web.Services
+<h3>Lobby</h3>
+
+<div style="margin-left: 15px;">
+    <button class = "restart-button" onclick = "location.href='/tictactoe'" style="margin-left: 10px;">Gameroom 1</button>
+    <button class = "restart-button" onclick = "location.href='/tictactoe2'" style="margin-left: 10px;">Gameroom2</button>
+    <button class = "restart-button" onclick = "location.href='tictactoe3'" style="margin-left: 10px;">Gameroom3</button>
+    <button class = "restart-button" onclick = "location.href='/tictactoebot'" style="margin-left: 10px;">Tic-Tac-Toe Bot</button>
+</div>
+
+<style>
+.restart-button {
+margin: 15px 5px 15px 0;
+padding: 12px 24px;
+font-size: 1.1rem;
+background-color: #007bff;
+color: white;
+border: none;
+border-radius: 6px;
+cursor: pointer;
+transition: background-color 0.3s ease;
+display: inline-block;
+}
+</style>

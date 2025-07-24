@@ -1,0 +1,184 @@
+﻿@page "/tictactoe3"
+@using PlayTogether.Web.Services
+@inject GameService3 GameService3
+<h3>Tic-Tac-Toe Game(Room 3)</h3>
+
+<div style="margin-bottom: 15px;">
+    <input placeholder="Player X Name" @bind="playerXInput" />
+    <input placeholder="Player O Name" @bind="playerOInput" style="margin-left: 10px;" />
+    <button class="restart-button" @onclick="SetPlayerNames" style="margin-left: 10px;">Set Player Names</button>
+</div>
+
+<div class="spectator-section" style="margin-bottom: 20px;">
+    <input placeholder="Enter spectator name" @bind="spectatorInput" />
+    <button class="restart-button" @onclick="SetSpectator" style="margin-left: 10px;">Set Spectator</button>
+    <button class="restart-button" @onclick="ClearSpectator" style="margin-left: 10px;">Clear Spectator</button>
+</div>
+
+@if (!string.IsNullOrEmpty(GameService3.WinnerMessage))
+{
+<div class="winner-text">@GameService3.WinnerMessage</div>
+}
+
+<button class="restart-button" @onclick="GameService3.ResetGame" disabled="@IsSpectator">RESTART GAME</button>
+<button class="restart-button" @onclick="GameService3.ResetScore" style="margin-left: 10px;" disabled="@IsSpectator">RESET SCORE</button>
+
+<div class="scoreboard" style="margin: 10px 0;">
+    <strong>@GameService3.PlayerXName</strong>: @GameService3.ScoreX / <strong>@GameService3.PlayerOName</strong>: @GameService3.ScoreO
+</div>
+<div class="spiel-flaeche">
+    @for (int row = 0; row < 3; row++)
+    {
+    int fixedRow = row;
+    <div class="bord-reihe">
+        @for (int col = 0; col < 3; col++)
+        {
+        int fixedCol = col;
+        <button class="zelle"
+                @onclick="() => MakeMoveIfAllowed(fixedRow, fixedCol)"
+                disabled="@(!CanPlay)">
+            @GameService3.Board[fixedRow, fixedCol]
+        </button>
+        }
+    </div>
+    }
+</div>
+
+@if (!string.IsNullOrEmpty(GameService3.SpectatorName))
+{
+<div class="spectator-info" style="margin-top: 10px; font-weight: bold; color: darkorange;">
+    Spectator: @GameService3.SpectatorName is watching the game!
+</div>
+}
+
+@code {
+private string playerXInput = "";
+private string playerOInput = "";
+private string spectatorInput = "";
+
+private bool IsSpectator => !string.IsNullOrWhiteSpace(GameService3.SpectatorName);
+
+private bool CanPlay =>
+!IsSpectator &&
+!string.IsNullOrWhiteSpace(GameService3.PlayerXName) &&
+!string.IsNullOrWhiteSpace(GameService3.PlayerOName);
+
+private void SetPlayerNames()
+{
+if (!string.IsNullOrWhiteSpace(playerXInput))
+    GameService3.PlayerXName = playerXInput.Trim();
+
+if (!string.IsNullOrWhiteSpace(playerOInput))
+    GameService3.PlayerOName = playerOInput.Trim();
+
+GameService3.ResetScore();
+}
+
+private void SetSpectator()
+{
+if (!string.IsNullOrWhiteSpace(spectatorInput))
+{
+    GameService3.SetSpectatorName(spectatorInput);
+spectatorInput = "";
+}
+}
+
+private void ClearSpectator()
+{
+    GameService3.ClearSpectator();
+}
+
+private void MakeMoveIfAllowed(int row, int col)
+{
+if (CanPlay)
+{
+    GameService3.MakeMove(row, col);
+}
+}
+
+protected override void OnInitialized()
+{
+    GameService3.StateChanged += OnGameStateChanged;
+}
+
+private void OnGameStateChanged(object? sender, EventArgs e)
+{
+InvokeAsync(StateHasChanged);
+}
+
+public void Dispose()
+{
+    GameService3.StateChanged -= OnGameStateChanged;
+}
+}
+
+@implements IDisposable
+
+<style>
+    .spiel-flaeche {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .bord-reihe {
+        display: flex;
+        gap: 10px;
+    }
+
+    .zelle {
+        width: 90px;
+        height: 90px;
+        font-size: 2rem;
+        background-color: #f0f0f0;
+        border: 2px solid #333;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+    }
+
+    .zelle:disabled {
+        cursor: not-allowed;
+        background-color: #ddd;
+    }
+
+    .winner-text {
+        margin-top: 20px;
+        font-size: 1.8rem;
+        color: green;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .restart-button {
+        margin: 15px 5px 15px 0;
+        padding: 12px 24px;
+        font-size: 1.1rem;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        display: inline-block;
+    }
+
+    .restart-button:disabled {
+        cursor: not-allowed;
+        background-color: #a0a0a0;
+    }
+
+    .restart-button:hover:not(:disabled) {
+        background-color: #0056b3;
+    }
+
+    .spectator-section input {
+        padding: 8px;
+        margin-right: 8px;
+        font-size: 1rem;
+    }
+</style>
