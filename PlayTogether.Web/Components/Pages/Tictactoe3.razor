@@ -1,6 +1,8 @@
 ﻿@page "/tictactoe3"
 @using PlayTogether.Web.Services
 @inject GameService3 GameService3
+@inject NavigationManager NavigationManager
+@inject Roomservice Roomservice
 <h3>Tic-Tac-Toe Game(Room 3)</h3>
 Reset
 <div style="margin-bottom: 15px;">
@@ -22,6 +24,7 @@ Reset
 
 <button class="restart-button" @onclick="GameService3.ResetGame" disabled="@IsSpectator">RESTART GAME</button>
 <button class="restart-button" @onclick="GameService3.ResetScore" style="margin-left: 10px;" disabled="@IsSpectator">RESET SCORE</button>
+<button class="restart-button" @onclick="LeafRoom" style="margin-left: 10px">Leave Room</button>
 
 <div class="scoreboard" style="margin: 10px 0;">
     <strong>@GameService3.PlayerXName</strong>: @GameService3.ScoreX / <strong>@GameService3.PlayerOName</strong>: @GameService3.ScoreO
@@ -109,6 +112,13 @@ InvokeAsync(StateHasChanged);
 public void Dispose()
 {
     GameService3.StateChanged -= OnGameStateChanged;
+}
+
+public void LeafRoom()
+{
+    Roomservice.room3leafe();
+    NavigationManager.NavigateTo("/tictactoe");
+    
 }
 }
 
