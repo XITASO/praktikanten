@@ -40,13 +40,13 @@
     }
     private void JoinRoom2()
     {
-        if (Roomservice.Room2 <= 1)
+        if (Roomservice.Room2 == 0)
         {
             Roomservice.room2join();
             NavigationManager.NavigateTo("/tictactoe2");
             Console.WriteLine(Roomservice.Room2);
         }
-        else if ( Roomservice.Room1 == 1)
+        else if ( Roomservice.Room2 == 1)
         {
             Roomservice.room2join();
             NavigationManager.NavigateTo("/tictactoe22");
@@ -59,7 +59,7 @@
     }
     private void JoinRoom3()
     {
-        if (Roomservice.Room3 <= 1)
+        if (Roomservice.Room3 == 0)
         {
             Roomservice.room3join();
             NavigationManager.NavigateTo("/tictactoe3");
