@@ -2790,6 +2790,8 @@ if (feld9 == "o" && feld7 == "o" && feld8 != "x")
   reihe = 2;
   spalte = 1;
 }
+
+
 board[reihe, spalte] = "o";
 WasLastMoveX = true;
 
@@ -2836,7 +2838,23 @@ if (
 winnerMessage = "It's a draw!";
 gameOver = true;
 
+}if (feld1 == "o" && feld2 == "o" && feld3 == "o"
+|| feld1 == "o" && feld5 == "o" && feld9 == "o"
+|| feld1 == "o" && feld4 == "o" && feld7 == "o"
+|| feld2 == "o" && feld5 == "o" && feld8 == "o"
+|| feld3 == "o" && feld6 == "o" && feld9 == "o"
+|| feld4 == "o" && feld5 == "o" && feld6 == "o"
+|| feld7 == "o" && feld8 == "o" && feld9 == "o"
+|| feld3 == "o" && feld5 == "o" && feld7 == "o")
+{
+oWins++;
+winnerMessage = "The one and only BOT wins!";
+gameOver = true;
+
+
 }
+else { }
+{
 if (feld1 == "x" && feld2 == "x" && feld3 == "x"
 || feld1 == "x" && feld5 == "x" && feld9 == "x"
 || feld1 == "x" && feld4 == "x" && feld7 == "x"
@@ -2848,22 +2866,6 @@ if (feld1 == "x" && feld2 == "x" && feld3 == "x"
 {
 winnerMessage = "Player X wins!";
 xWins++;
-gameOver = true;
-
-}
-else { }
-{
-if (feld1 == "o" && feld2 == "o" && feld3 == "o"
-|| feld1 == "o" && feld5 == "o" && feld9 == "o"
-|| feld1 == "o" && feld4 == "o" && feld7 == "o"
-|| feld2 == "o" && feld5 == "o" && feld8 == "o"
-|| feld3 == "o" && feld6 == "o" && feld9 == "o"
-|| feld4 == "o" && feld5 == "o" && feld6 == "o"
-|| feld7 == "o" && feld8 == "o" && feld9 == "o"
-|| feld3 == "o" && feld5 == "o" && feld7 == "o")
-{
-oWins++;
-winnerMessage = "The one and only BOT wins!";
 gameOver = true;
 
 }
