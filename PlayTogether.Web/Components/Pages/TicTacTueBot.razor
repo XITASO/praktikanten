@@ -1488,6 +1488,48 @@ if (feld1 == "x" && feld2 == "x" && feld6 == "x" && feld5 == "o" && feld3 == "o"
 
 
 
+if (feld1 == "o" && feld2 == "o" && feld6 != "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld1 == "o" && feld5 == "o" && feld9 != "x")
+{
+  reihe = 2;
+  spalte = 2;
+}
+if (feld1 == "o" && feld4 == "o" && feld7 != "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld2 == "o" && feld5 == "o" && feld8 != "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld3 == "o" && feld6 == "o" && feld9 != "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld3 == "o" && feld5 == "o" && feld7 != "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld4 == "o" && feld5 == "o" && feld6 != "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld7 == "o" && feld8 == "o" && feld9 != "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+
+
 board[reihe, spalte] = "o";
 WasLastMoveX = false;
 }
