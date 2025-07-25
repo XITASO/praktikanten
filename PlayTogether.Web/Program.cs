@@ -16,6 +16,7 @@ builder.Services.AddSingleton<CounterService>();
 builder.Services.AddSingleton<GameService>();
 builder.Services.AddSingleton<GameService2>();
 builder.Services.AddSingleton<GameService3>();
+builder.Services.AddSingleton<Roomservice>();
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
