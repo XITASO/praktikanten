@@ -49,8 +49,11 @@ private void MakeMove(int reihe, int spalte)
 if (board[reihe, spalte] != null || gameOver)
 return;
 
-if (WasLastMoveX == true)
-{
+
+board[reihe, spalte] = "x";
+WasLastMoveX = true;
+
+  
 string feld1 = board[0,0];
 string feld2 = board[0,1];
 string feld3 = board[0,2];
@@ -2363,16 +2366,303 @@ if (feld7 == "x" && feld6 == "x" && feld2 == "x" && feld9 == "x")
   reihe = 2;
   spalte = 1;
 }
-if (feld7 == "x" && feld6 == "x" && feld3 == "x" && feld1 == "x")
+if (feld7 == "x" && feld6 == "x" && feld4 == "x" && feld1 == "x")
 {
   reihe = 2;
   spalte = 2;
 }
-if (feld7 == "x" && feld6 == "x" && feld3 == "x" && feld9 == "x")
+if (feld7 == "x" && feld6 == "x" && feld4 == "x" && feld9 == "x")
 {
   reihe = 0;
   spalte = 1;
 }
+if (feld7 == "x" && feld6 == "x" && feld8 == "x" && feld1 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld7 == "x" && feld6 == "x" && feld9 == "x" && feld2 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld7 == "x" && feld8 == "x" && feld1 == "x" && feld6 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld7 == "x" && feld9 == "x" && feld2 == "x" && feld6 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld8 == "x" && feld1 == "x" && feld2 == "x" && feld7 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld8 == "x" && feld1 == "x" && feld2 == "x" && feld6 == "x")
+{
+  reihe = 2;
+  spalte = 0;
+}
+if (feld8 == "x" && feld1 == "x" && feld3 == "x" && feld4 == "x")
+{
+  reihe = 2;
+  spalte = 0;
+}
+if (feld8 == "x" && feld1 == "x" && feld3 == "x" && feld6 == "x")
+{
+  reihe = 2;
+  spalte = 0;
+}
+if (feld8 == "x" && feld1 == "x" && feld3 == "x" && feld7 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld8 == "x" && feld1 == "x" && feld4 == "x" && feld3 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld8 == "x" && feld1 == "x" && feld6 == "x" && feld2 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld8 == "x" && feld1 == "x" && feld6 == "x" && feld3 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld8 == "x" && feld2 == "x" && feld1 == "x" && feld7 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld8 == "x" && feld3 == "x" && feld1 == "x" && feld4 == "x")
+{
+  reihe = 2;
+  spalte = 2;
+}
+if (feld8 == "x" && feld3 == "x" && feld1 == "x" && feld6 == "x")
+{
+  reihe = 2;
+  spalte = 2;
+}
+if (feld8 == "x" && feld3 == "x" && feld1 == "x" && feld9 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld8 == "x" && feld3 == "x" && feld2 == "x" && feld4 == "x")
+{
+  reihe = 2;
+  spalte = 2;
+}
+if (feld8 == "x" && feld3 == "x" && feld2 == "x" && feld9 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld8 == "x" && feld3 == "x" && feld4 == "x" && feld1 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld8 == "x" && feld3 == "x" && feld4 == "x" && feld2 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld8 == "x" && feld3 == "x" && feld4 == "x" && feld9 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld8 == "x" && feld3 == "x" && feld6 == "x" && feld1 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld8 == "x" && feld3 == "x" && feld9 == "x" && feld4 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld8 == "x" && feld4 == "x" && feld3 == "x" && feld1 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld8 == "x" && feld4 == "x" && feld3 == "x" && feld2 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld8 == "x" && feld4 == "x" && feld3 == "x" && feld9 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld8 == "x" && feld6 == "x" && feld1 == "x" && feld2 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld8 == "x" && feld6 == "x" && feld1 == "x" && feld3 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld8 == "x" && feld6 == "x" && feld1 == "x" && feld7 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld8 == "x" && feld7 == "x" && feld1 == "x" && feld6 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld8 == "x" && feld9 == "x" && feld3 == "x" && feld4 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld9 == "x" && feld1 == "x" && feld2 == "x" && feld7 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld9 == "x" && feld2 == "x" && feld3 == "x" && feld4 == "x")
+{
+  reihe = 2;
+  spalte = 0;
+}
+if (feld9 == "x" && feld2 == "x" && feld4 == "x" && feld3 == "x")
+{
+  reihe = 2;
+  spalte = 0;
+}
+if (feld9 == "x" && feld2 == "x" && feld4 == "x" && feld7 == "x")
+{
+  reihe = 2;
+  spalte = 1;
+}
+if (feld9 == "x" && feld2 == "x" && feld4 == "x" && feld8 == "x")
+{
+  reihe = 2;
+  spalte = 0;
+}
+if (feld9 == "x" && feld2 == "x" && feld6 == "x" && feld7 == "x")
+{
+  reihe = 2;
+  spalte = 1;
+}
+if (feld9 == "x" && feld2 == "x" && feld7 == "x" && feld3 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld9 == "x" && feld2 == "x" && feld7 == "x" && feld4 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld9 == "x" && feld2 == "x" && feld7 == "x" && feld6 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld9 == "x" && feld2 == "x" && feld8 == "x" && feld3 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+if (feld9 == "x" && feld2 == "x" && feld8 == "x" && feld4 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld9 == "x" && feld3 == "x" && feld4 == "x" && feld8 == "x")
+{
+  reihe = 2;
+  spalte = 0;
+}
+if (feld9 == "x" && feld4 == "x" && feld2 == "x" && feld3 == "x")
+{
+  reihe = 2;
+  spalte = 0;
+}
+if (feld9 == "x" && feld4 == "x" && feld2 == "x" && feld7 == "x")
+{
+  reihe = 2;
+  spalte = 1;
+}
+if (feld9 == "x" && feld4 == "x" && feld2 == "x" && feld8 == "x")
+{
+  reihe = 2;
+  spalte = 0;
+}
+if (feld9 == "x" && feld4 == "x" && feld3 == "x" && feld2 == "x")
+{
+  reihe = 2;
+  spalte = 0;
+}
+if (feld9 == "x" && feld4 == "x" && feld3 == "x" && feld2 == "x")
+{
+  reihe = 2;
+  spalte = 0;
+}
+if (feld9 == "x" && feld4 == "x" && feld3 == "x" && feld7 == "x")
+{
+  reihe = 2;
+  spalte = 1;
+}
+if (feld9 == "x" && feld4 == "x" && feld3 == "x" && feld8 == "x")
+{
+  reihe = 2;
+  spalte = 0;
+}
+if (feld9 == "x" && feld4 == "x" && feld6 == "x" && feld2 == "x")
+{
+  reihe = 2;
+  spalte = 0;
+}
+if (feld9 == "x" && feld4 == "x" && feld6 == "x" && feld7 == "x")
+{
+  reihe = 0;
+  spalte = 1;
+}
+if (feld9 == "x" && feld4 == "x" && feld7 == "x" && feld2 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld9 == "x" && feld4 == "x" && feld8 == "x" && feld3 == "x")
+{
+  reihe = 1;
+  spalte = 2;
+}
+if (feld9 == "x" && feld6 == "x" && feld7 == "x" && feld2 == "x")
+{
+  reihe = 0;
+  spalte = 0;
+}
+if (feld9 == "x" && feld7 == "x" && feld2 == "x" && feld6 == "x")
+{
+  reihe = 0;
+  spalte = 2;
+}
+if (feld9 == "x" && feld8 == "x" && feld3 == "x" && feld4 == "x")
+{
+  reihe = 1;
+  spalte = 0;
+}
+
+
 
 
 
@@ -2500,20 +2790,25 @@ if (feld9 == "o" && feld7 == "o" && feld8 != "x")
   reihe = 2;
   spalte = 1;
 }
-
-
 board[reihe, spalte] = "o";
-WasLastMoveX = false;
-}
-else
-{
-
-board[reihe, spalte] = "x";
 WasLastMoveX = true;
-}
+
+
+
+
 GewinnerErmitteln();
 
 }
+
+
+
+
+
+
+
+
+
+
 
 private void GewinnerErmitteln()
 {
@@ -2660,3 +2955,94 @@ ResetGame();
     text-align: center;
   }
 </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
