@@ -17,53 +17,25 @@
 
 
 
-
-
-@* <div style="margin-top:15px;margin-left: 15px"> *@
-@*     <button class="spectator-button" @onclick="JoinRoom1spectator" style="margin-left: 10px;">Spectate Gameroom 1  </button> *@
-@*     <button class="spectator-button" @onclick="JoinRoom2spectator" style="margin-left: 10px;">Spectate Gameroom 2  </button> *@
-@*     <button class="spectator-button" @onclick="JoinRoom3spectator" style="margin-left: 10px;">Spectate Gameroom 3  </button> *@
-@* *@
-@* </div> *@
-
-
-@* <div style="margin-top: 15px; margin-left: 15px;"> *@
-@*     <input placeholder="Spectator name" @bind="spectatorNameInput" /> *@
-@* </div> *@
-
-
-
-
 @code {
-    // public string spectatorNameInput;
-    //
-    // private void JoinRoom1spectator()
-    // {
-    //     GameService.SetSpectatorName(spectatorNameInput); 
-    //     NavigationManager.NavigateTo("/tictactoe1spectator");
-    //     
-    // }
-    //
-    // private void JoinRoom2spectator()
-    // {
-    //     
-    // }
-    //
-    // private void JoinRoom3spectator()
-    // {
-    //     
-    // }
+   
     private void JoinRoom1()
-    {
-        if ( Roomservice.Room1 <= 1)
+    { 
+        if ( Roomservice.Room1 == 0)
         {
             Roomservice.room1join();
             NavigationManager.NavigateTo("/tictactoe1");
             Console.WriteLine(Roomservice.Room1);
         }
-        else
+        else if ( Roomservice.Room1 == 1)
         {
-          
+            Roomservice.room1join();
+            NavigationManager.NavigateTo("/tictactoe12");
+            Console.WriteLine(Roomservice.Room1);
+        }
+        else if( Roomservice.Room1 != 2)
+        {
+            Roomservice.Room1reset();
         }
     }
     private void JoinRoom2()
@@ -74,9 +46,15 @@
             NavigationManager.NavigateTo("/tictactoe2");
             Console.WriteLine(Roomservice.Room2);
         }
-        else
+        else if ( Roomservice.Room1 == 1)
         {
-          
+            Roomservice.room1join();
+            NavigationManager.NavigateTo("/tictactoe22");
+            Console.WriteLine(Roomservice.Room2);
+        }
+        else if( Roomservice.Room1 != 2)
+        {
+            Roomservice.Room2reset();
         }
     }
     private void JoinRoom3()
@@ -87,9 +65,15 @@
             NavigationManager.NavigateTo("/tictactoe3");
             Console.WriteLine(Roomservice.Room3);
         }
-        else
+        else if ( Roomservice.Room1 == 1)
         {
-          
+            Roomservice.room1join();
+            NavigationManager.NavigateTo("/tictactoe32");
+            Console.WriteLine(Roomservice.Room3);
+        }
+        else if( Roomservice.Room1 != 2)
+        {
+            Roomservice.Room3reset();
         }
     }
 }

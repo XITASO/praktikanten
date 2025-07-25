@@ -1,12 +1,12 @@
-﻿@page "/tictactoe3"
+@page "/tictactoe3"
 @using PlayTogether.Web.Services
 @inject GameService3 GameService3
 @inject NavigationManager NavigationManager
 @inject Roomservice Roomservice
 <h3>Tic-Tac-Toe Game(Room 3)</h3>
-Reset
+
 <div style="margin-bottom: 15px;">
-    <input placeholder="Player X Name" @bind="playerXInput" style="margin-left: 10px;" />
+    <input placeholder="Player O Name" @bind="playerOInput" />
     <button class="restart-button" @onclick="SetPlayerNames" style="margin-left: 10px;">Set Player Names</button>
 </div>
 
@@ -48,13 +48,12 @@ private bool disposed = false;
 
 private bool CanPlay =>
 !string.IsNullOrWhiteSpace(GameService3.PlayerXName) &&
-GameService3.CurrentPlayer == "X";
+GameService3.CurrentPlayer == "O";
 
 private void SetPlayerNames()
 {
-if (!string.IsNullOrWhiteSpace(playerXInput))
-    GameService3.PlayerXName = playerXInput.Trim();
-
+if (!string.IsNullOrWhiteSpace(playerOInput))
+    GameService3.PlayerOName = playerOInput.Trim();
 
 GameService3.ResetScore();
 }

@@ -17,7 +17,18 @@ public class Roomservice
         Console.WriteLine("Room3" + Room3);
     }
 
-   
+    public void Room1reset()
+    {
+        Room1 = 0;
+    }
+    public void Room2reset()
+    {
+        Room2 = 0;
+    }
+    public void Room3reset()
+    {
+        Room3 = 0;
+    }
     public void room1join()
     {
 

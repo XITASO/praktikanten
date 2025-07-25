@@ -7,9 +7,9 @@
 <h3>Tic-Tac-Toe Game(Room 1)</h3>
 
 <div style="margin-bottom: 15px;">
-    <input placeholder="Player X Name" @bind="playerXInput" />
-    <input placeholder="Player O Name" @bind="playerOInput" style="margin-left: 10px;" />
-    <button class="restart-button" @onclick="SetPlayerNames" style="margin-left: 10px;">Set Player Names</button>
+    <input placeholder="Enter your Name" @bind="playerXInput" />
+    <button class="restart-button" @onclick="SetPlayerNames" style="margin-left: 10px;">Set Player Name</button>
+    <button class="restart-button" @onclick="GameService.ResetGame" style ="margin-left : 10px;">Restart</button>
 </div>
 
 @if (!string.IsNullOrEmpty(GameService.WinnerMessage))
@@ -18,6 +18,8 @@
 }
 
 <button class="restart-button" @onclick="LeafRoom" style="margin-left: 10px">Leave Room</button>
+<button class="restart-button" @onclick="GameService.ResetScore" style ="margin-left : 10px;">Restart</button>
+
 
 <div class="scoreboard" style="margin: 10px 0;">
     <strong>@GameService.PlayerXName</strong>: @GameService.ScoreX / <strong>@GameService.PlayerOName</strong>: @GameService.ScoreO
@@ -50,15 +52,12 @@ private bool disposed = false;
 
 private bool CanPlay =>
 !string.IsNullOrWhiteSpace(GameService.PlayerXName) &&
-!string.IsNullOrWhiteSpace(GameService.PlayerOName);
+GameService.CurrentPlayer == "X";
 
 private void SetPlayerNames()
 {
 if (!string.IsNullOrWhiteSpace(playerXInput))
 GameService.PlayerXName = playerXInput.Trim();
-
-if (!string.IsNullOrWhiteSpace(playerOInput))
-GameService.PlayerOName = playerOInput.Trim();
 
 GameService.ResetScore();
 }
