@@ -16,7 +16,7 @@ namespace PlayTogether.Web.Services
         public string PlayerXName { get; set; } = "Player X";
         public string PlayerOName { get; set; } = "Player O";
 
-        public string SpectatorName { get; private set; } = string.Empty;
+        
 
         public event EventHandler? StateChanged;
 
@@ -120,16 +120,7 @@ namespace PlayTogether.Web.Services
             StateChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        public void SetSpectatorName(string spectatorName)
-        {
-            SpectatorName = spectatorName?.Trim() ?? string.Empty;
-            NotifyStateChanged();
-        }
-
-        public void ClearSpectator()
-        {
-            SpectatorName = string.Empty;
-            NotifyStateChanged();
-        }
+        
+        
     }
 }

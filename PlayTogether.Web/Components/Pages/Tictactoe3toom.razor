@@ -9,19 +9,13 @@
     <button class="restart-button" @onclick="SetPlayerNames" style="margin-left: 10px;">Set Player Names</button>
 </div>
 
-<div class="spectator-section" style="margin-bottom: 20px;">
-    <input placeholder="Enter spectator name" @bind="spectatorInput" />
-    <button class="restart-button" @onclick="SetSpectator" style="margin-left: 10px;">Set Spectator</button>
-    <button class="restart-button" @onclick="ClearSpectator" style="margin-left: 10px;">Clear Spectator</button>
-</div>
+
 
 @if (!string.IsNullOrEmpty(GameService3.WinnerMessage))
 {
 <div class="winner-text">@GameService3.WinnerMessage</div>
 }
 
-<button class="restart-button" @onclick="GameService3.ResetGame" disabled="@IsSpectator">RESTART GAME</button>
-<button class="restart-button" @onclick="GameService3.ResetScore" style="margin-left: 10px;" disabled="@IsSpectator">RESET SCORE</button>
 
 <div class="scoreboard" style="margin: 10px 0;">
     <strong>@GameService3.PlayerXName</strong>: @GameService3.ScoreX / <strong>@GameService3.PlayerOName</strong>: @GameService3.ScoreO
@@ -44,22 +38,16 @@
     }
 </div>
 
-@if (!string.IsNullOrEmpty(GameService3.SpectatorName))
-{
-<div class="spectator-info" style="margin-top: 10px; font-weight: bold; color: darkorange;">
-    Spectator: @GameService3.SpectatorName is watching the game!
-</div>
-}
+
 
 @code {
 private string playerXInput = "";
 private string playerOInput = "";
 private string spectatorInput = "";
 
-private bool IsSpectator => !string.IsNullOrWhiteSpace(GameService3.SpectatorName);
+
 
 private bool CanPlay =>
-!IsSpectator &&
 !string.IsNullOrWhiteSpace(GameService3.PlayerXName) &&
 !string.IsNullOrWhiteSpace(GameService3.PlayerOName);
 
@@ -72,20 +60,6 @@ if (!string.IsNullOrWhiteSpace(playerOInput))
     GameService3.PlayerOName = playerOInput.Trim();
 
 GameService3.ResetScore();
-}
-
-private void SetSpectator()
-{
-if (!string.IsNullOrWhiteSpace(spectatorInput))
-{
-    GameService3.SetSpectatorName(spectatorInput);
-spectatorInput = "";
-}
-}
-
-private void ClearSpectator()
-{
-    GameService3.ClearSpectator();
 }
 
 private void MakeMoveIfAllowed(int row, int col)
