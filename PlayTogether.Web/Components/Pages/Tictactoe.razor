@@ -4,11 +4,7 @@
 @inject NavigationManager NavigationManager
 @inject Roomservice Roomservice
 
-<h3>Tic-Tac-Toe Game</h3>
-
-<div style="margin-bottom: 15px;">
-    <input placeholder="Your Name" @bind="localPlayerName" />
-</div>
+<h3>Tic-Tac-Toe Game(Room 1)</h3>
 
 <div style="margin-bottom: 15px;">
     <input placeholder="Player X Name" @bind="playerXInput" />
@@ -16,39 +12,16 @@
     <button class="restart-button" @onclick="SetPlayerNames" style="margin-left: 10px;">Set Player Names</button>
 </div>
 
-<div class="spectator-section" style="margin-bottom: 20px;">
-    <input placeholder="Enter spectator name" @bind="spectatorInput" />
-    <button class="restart-button" @onclick="BecomeSpectator" style="margin-left: 10px;">Set Spectator</button>
-    <button class="restart-button" @onclick="LeaveSpectator" style="margin-left: 10px;">Clear Spectator</button>
-</div>
-
 @if (!string.IsNullOrEmpty(GameService.WinnerMessage))
 {
-    <div class="winner-text">@GameService.WinnerMessage</div>
+<div class="winner-text">@GameService.WinnerMessage</div>
 }
 
-<button class="restart-button" @onclick="GameService.ResetGame" disabled="@isSpectator">RESTART GAME</button>
-<button class="restart-button" @onclick="GameService.ResetScore" style="margin-left: 10px;" disabled="@isSpectator">RESET SCORE</button>
 <button class="restart-button" @onclick="LeafRoom" style="margin-left: 10px">Leave Room</button>
 
 <div class="scoreboard" style="margin: 10px 0;">
     <strong>@GameService.PlayerXName</strong>: @GameService.ScoreX / <strong>@GameService.PlayerOName</strong>: @GameService.ScoreO
 </div>
-
-@if (!string.IsNullOrWhiteSpace(localRole))
-{
-    <div style="margin-top: 10px; font-weight: bold;">
-        You are playing as: @localRole (@localPlayerName)
-    </div>
-}
-
-@if (!string.IsNullOrEmpty(GameService.SpectatorName))
-{
-    <div class="spectator-info" style="margin-top: 10px; font-weight: bold; color: darkorange;">
-        Spectator: @GameService.SpectatorName is watching the game!
-    </div>
-}
-
 <div class="spiel-flaeche">
     @for (int row = 0; row < 3; row++)
     {
@@ -59,7 +32,7 @@
                 int fixedCol = col;
                 <button class="zelle"
                         @onclick="() => MakeMoveIfAllowed(fixedRow, fixedCol)"
-                        disabled="@(!CanPlay || GameService.Board[fixedRow, fixedCol] != null)">
+                        disabled="@(!CanPlay)">
                     @GameService.Board[fixedRow, fixedCol]
                 </button>
             }
@@ -68,109 +41,77 @@
 </div>
 
 @code {
-    private string playerXInput = "";
-    private string playerOInput = "";
-    private string spectatorInput = "";
-    private string localPlayerName = "";
-    private string localRole = "";
-    private bool isSpectator = false;
-    public bool Roomleaft = true;
-    private bool disposed = false;
-
-    private bool CanPlay =>
-        (localRole == GameService.CurrentPlayer) &&
-        !string.IsNullOrWhiteSpace(GameService.PlayerXName) &&
-        !string.IsNullOrWhiteSpace(GameService.PlayerOName) &&
-        !isSpectator &&
-        !GameService.GameOver;
-   
+private string playerXInput = "";
+private string playerOInput = "";
+private string spectatorInput = "";
+public bool Roomleaft = true;
+private bool disposed = false;
 
 
-    private void SetPlayerNames()
-    {
-        if (!string.IsNullOrWhiteSpace(playerXInput))
-        {
-            GameService.PlayerXName = playerXInput.Trim();
-            if (playerXInput.Trim() == localPlayerName)
-                localRole = "X";
-        }
+private bool CanPlay =>
+!string.IsNullOrWhiteSpace(GameService.PlayerXName) &&
+!string.IsNullOrWhiteSpace(GameService.PlayerOName);
 
-        if (!string.IsNullOrWhiteSpace(playerOInput))
-        {
-            GameService.PlayerOName = playerOInput.Trim();
-            if (playerOInput.Trim() == localPlayerName)
-                localRole = "O";
-        }
+private void SetPlayerNames()
+{
+if (!string.IsNullOrWhiteSpace(playerXInput))
+GameService.PlayerXName = playerXInput.Trim();
 
-        GameService.ResetScore();
-    }
+if (!string.IsNullOrWhiteSpace(playerOInput))
+GameService.PlayerOName = playerOInput.Trim();
 
-    private void BecomeSpectator()
-    {
-        if (!string.IsNullOrWhiteSpace(spectatorInput))
-        {
-            localPlayerName = spectatorInput.Trim();
-            localRole = "Spectator";
-            isSpectator = true;
-            GameService.SetSpectatorName(spectatorInput);
-            spectatorInput = "";
-        }
-    }
+GameService.ResetScore();
+}
 
-    private void LeaveSpectator()
-    {
-        isSpectator = false;
-        localRole = "";
-        GameService.ClearSpectator();
-    }
+private void SetSpectator()
+{
 
-    private void MakeMoveIfAllowed(int row, int col)
-    {
-        if (CanPlay)
-        {
-            GameService.MakeMove(row, col);
-        }
-    }
-
-    protected override void OnInitialized()
-    {
-        GameService.StateChanged += OnGameStateChanged;
-        Roomleaft = false;  // Raum ist jetzt "joined"
-    }
-
-    private void OnGameStateChanged(object? sender, EventArgs e)
-    {
-        InvokeAsync(StateHasChanged);
-    }
-
-    public void LeafRoom()
-    {
-        Roomservice.room1leafe();
-        NavigationManager.NavigateTo("/tictactoe");
-        Roomleaft = true;
-
-    }
-    public void Dispose()
-    {
-        GameService.StateChanged -= OnGameStateChanged;
-        
-
-       
-       
-    if (!disposed)
-    {
-        
-
-        if (!Roomleaft)
-        {
-            Roomservice.room1leafe();
-        } disposed = true;
-    
 }
 
 
+
+private void MakeMoveIfAllowed(int row, int col)
+{
+if (CanPlay)
+{
+GameService.MakeMove(row, col);
+}
+}
+
+
+protected override void OnInitialized()
+{
+GameService.StateChanged += OnGameStateChanged;
+Roomleaft = false;
+}
+
+private void OnGameStateChanged(object? sender, EventArgs e)
+{
+InvokeAsync(StateHasChanged);
+}
+
+public void LeafRoom()
+{
+    Roomservice.room1leafe();
+    NavigationManager.NavigateTo("/tictactoe");
+    Roomleaft = true;
+
+}
+public void Dispose()
+{
+GameService.StateChanged -= OnGameStateChanged;
+if (!disposed)
+{
         
-    }
+
+    if (!Roomleaft)
+    {
+        Roomservice.room1leafe();
+    } disposed = true;
+        
+}
+}
+
 }
 
 @implements IDisposable
@@ -202,10 +143,10 @@
         font-weight: bold;
     }
 
-        .zelle:disabled {
-            cursor: not-allowed;
-            background-color: #ddd;
-        }
+    .zelle:disabled {
+        cursor: not-allowed;
+        background-color: #ddd;
+    }
 
     .winner-text {
         margin-top: 20px;
@@ -228,14 +169,14 @@
         display: inline-block;
     }
 
-        .restart-button:disabled {
-            cursor: not-allowed;
-            background-color: #a0a0a0;
-        }
+    .restart-button:disabled {
+        cursor: not-allowed;
+        background-color: #a0a0a0;
+    }
 
-        .restart-button:hover:not(:disabled) {
-            background-color: #0056b3;
-        }
+    .restart-button:hover:not(:disabled) {
+        background-color: #0056b3;
+    }
 
     .spectator-section input {
         padding: 8px;

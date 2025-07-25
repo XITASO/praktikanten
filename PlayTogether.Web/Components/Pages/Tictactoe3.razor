@@ -11,19 +11,11 @@ Reset
     <button class="restart-button" @onclick="SetPlayerNames" style="margin-left: 10px;">Set Player Names</button>
 </div>
 
-<div class="spectator-section" style="margin-bottom: 20px;">
-    <input placeholder="Enter spectator name" @bind="spectatorInput" />
-    <button class="restart-button" @onclick="SetSpectator" style="margin-left: 10px;">Set Spectator</button>
-    <button class="restart-button" @onclick="ClearSpectator" style="margin-left: 10px;">Clear Spectator</button>
-</div>
-
 @if (!string.IsNullOrEmpty(GameService3.WinnerMessage))
 {
 <div class="winner-text">@GameService3.WinnerMessage</div>
 }
 
-<button class="restart-button" @onclick="GameService3.ResetGame" disabled="@IsSpectator">RESTART GAME</button>
-<button class="restart-button" @onclick="GameService3.ResetScore" style="margin-left: 10px;" disabled="@IsSpectator">RESET SCORE</button>
 <button class="restart-button" @onclick="LeafRoom" style="margin-left: 10px">Leave Room</button>
 
 <div class="scoreboard" style="margin: 10px 0;">
@@ -47,13 +39,6 @@ Reset
     }
 </div>
 
-@if (!string.IsNullOrEmpty(GameService3.SpectatorName))
-{
-<div class="spectator-info" style="margin-top: 10px; font-weight: bold; color: darkorange;">
-    Spectator: @GameService3.SpectatorName is watching the game!
-</div>
-}
-
 
 @code {
 private string playerXInput = "";
@@ -62,10 +47,7 @@ private string spectatorInput = "";
 public bool Roomleaft = true;
 private bool disposed = false;
 
-private bool IsSpectator => !string.IsNullOrWhiteSpace(GameService3.SpectatorName);
-
 private bool CanPlay =>
-!IsSpectator &&
 !string.IsNullOrWhiteSpace(GameService3.PlayerXName) &&
 !string.IsNullOrWhiteSpace(GameService3.PlayerOName);
 
@@ -80,19 +62,6 @@ if (!string.IsNullOrWhiteSpace(playerOInput))
 GameService3.ResetScore();
 }
 
-private void SetSpectator()
-{
-if (!string.IsNullOrWhiteSpace(spectatorInput))
-{
-    GameService3.SetSpectatorName(spectatorInput);
-spectatorInput = "";
-}
-}
-
-private void ClearSpectator()
-{
-    ClearSpectator();
-}
 
 private void MakeMoveIfAllowed(int row, int col)
 {

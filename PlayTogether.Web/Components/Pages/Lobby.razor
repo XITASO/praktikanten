@@ -3,6 +3,9 @@
 @using PlayTogether.Web.Services
 @inject NavigationManager NavigationManager
 @inject Roomservice Roomservice
+@inject GameService GameService
+@inject GameService2 GameService2
+@inject GameService3 GameService3
 <h3>TicTacToe</h3>
 
 <div style="margin-left: 15px;">
@@ -16,10 +19,40 @@
 
 
 
+@* <div style="margin-top:15px;margin-left: 15px"> *@
+@*     <button class="spectator-button" @onclick="JoinRoom1spectator" style="margin-left: 10px;">Spectate Gameroom 1  </button> *@
+@*     <button class="spectator-button" @onclick="JoinRoom2spectator" style="margin-left: 10px;">Spectate Gameroom 2  </button> *@
+@*     <button class="spectator-button" @onclick="JoinRoom3spectator" style="margin-left: 10px;">Spectate Gameroom 3  </button> *@
+@* *@
+@* </div> *@
+
+
+@* <div style="margin-top: 15px; margin-left: 15px;"> *@
+@*     <input placeholder="Spectator name" @bind="spectatorNameInput" /> *@
+@* </div> *@
+
 
 
 
 @code {
+    // public string spectatorNameInput;
+    //
+    // private void JoinRoom1spectator()
+    // {
+    //     GameService.SetSpectatorName(spectatorNameInput); 
+    //     NavigationManager.NavigateTo("/tictactoe1spectator");
+    //     
+    // }
+    //
+    // private void JoinRoom2spectator()
+    // {
+    //     
+    // }
+    //
+    // private void JoinRoom3spectator()
+    // {
+    //     
+    // }
     private void JoinRoom1()
     {
         if ( Roomservice.Room1 <= 1)
@@ -84,6 +117,18 @@ display: inline-block;
     font-size: 1.1rem;
     background-color: #ffffff;
     color: black;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+}
+.spectator-button {
+    margin: 15px 5px 15px 0;
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    background-color: #46D51F;
+    color: white;
     border: none;
     border-radius: 6px;
     cursor: pointer;
