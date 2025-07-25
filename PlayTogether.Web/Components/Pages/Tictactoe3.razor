@@ -54,10 +54,13 @@ Reset
 </div>
 }
 
+
 @code {
 private string playerXInput = "";
 private string playerOInput = "";
 private string spectatorInput = "";
+public bool Roomleaft = true;
+private bool disposed = false;
 
 private bool IsSpectator => !string.IsNullOrWhiteSpace(GameService3.SpectatorName);
 
@@ -102,6 +105,7 @@ if (CanPlay)
 protected override void OnInitialized()
 {
     GameService3.StateChanged += OnGameStateChanged;
+    Roomleaft = false;
 }
 
 private void OnGameStateChanged(object? sender, EventArgs e)
@@ -109,18 +113,29 @@ private void OnGameStateChanged(object? sender, EventArgs e)
 InvokeAsync(StateHasChanged);
 }
 
-public void Dispose()
-{
-    GameService3.StateChanged -= OnGameStateChanged;
-    Roomservice.room3leafe();
-}
-
 public void LeafRoom()
 {
     Roomservice.room3leafe();
     NavigationManager.NavigateTo("/tictactoe");
+    Roomleaft = true;
     
 }
+
+public void Dispose()
+{
+    GameService3.StateChanged -= OnGameStateChanged;
+
+    if (!disposed)
+    {
+        if (!Roomleaft)
+        {
+            Roomservice.room3leafe();
+        }
+
+        disposed = true;
+    }
+}
+
 }
 
 @implements IDisposable

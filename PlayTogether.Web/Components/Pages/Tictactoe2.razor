@@ -59,6 +59,8 @@
 private string playerXInput = "";
 private string playerOInput = "";
 private string spectatorInput = "";
+public bool Roomleaft = true;
+private bool disposed = false;
 
 private bool IsSpectator => !string.IsNullOrWhiteSpace(GameService2.SpectatorName);
 
@@ -100,9 +102,11 @@ GameService2.MakeMove(row, col);
 }
 }
 
+
 protected override void OnInitialized()
 {
 GameService2.StateChanged += OnGameStateChanged;
+Roomleaft = false;
 }
 
 private void OnGameStateChanged(object? sender, EventArgs e)
@@ -110,17 +114,28 @@ private void OnGameStateChanged(object? sender, EventArgs e)
 InvokeAsync(StateHasChanged);
 }
 
-public void Dispose()
-{
-GameService2.StateChanged -= OnGameStateChanged;
-Roomservice.room1leafe();
-}
 public void LeafRoom()
 {
     Roomservice.room2leafe();
-    NavigationManager.NavigateTo("/tictactoe");   
+    NavigationManager.NavigateTo("/tictactoe");
+    Roomleaft = true;
+
+}
+public void Dispose()
+{
+GameService2.StateChanged -= OnGameStateChanged;
+if (!disposed)
+{
+        
+
+    if (!Roomleaft)
+    {
+        Roomservice.room2leafe();
+    } disposed = true;
         
 }
+}
+
 }
 
 @implements IDisposable

@@ -74,6 +74,8 @@
     private string localPlayerName = "";
     private string localRole = "";
     private bool isSpectator = false;
+    public bool Roomleaft = true;
+    private bool disposed = false;
 
     private bool CanPlay =>
         (localRole == GameService.CurrentPlayer) &&
@@ -81,6 +83,8 @@
         !string.IsNullOrWhiteSpace(GameService.PlayerOName) &&
         !isSpectator &&
         !GameService.GameOver;
+   
+
 
     private void SetPlayerNames()
     {
@@ -131,6 +135,7 @@
     protected override void OnInitialized()
     {
         GameService.StateChanged += OnGameStateChanged;
+        Roomleaft = false;  // Raum ist jetzt "joined"
     }
 
     private void OnGameStateChanged(object? sender, EventArgs e)
@@ -138,16 +143,32 @@
         InvokeAsync(StateHasChanged);
     }
 
-    public void Dispose()
-    {
-        GameService.StateChanged -= OnGameStateChanged;
-        Roomservice.room1leafe();
-    }
-
     public void LeafRoom()
     {
         Roomservice.room1leafe();
-        NavigationManager.NavigateTo("/tictactoe");   
+        NavigationManager.NavigateTo("/tictactoe");
+        Roomleaft = true;
+
+    }
+    public void Dispose()
+    {
+        GameService.StateChanged -= OnGameStateChanged;
+        
+
+       
+       
+    if (!disposed)
+    {
+        
+
+        if (!Roomleaft)
+        {
+            Roomservice.room1leafe();
+        } disposed = true;
+    
+}
+
+
         
     }
 }
