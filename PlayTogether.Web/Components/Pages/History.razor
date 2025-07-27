@@ -1,0 +1,84 @@
+﻿@page "/history"
+@using PlayTogether.Web.Services
+@inject GameService GameService
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+
+<h3>Player History</h3>
+
+<div style="margin-bottom: 15px;">
+    <input placeholder="Enter your Name" @bind="playerName" />
+    <button class="history-button" @onclick="ShowHistory">Show History</button>
+</div>
+
+@if (showStats)
+{
+    <div class="history-stats">
+        <label><strong>Wins:</strong> @wins</label><br />
+        <label><strong>Losses:</strong> @losses</label>
+    </div>
+}
+else if (notFound)
+{
+    <div class="history-stats" style="color: red;">
+        No stats found for "@playerName".
+    </div>
+}
+
+@code {
+    private string playerName = string.Empty;
+    private int wins = 0;
+    private int losses = 0;
+    private bool showStats = false;
+    private bool notFound = false;
+
+    private async Task ShowHistory()
+    {
+        showStats = false;
+        notFound = false;
+
+        if (!string.IsNullOrWhiteSpace(playerName))
+        {
+            string key = $"history_{playerName.ToLower()}";
+            var stats = await LocalStorage.GetItemAsync<GameService.PlayerStats>(key);
+
+            if (stats != null)
+            {
+                wins = stats.Wins;
+                losses = stats.Losses;
+                showStats = true;
+            }
+            else
+            {
+                notFound = true;
+            }
+        }
+    }
+}
+
+<style>
+    .history-button {
+        margin-left: 10px;
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: white;
+        font-size: 1rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+        .history-button:hover {
+            background-color: #218838;
+        }
+
+    .history-stats {
+        margin-top: 20px;
+        font-size: 1.2rem;
+        color: #333;
+    }
+
+    input {
+        padding: 8px;
+        font-size: 1rem;
+    }
+</style>

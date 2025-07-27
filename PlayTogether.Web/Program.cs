@@ -1,6 +1,6 @@
 using PlayTogether.Web.Components;
 using PlayTogether.Web.Services;
-
+using Blazored.LocalStorage;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the application.
@@ -13,14 +13,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<CounterService>();
 
 // ? ADDED: Register GameService as a singleton so all users share the same game state
-builder.Services.AddSingleton<GameService>();
+builder.Services.AddScoped<GameService>();
 builder.Services.AddSingleton<GameService2>();
 builder.Services.AddSingleton<GameService3>();
 builder.Services.AddSingleton<Roomservice>();
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-
+builder.Services.AddBlazoredLocalStorage();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

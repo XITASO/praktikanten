@@ -1,9 +1,18 @@
 using System;
+using Blazored.LocalStorage;
+
 
 namespace PlayTogether.Web.Services
 {
     public class GameService
     {
+        private readonly ILocalStorageService _localStorage;
+
+        public GameService(ILocalStorageService localStorage)
+        {
+            _localStorage = localStorage;
+        }
+
         public string[,] Board { get; private set; } = new string[3, 3];
 
         public string CurrentPlayer { get; private set; } = "X";
@@ -119,8 +128,50 @@ namespace PlayTogether.Web.Services
         {
             StateChanged?.Invoke(this, EventArgs.Empty);
         }
+        public int GetWinsForPlayer(string playerName)
+        {
+            // Example logic
+            return playerName == PlayerXName ? ScoreX : (playerName == PlayerOName ? ScoreO : 0);
+        }
 
+        public int GetLossesForPlayer(string playerName)
+        {
+            // Very basic, just a mirror of wins for now
+            if (playerName == PlayerXName) return ScoreO;
+            if (playerName == PlayerOName) return ScoreX;
+            return 0;
+        }
         
-        
+        public class PlayerStats
+        {
+            public int Wins { get; set; }
+            public int Losses { get; set; }
+        }
+        public async Task SaveScoresToLocalStorageAsync()
+        {
+            var statsX = new PlayerStats { Wins = ScoreX, Losses = ScoreO };
+            var statsO = new PlayerStats { Wins = ScoreO, Losses = ScoreX };
+
+            await _localStorage.SetItemAsync($"history_{PlayerXName.ToLower()}", statsX);
+            await _localStorage.SetItemAsync($"history_{PlayerOName.ToLower()}", statsO);
+        }
+        public async Task LoadScoresFromLocalStorageAsync()
+        {
+            var statsX = await _localStorage.GetItemAsync<PlayerStats>($"history_{PlayerXName.ToLower()}");
+            var statsO = await _localStorage.GetItemAsync<PlayerStats>($"history_{PlayerOName.ToLower()}");
+
+            if (statsX != null)
+            {
+                ScoreX = statsX.Wins;
+                ScoreO = statsX.Losses;
+            }
+            else if (statsO != null)
+            {
+                ScoreO = statsO.Wins;
+                ScoreX = statsO.Losses;
+            }
+        }
+
+
     }
 }
