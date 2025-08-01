@@ -6,13 +6,7 @@ namespace PlayTogether.Web.Services
 {
     public class GameService
     {
-        private readonly ILocalStorageService _localStorage;
-
-        public GameService(ILocalStorageService localStorage)
-        {
-            _localStorage = localStorage;
-        }
-
+       
         public string[,] Board { get; private set; } = new string[3, 3];
 
         public string CurrentPlayer { get; private set; } = "X";
@@ -147,18 +141,19 @@ namespace PlayTogether.Web.Services
             public int Wins { get; set; }
             public int Losses { get; set; }
         }
-        public async Task SaveScoresToLocalStorageAsync()
+        public async Task SaveScoresToLocalStorageAsync(ILocalStorageService localStorage)
         {
             var statsX = new PlayerStats { Wins = ScoreX, Losses = ScoreO };
             var statsO = new PlayerStats { Wins = ScoreO, Losses = ScoreX };
 
-            await _localStorage.SetItemAsync($"history_{PlayerXName.ToLower()}", statsX);
-            await _localStorage.SetItemAsync($"history_{PlayerOName.ToLower()}", statsO);
+            await localStorage.SetItemAsync($"history_{PlayerXName.ToLower()}", statsX);
+            await localStorage.SetItemAsync($"history_{PlayerOName.ToLower()}", statsO);
         }
-        public async Task LoadScoresFromLocalStorageAsync()
+
+        public async Task LoadScoresFromLocalStorageAsync(ILocalStorageService localStorage)
         {
-            var statsX = await _localStorage.GetItemAsync<PlayerStats>($"history_{PlayerXName.ToLower()}");
-            var statsO = await _localStorage.GetItemAsync<PlayerStats>($"history_{PlayerOName.ToLower()}");
+            var statsX = await localStorage.GetItemAsync<PlayerStats>($"history_{PlayerXName.ToLower()}");
+            var statsO = await localStorage.GetItemAsync<PlayerStats>($"history_{PlayerOName.ToLower()}");
 
             if (statsX != null)
             {
@@ -171,6 +166,9 @@ namespace PlayTogether.Web.Services
                 ScoreX = statsO.Losses;
             }
         }
+
+        
+
 
 
     }

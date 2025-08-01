@@ -3,6 +3,8 @@
 @inject GameService2 GameService2
 @inject NavigationManager NavigationManager
 @inject Roomservice Roomservice
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+
 
 <h3>Tic-Tac-Toe Game(Room 2)</h3>
 
@@ -85,10 +87,16 @@ GameService2.StateChanged += OnGameStateChanged;
 Roomleaft = false;
 }
 
-private void OnGameStateChanged(object? sender, EventArgs e)
-{
-InvokeAsync(StateHasChanged);
-}
+
+    private async void OnGameStateChanged(object? sender, EventArgs e)
+    {
+        await InvokeAsync(StateHasChanged);
+        if (GameService2.GameOver &&
+            (GameService2.WinnerMessage.Contains("wins") || GameService2.WinnerMessage.Contains("draw")))
+        {
+            await GameService2.SaveScoresToLocalStorageAsync(LocalStorage);
+        }
+    }
 
 public void LeafRoom()
 {

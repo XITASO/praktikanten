@@ -15,7 +15,7 @@
 
 @if (!string.IsNullOrEmpty(GameService.WinnerMessage))
 {
-<div class="winner-text">@GameService.WinnerMessage</div>
+    <div class="winner-text">@GameService.WinnerMessage</div>
 }
 
 <button class="restart-button" @onclick="LeafRoom" style="margin-left: 10px">Leave Room</button>
@@ -34,8 +34,8 @@
             {
                 int fixedCol = col;
                 <button class="zelle"
-                        @onclick="() => MakeMoveIfAllowed(fixedRow, fixedCol)"
-                        disabled="@(!CanPlay)">
+                @onclick="() => MakeMoveIfAllowed(fixedRow, fixedCol)"
+                disabled="@(!CanPlay)">
                     @GameService.Board[fixedRow, fixedCol]
                 </button>
             }
@@ -44,57 +44,57 @@
 </div>
 
 @code {
-private string playerXInput = "";
-private string playerOInput = "";
-private string spectatorInput = "";
-public bool Roomleaft = true;
-private bool disposed = false;
+    private string playerXInput = "";
+    private string playerOInput = "";
+    private string spectatorInput = "";
+    public bool Roomleaft = true;
+    private bool disposed = false;
 
 
-private bool CanPlay =>
-!string.IsNullOrWhiteSpace(GameService.PlayerXName) &&
-GameService.CurrentPlayer == "X";
+    private bool CanPlay =>
+    !string.IsNullOrWhiteSpace(GameService.PlayerXName) &&
+    GameService.CurrentPlayer == "X";
 
-private void SetPlayerNames()
-{
-if (!string.IsNullOrWhiteSpace(playerXInput))
-GameService.PlayerXName = playerXInput.Trim();
-
-GameService.ResetScore();
-}
-
-private void SetSpectator()
-{
-
-}
-
-
-
-private void MakeMoveIfAllowed(int row, int col)
-{
-if (CanPlay)
-{
-GameService.MakeMove(row, col);
-}
-}
-
-
-protected override async void OnInitialized()
-{
-    GameService.StateChanged += OnGameStateChanged;
-    await GameService.LoadScoresFromLocalStorageAsync();
-    Roomleaft = false;
-}
-
-private async void OnGameStateChanged(object? sender, EventArgs e)
-{
-    await InvokeAsync(StateHasChanged);
-    if(GameService.GameOver &&
-        (GameService.WinnerMessage.Contains("wins") || GameService.WinnerMessage.Contains("draw")))
+    private void SetPlayerNames()
     {
-        await GameService.SaveScoresToLocalStorageAsync(); 
+        if (!string.IsNullOrWhiteSpace(playerXInput))
+            GameService.PlayerXName = playerXInput.Trim();
+
+        GameService.ResetScore();
     }
+
+    private void SetSpectator()
+    {
+
+    }
+
+
+
+    private void MakeMoveIfAllowed(int row, int col)
+    {
+        if (CanPlay)
+        {
+            GameService.MakeMove(row, col);
+        }
+    }
+
+   
+
+    protected override async void OnInitialized()
+    {
+        GameService.StateChanged += OnGameStateChanged;
+        Roomleaft = false;
 }
+
+    private async void OnGameStateChanged(object? sender, EventArgs e)
+    {
+        await InvokeAsync(StateHasChanged);
+        if(GameService.GameOver &&
+            (GameService.WinnerMessage.Contains("wins") || GameService.WinnerMessage.Contains("draw")))
+        {
+                await GameService.SaveScoresToLocalStorageAsync(LocalStorage);
+        }
+    }
     
 public void LeafRoom()
 {
