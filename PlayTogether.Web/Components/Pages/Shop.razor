@@ -1,0 +1,38 @@
+﻿@page "/shop"
+
+@using PlayTogether.Web.Services
+@inject ClickerService Clicker
+
+
+<h1>Shop</h1>
+
+<h3>Deine Clicks: @Clicker.Clicks</h3>
+
+<p>Stärke pro Klick: @Clicker.ClickPower</p>
+
+<button class="btn btn-success" @onclick="BuyUpgrade">
+    Upgrade kaufen (@Clicker.UpgradeCost Clicks)
+</button>
+
+<p>@message</p>
+
+<a href="/counter">Zurück zum Clicker</a>
+
+
+@code {
+
+    private string message = "";
+
+
+    private void BuyUpgrade()
+    {
+        if (Clicker.BuyUpgrade())
+        {
+            message = "Upgrade gekauft!";
+        }
+        else
+        {
+            message = "Nicht genug Clicks!";
+        }
+    }
+}

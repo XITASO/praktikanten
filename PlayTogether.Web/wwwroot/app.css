@@ -47,5 +47,60 @@ h1:focus {
     }
 
 .darker-border-checkbox.form-check-input {
-    border-color: #929292;
+    border-color: #f0f0f0;
+}
+
+.click-button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.click-button img {
+    width: 240px;
+    height: auto;
+    display: block;
+}
+
+.click-button:active img {
+    transform: scale(0.9);
+}
+
+.clicker-container {
+    text-align: center;
+    margin-top: 40px;
+}
+
+
+.clicker-container h2 {
+    font-size: 40px;
+    margin-bottom: 30px;
+}
+
+
+.click-button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+
+.click-button img {
+    width: 600px;
+    height: auto;
+    display: block;
+    margin: auto;
+    transition: transform 0.1s;
+}
+
+
+.click-button:active img {
+    transform: scale(0.9);
+}
+
+
+.clicker-container p {
+    font-size: 24px;
 }

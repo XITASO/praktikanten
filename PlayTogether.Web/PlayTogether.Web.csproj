@@ -9,4 +9,8 @@
         <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Compile Include="wwwroot\ClickService.cs" />
+    </ItemGroup>
+
 </Project>
