@@ -1,0 +1,13 @@
+﻿@page "/LobbyList"
+@using PlayTogether.Web.Services
+@inject LobbyService LobbyService
+
+<h3>LobbyList</h3>
+
+<title> Lobbies: </title>
+
+@foreach(var Lobby in LobbyService.Lobbies)
+{
+    <button class="click-button"> @Lobby.Name </button>
+    <p>  </p>
+}
