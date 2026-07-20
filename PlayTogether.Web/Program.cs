@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddSingleton<ClickerService>();
+builder.Services.AddSingleton<LobbyService>();
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
