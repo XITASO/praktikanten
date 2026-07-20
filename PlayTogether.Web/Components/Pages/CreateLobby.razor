@@ -1,19 +1,23 @@
-﻿@page "/CreateLobby"
+﻿@using PlayTogether.Web.Services
+@inject LobbyService Lobby
+
+@page "/CreateLobby"
 <h3>CreateLobby</h3>
 
 <p> Lobby name: </p>
-<input type="text" name="Lobby name" value=""/>
+<input type="text" @bind="lobbyname" name="Lobby name" />
 <p>  </p>
 <p> Lobby code: </p>
-<input type="text" name="join code" value=""/>
+<input type="text" @bind="code" name="join code" />
 <p>  </p>
 <button class="click-button" @onclick="create" > create </button>
 
 @code {
-
+    string lobbyname;
+    string code;
     private void create()
     {
-        
+        Lobby.CreateLobby(lobbyname, code); 
     }
     
 }

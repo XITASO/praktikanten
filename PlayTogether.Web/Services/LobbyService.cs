@@ -14,6 +14,12 @@ public class LobbyService
                 Name = name,
                 Password = password,
             });
+            
+            Console.WriteLine("Created new lobby");
+        }
+        else
+        {
+            Console.WriteLine("Duplicate lobby");
         }
     }
 }
