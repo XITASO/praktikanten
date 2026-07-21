@@ -52,7 +52,7 @@ public class LobbyService
         }
         //passwort stimmt
         
-        existing.Players.Add(spielername);
+        existing.Players.Add(spielername, new Playerdata());
         return true;
     }
 }
@@ -62,6 +62,15 @@ public class Lobby
     public string Name { get; set; } = "";
     public string Password { get; set; } = "";
 
-    public List<String> Players = new List<String>();
-    //public Dictionary<String, int> Players = new Dictionary<String, int>();
+    //public List<String> Players = new List<String>();
+    public Dictionary<String, Playerdata> Players = new Dictionary<String, Playerdata>();
+}
+
+public class Playerdata
+{
+    
+    public string Name;
+    public int clicks = 0;
+    public int clickMultiplier = 1;
+    public int upgradeCost = 100;
 }

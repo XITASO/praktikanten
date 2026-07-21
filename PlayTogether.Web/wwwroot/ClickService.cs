@@ -1,4 +1,6 @@
 namespace PlayTogether.Web.Services;
+using PlayTogether.Web.Services;
+
 
 public class ClickerService
 {
@@ -12,6 +14,7 @@ public class ClickerService
     public void AddClick()
     {
         Clicks += ClickPower;
+        
     }
 
 

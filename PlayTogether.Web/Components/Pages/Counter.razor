@@ -38,15 +38,9 @@
     private List<string> melons = new();
 
 
-    private async Task Click()
+    private void Click()
     {
-        Clicker.AddClick();
-
-        melons.Add("");
-
-        await Task.Delay(800);
-
-        melons.RemoveAt(0);
+        
     }
 
 }
