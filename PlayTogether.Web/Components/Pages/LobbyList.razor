@@ -3,6 +3,7 @@
 @inject LobbyService LobbyService
 @inject ProtectedLocalStorage ProtectedLocalStorage
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject NavigationManager Navigation
 
 <h3>LobbyList</h3>
 
@@ -62,13 +63,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await ProtectedLocalStorage.GetAsync<string>("username");
-        if (result.Success &&  result.Value != null)
+      var result = await ProtectedLocalStorage.GetAsync<string>("username");
+            if (result.Success &&  result.Value != null)
         {
             playerName = result.Value;
         }
     }
-
+    
     private void OpenPasswordDialog(Lobby lobby)
     {
         selectedLobby = lobby;
@@ -106,6 +107,7 @@
         if (success)
         {
             CloseDialog();
+            Navigation.NavigateTo("/counter");
         }
         else
         {
