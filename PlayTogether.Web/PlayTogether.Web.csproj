@@ -13,4 +13,8 @@
       <Compile Include="wwwroot\ClickService.cs" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Blazor.LocalStorage" Version="10.0.0" />
+    </ItemGroup>
+
 </Project>
