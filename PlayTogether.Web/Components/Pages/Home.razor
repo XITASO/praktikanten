@@ -31,11 +31,10 @@
             var result = await ProtectedLocalStorage.GetAsync<string>("username");
             if (result.Success)
             {
-                Navigation.NavigateTo("/CreateLobby");
+                Navigation.NavigateTo("/LobbyList");
             }
         }
     }
-    
     
     private async Task Start()
     {
