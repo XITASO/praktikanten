@@ -7,7 +7,6 @@
 @inject NavigationManager Navigation
 @inject ProtectedLocalStorage ProtectedLocalStorage
 
-
 <h3>Create Lobby</h3>
 
 <p>Spieler: @PlayerName</p>
@@ -34,8 +33,9 @@
     {
         Lobby.CreateLobby(lobbyname, code);
 
-        Navigation.NavigateTo("/lobby");
+        Navigation.NavigateTo("/LobbyList");
     }
+    
     
     private string PlayerName = "";
     
@@ -47,7 +47,7 @@
             if (result.Success &&  result.Value != null)
             {
                 PlayerName = result.Value;
-                StateHasChanged();
+                
             }
             else {
                 Navigation.NavigateTo("/");
