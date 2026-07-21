@@ -2,33 +2,31 @@ namespace PlayTogether.Web.Services;
 using PlayTogether.Web.Services;
 
 
-public class ClickerService
+public class ClickerService(LobbyService lobbyService)
 {
-    public int Clicks { get; private set; } = 0;
-
-    public int ClickPower { get; private set; } = 1;
-
-    public int UpgradeCost { get; private set; } = 100;
-
-
-    public void AddClick()
+    public int clicks(string playername)
     {
-        Clicks += ClickPower;
-        
+        return lobbyService.getPlayerData(playername).clicks;
     }
 
-
-    public bool BuyUpgrade()
+    public int clickPower(string playername)
     {
-        if (Clicks >= UpgradeCost)
-        {
-            Clicks -= UpgradeCost;
-            ClickPower *= 2;
-            UpgradeCost *= 2;
+        return lobbyService.getPlayerData(playername).clickMultiplier;
+    }
 
-            return true;
-        }
-
-        return false;
+    public int upgradeCost(string playername)
+    {
+        return lobbyService.getPlayerData(playername).upgradeCost;
+    }
+    
+    public void AddClick(string playername)
+    {
+        //Clicks += ClickPower;
+        lobbyService.getPlayerData(playername).click();
+    }
+    
+    public bool BuyUpgrade(string playername)
+    {
+        return lobbyService.getPlayerData(playername).upgrade();
     }
 }

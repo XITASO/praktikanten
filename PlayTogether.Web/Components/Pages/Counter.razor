@@ -2,45 +2,55 @@
 
 @using PlayTogether.Web.Services
 @inject ClickerService Clicker
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedLocalStorage ProtectedLocalStorage
+
+@if (PlayerName != "")
+{
+    <div class="clicker-container">
+
+        <h1>🍉 Clicker</h1>
+
+        <h2>Clicks: @Clicker.clicks(PlayerName)</h2>
 
 
-<div class="clicker-container">
+        <div class="melon-area">
 
-    <h1>🍉 Clicker</h1>
+            <button class="click-button" @onclick="Click">
+                <img src="/images/wassermelonen.png" alt="Click Button"/>
+            </button>
 
-    <h2>Clicks: @Clicker.Clicks</h2>
-
-
-    <div class="melon-area">
-
-        @foreach (var melon in melons)
-        {
-            <span class="melon-fly">@melon</span>
-        }   
+        </div>
 
 
-        <button class="click-button" @onclick="Click">
-            <img src="/images/wassermelonen.png" alt="Click Button" />
-        </button>
+        <p>Pro Klick: @Clicker.clickPower(PlayerName)</p>
+
+        <a href="/shop">🛒 Shop öffnen</a>
 
     </div>
-
-
-    <p>Pro Klick: @Clicker.ClickPower</p>
-
-    <a href="/shop">🛒 Shop öffnen</a>
-
-</div>
-
+}
 
 @code {
+    
+    private string PlayerName = "";
 
-    private List<string> melons = new();
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var result = await ProtectedLocalStorage.GetAsync<string>("username");
+            if (result.Success && result.Value != null)
+            {
+                PlayerName = result.Value;
+                StateHasChanged();
+            }
+        }
+    }
 
 
     private void Click()
     {
-        
+        Clicker.AddClick(PlayerName);
     }
 
 }

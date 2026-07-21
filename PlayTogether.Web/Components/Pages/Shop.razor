@@ -1,23 +1,30 @@
 ﻿@page "/shop"
 
 @using PlayTogether.Web.Services
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+
 @inject ClickerService Clicker
+@inject LobbyService Lobby
+@inject NavigationManager Navigation
+@inject ProtectedLocalStorage ProtectedLocalStorage
 
 
-<h1>Shop</h1>
+@if (PlayerName != "")
+{
+    <h1>Shop</h1>
 
-<h3>Deine Clicks: @Clicker.Clicks</h3>
+    <h3>Deine Clicks: @Clicker.clicks(PlayerName)</h3>
 
-<p>Stärke pro Klick: @Clicker.ClickPower</p>
+    <p>Stärke pro Klick: @Clicker.clickPower(PlayerName)</p>
 
-<button class="btn btn-success" @onclick="BuyUpgrade">
-    Upgrade kaufen (@Clicker.UpgradeCost Clicks)
-</button>
+    <button class="btn btn-success" @onclick="BuyUpgrade">
+        Upgrade kaufen (@Clicker.upgradeCost(PlayerName) Clicks)
+    </button>
 
-<p>@message</p>
+    <p>@message</p>
 
-<a href="/counter">Zurück zum Clicker</a>
-
+    <a href="/counter">Zurück zum Clicker</a>
+}
 
 @code {
 
@@ -26,13 +33,31 @@
 
     private void BuyUpgrade()
     {
-        if (Clicker.BuyUpgrade())
+        if (Clicker.BuyUpgrade(PlayerName))
         {
             message = "Upgrade gekauft!";
         }
         else
         {
             message = "Nicht genug Clicks!";
+        }
+    }
+    
+    private string PlayerName = "";
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var result = await ProtectedLocalStorage.GetAsync<string>("username");
+            if (result.Success &&  result.Value != null)
+            {
+                PlayerName = result.Value;
+                StateHasChanged();
+            }
+            else {
+                Navigation.NavigateTo("/");
+            }
         }
     }
 }

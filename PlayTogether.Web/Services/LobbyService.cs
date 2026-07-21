@@ -23,6 +23,30 @@ public class LobbyService
         }
     }
 
+    public Lobby GetLobby(string name)
+    {
+        foreach (var lobby in Lobbies)
+        {
+            if (lobby.Name == name) return lobby;
+        }
+        return null;
+    }
+
+    public Lobby findPlayerLobby(string playername)
+    {
+        foreach (var lobby in Lobbies)
+        {
+            if (lobby.Players.ContainsKey(playername)) return lobby;
+        }
+        return null;
+    }
+
+    public Playerdata getPlayerData(string playername)
+    {
+        if(findPlayerLobby(playername) == null) return null;
+        return findPlayerLobby(playername).Players[playername];
+    }
+
     public bool join(String name, String passwort, String spielername)
     {
         bool lobbyexists = false;
@@ -68,9 +92,26 @@ public class Lobby
 
 public class Playerdata
 {
-    
     public string Name;
     public int clicks = 0;
     public int clickMultiplier = 1;
     public int upgradeCost = 100;
+
+    public void click()
+    {
+        clicks += clickMultiplier;
+    }
+
+    public bool upgrade()
+    {
+        if (clicks >= upgradeCost)
+        {
+            clicks -= upgradeCost;
+            clickMultiplier *= 2;
+            upgradeCost *= 2;
+
+            return true;
+        }
+        return false;
+    }
 }
