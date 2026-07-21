@@ -23,7 +23,7 @@ public class LobbyService
         }
     }
 
-    public void join(String name, String passwort, String spielername)
+    public bool join(String name, String passwort, String spielername)
     {
         bool lobbyexists = false;
         Lobby existing = new Lobby();
@@ -41,18 +41,19 @@ public class LobbyService
         if (!lobbyexists || existing == null)
         {
             Console.WriteLine("Lobby not found");
-            return;
+            return false;
         }
         // lobby existiert
         
         if (passwort != existing.Password)
         {
             Console.WriteLine("Passwords do not match");
-            return;
+            return false;
         }
         //passwort stimmt
         
         existing.Players.Add(spielername);
+        return true;
     }
 }
 
@@ -62,4 +63,5 @@ public class Lobby
     public string Password { get; set; } = "";
 
     public List<String> Players = new List<String>();
+    //public Dictionary<String, int> Players = new Dictionary<String, int>();
 }
