@@ -1,13 +1,123 @@
 ﻿@page "/LobbyList"
 @using PlayTogether.Web.Services
 @inject LobbyService LobbyService
+@inject ProtectedLocalStorage ProtectedLocalStorage
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 
 <h3>LobbyList</h3>
 
-<title> Lobbies: </title>
+<title>Lobbies:</title>
 
-@foreach(var Lobby in LobbyService.Lobbies)
+@foreach (var Lobby in LobbyService.Lobbies)
 {
-    <button class="click-button"> @Lobby.Name </button>
-    <p>  </p>
+    <button class="click-button" @onclick="() => OpenPasswordDialog(Lobby)">
+        @Lobby.Name
+    </button>
+    <p></p>
+}
+
+@if (selectedLobby is not null)
+{
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <h4>Lobby "@selectedLobby.Name" beitreten</h4>
+
+            @if (string.IsNullOrWhiteSpace(playerName))
+            {
+                <input type="text"
+                       @bind="playerNameInput"
+                       @bind:event="oninput"
+                       placeholder="Dein Name" />
+            }
+            else
+            {
+                <p>Du trittst bei als: <strong>@playerName</strong></p>
+            }
+
+            <input type="password"
+                   @bind="enteredPassword"
+                   @bind:event="oninput"
+                   placeholder="Passwort eingeben"
+                   @onkeydown="HandleKeyDown" />
+
+            @if (showError)
+            {
+                <p class="error-text">Name fehlt oder Passwort falsch!</p>
+            }
+
+            <div class="modal-buttons">
+                <button @onclick="ConfirmPassword">Beitreten</button>
+                <button @onclick="CloseDialog">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private Lobby? selectedLobby;
+    private string enteredPassword = string.Empty;
+    private string playerName = string.Empty;
+    private string playerNameInput = string.Empty;
+    private bool showError = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await ProtectedLocalStorage.GetAsync<string>("username");
+        if (result.Success &&  result.Value != null)
+        {
+            playerName = result.Value;
+        }
+    }
+
+    private void OpenPasswordDialog(Lobby lobby)
+    {
+        selectedLobby = lobby;
+        enteredPassword = string.Empty;
+        showError = false;
+    }
+
+    private void CloseDialog()
+    {
+        selectedLobby = null;
+        enteredPassword = string.Empty;
+        showError = false;
+    }
+
+    private async Task ConfirmPassword()
+    {
+        if (string.IsNullOrWhiteSpace(playerName))
+        {
+            if (string.IsNullOrWhiteSpace(playerNameInput))
+            {
+                showError = true;
+                return;
+            }
+            
+        }
+
+        if (selectedLobby is null)
+        {
+            showError = true;
+            return;
+        }
+
+        bool success = LobbyService.join(selectedLobby.Name, enteredPassword, playerName);
+
+        if (success)
+        {
+            CloseDialog();
+        }
+        else
+        {
+            showError = true;
+        }
+    }
+
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await ConfirmPassword();
+        }
+    }
 }
