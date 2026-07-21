@@ -1,7 +1,48 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 
-<PageTitle>Home</PageTitle>
+@inject ProtectedLocalStorage ProtectedLocalStorage
+@inject NavigationManager Navigation
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+<h1>🎮 Willkommen bei PlayTogether</h1>
+
+<p>Gib deinen Namen ein:</p>
+
+<input class="form-control"
+       placeholder="Spielername"
+       @bind="PlayerName" />
+
+<br />
+
+<button class="btn btn-primary" @onclick="Start">
+    Start
+</button>
+
+
+@code {
+
+    private string PlayerName = "";
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var result = await ProtectedLocalStorage.GetAsync<string>("username");
+            if (result.Success)
+            {
+                Navigation.NavigateTo("/CreateLobby");
+            }
+        }
+    }
+    
+    
+    private async Task Start()
+    {
+        if (!string.IsNullOrWhiteSpace(PlayerName))
+        {
+            await ProtectedLocalStorage.SetAsync("username", PlayerName);
+            Navigation.NavigateTo("/CreateLobby");
+        }
+    }
+}

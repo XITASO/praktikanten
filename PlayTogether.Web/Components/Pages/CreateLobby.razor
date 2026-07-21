@@ -1,23 +1,58 @@
-﻿@using PlayTogether.Web.Services
+﻿@page "/CreateLobby"
+
+@using PlayTogether.Web.Services
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+
 @inject LobbyService Lobby
+@inject NavigationManager Navigation
+@inject ProtectedLocalStorage ProtectedLocalStorage
 
-@page "/CreateLobby"
-<h3>CreateLobby</h3>
 
-<p> Lobby name: </p>
-<input type="text" @bind="lobbyname" name="Lobby name" />
-<p>  </p>
-<p> Lobby code: </p>
-<input type="text" @bind="code" name="join code" />
-<p>  </p>
-<button class="click-button" @onclick="create" > create </button>
+<h3>Create Lobby</h3>
+
+<p>Spieler: @PlayerName</p>
+
+<p>Lobby Name:</p>
+<input type="text" @bind="lobbyname" />
+
+<p>Lobby Code:</p>
+<input type="text" @bind="code" />
+
+<br /><br />
+
+<button class="btn btn-success" @onclick="Create">
+    Create
+</button>
+
+
 
 @code {
-    string lobbyname;
-    string code;
-    private void create()
+    string lobbyname = "";
+    string code = "";
+
+    private void Create()
     {
         Lobby.CreateLobby(lobbyname, code);
+
+        Navigation.NavigateTo("/lobby");
+    }
+    
+    private string PlayerName = "";
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var result = await ProtectedLocalStorage.GetAsync<string>("username");
+            if (result.Success &&  result.Value != null)
+            {
+                PlayerName = result.Value;
+                StateHasChanged();
+            }
+            else {
+                Navigation.NavigateTo("/");
+            }
+        }
     }
     
 }
