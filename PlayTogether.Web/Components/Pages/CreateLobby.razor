@@ -17,6 +17,11 @@
 <p>Lobby Code:</p>
 <input type="text" @bind="code" />
 
+@if (showError)
+{
+    <p class="error-text">Bitte einen Lobby-Namen eingeben!</p>
+}
+
 <br /><br />
 
 <button class="btn btn-success" @onclick="Create">
@@ -32,9 +37,17 @@
 @code {
     string lobbyname = "";
     string code = "";
+    bool showError = false;
 
     private void Create()
     {
+        if (string.IsNullOrWhiteSpace(lobbyname))
+        {
+            showError = true;
+            return;
+        }
+
+        showError = false;
         Lobby.CreateLobby(lobbyname, code);
 
         Navigation.NavigateTo("/LobbyList");
