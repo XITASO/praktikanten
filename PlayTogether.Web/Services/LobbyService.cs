@@ -47,7 +47,13 @@ public class LobbyService
         return findPlayerLobby(playername).Players[playername];
     }
 
-    public bool join(String name, String passwort, String spielername)
+    /**
+     * <returns>1 -> Lobby nicht gefunden;   </returns>
+     * <returns>2 -> falsches Passwort;    </returns>
+     * <returns>3 -> player schon in der lobby;   </returns>
+     * <returns>0 -> erfolg!</returns>
+     */
+    public int join(String name, String passwort, String spielername)
     {
         bool lobbyexists = false;
         Lobby existing = new Lobby();
@@ -65,26 +71,26 @@ public class LobbyService
         if (!lobbyexists || existing == null)
         {
             Console.WriteLine("Lobby not found");
-            return false;
+            return 1;
         }
         // lobby existiert
         
         if (passwort != existing.Password)
         {
             Console.WriteLine("Passwords do not match");
-            return false;
+            return 2;
         }
         // passwort stimmt
 
         if (existing.Players.ContainsKey(spielername))
         {
             Console.WriteLine("Spieler ist bereits in der Lobby");
-            return false;
+            return 3;
         }
         // spieler ist noch nicht vorhanden
         
         existing.Players.Add(spielername, new Playerdata());
-        return true;
+        return 0;
     }
 
     /**
