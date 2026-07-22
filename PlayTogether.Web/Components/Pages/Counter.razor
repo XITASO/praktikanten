@@ -45,6 +45,16 @@
 
 @code {
     
+    protected override void OnInitialized()
+    {
+        Clicker.ClicksChanged += this.Player_ClicksChanged;
+    }
+
+    private void Player_ClicksChanged(object? sender, EventArgs e)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+    
     private string PlayerName = "";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

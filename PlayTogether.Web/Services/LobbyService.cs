@@ -74,12 +74,23 @@ public class LobbyService
             Console.WriteLine("Passwords do not match");
             return false;
         }
-        //passwort stimmt
+        // passwort stimmt
+
+        if (existing.Players.ContainsKey(spielername))
+        {
+            Console.WriteLine("Spieler ist bereits in der Lobby");
+            return false;
+        }
+        // spieler ist noch nicht vorhanden
         
         existing.Players.Add(spielername, new Playerdata());
         return true;
     }
 
+    /**
+     * <param name="lobby">An Instance of Lobby</param>
+     * <returns>A list of Tupels, format: ( playername, clicks )</returns>
+     */
     public List<(string name, int score)> getScoreboard(Lobby lobby)
     {
         List<(string name, int score)> List = new();
@@ -91,28 +102,30 @@ public class LobbyService
         return List;
     }
 }
-
+// ______________________________LOBBY CLASS______________________________________
 public class Lobby
 {
     public string Name { get; set; } = "";
     public string Password { get; set; } = "";
-
-    //public List<String> Players = new List<String>();
+    
     public Dictionary<string, Playerdata> Players = new();
 }
 
+//____________________________________PLAYERDATA CLASS__________________________________
 public class Playerdata
-{
+{   
+    // ________________________DATA_____________________
     public string Name;
     public int clicks = 0;
     public int clickMultiplier = 1;
     public int upgradeCost = 100;
-
+    
+    // ____________________PLAYER ACTIONS__________________
     public void click()
     {
         clicks += clickMultiplier;
     }
-
+    
     public bool upgrade()
     {
         if (clicks >= upgradeCost)
@@ -120,7 +133,6 @@ public class Playerdata
             clicks -= upgradeCost;
             clickMultiplier *= 2;
             upgradeCost *= 2;
-
             return true;
         }
         return false;

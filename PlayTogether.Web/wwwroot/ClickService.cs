@@ -23,10 +23,18 @@ public class ClickerService(LobbyService lobbyService)
     {
         //Clicks += ClickPower;
         lobbyService.getPlayerData(playername).click();
+        OnClicksChanged();
     }
     
     public bool BuyUpgrade(string playername)
     {
+        OnClicksChanged();
         return lobbyService.getPlayerData(playername).upgrade();
+    }
+    
+    public event EventHandler? ClicksChanged;
+    protected virtual void OnClicksChanged()
+    {
+        ClicksChanged?.Invoke(this, EventArgs.Empty);
     }
 }
