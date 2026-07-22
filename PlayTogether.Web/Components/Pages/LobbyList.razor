@@ -47,7 +47,7 @@
 
             @if (showError)
             {
-                <p class="error-text">Name fehlt oder Passwort falsch!</p>
+                <p class="error-text">@ErrorMessage</p>
             }
 
             <div class="modal-buttons">
@@ -64,6 +64,7 @@
     private string playerName = string.Empty;
     private string playerNameInput = string.Empty;
     private bool showError = false;
+    private string ErrorMessage = "Fehler";
 
     protected override async Task OnInitializedAsync()
     {
@@ -106,15 +107,29 @@
             return;
         }
 
-        bool success = LobbyService.join(selectedLobby.Name, enteredPassword, playerName);
+        int success = LobbyService.Join(selectedLobby.Name, enteredPassword, playerName);
 
-        if (success)
+        if (success == 0 || success == 3)
         {
             CloseDialog();
             Navigation.NavigateTo("/counter");
         }
         else
         {
+            switch (success)
+            {
+                case 1:
+                    ErrorMessage = "Lobby nicht gefunden!";
+                    break;
+                    
+                case 2:
+                    ErrorMessage = "Passwort falsch!";
+                    break;
+                    
+                default:
+                    ErrorMessage = "Ein falscher Fehler trat auf!!!";
+                    break;
+            }
             showError = true;
         }
     }

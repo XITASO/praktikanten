@@ -4,43 +4,52 @@ using PlayTogether.Web.Services;
 
 public class ClickerService(LobbyService lobbyService)
 {
-    public int clicks(string playername)
+    public int? Clicks(string playername)
     {
-        return lobbyService.getPlayerData(playername).clicks;
+        return lobbyService.GetPlayerData(playername)?.Clicks;
     }
 
-    public int clickPower(string playername)
+    public int? ClickPower(string playername)
     {
-        return lobbyService.getPlayerData(playername).clickMultiplier;
+        return lobbyService.GetPlayerData(playername)?.ClickMultiplier;
     }
 
-    public int upgradeCost(string playername)
+    public int? UpgradeCost(string playername)
     {
-        return lobbyService.getPlayerData(playername).upgradeCost;
+        return lobbyService.GetPlayerData(playername)?.UpgradeCost;
     }
     
     public void AddClick(string playername)
     {
-        lobbyService.getPlayerData(playername).click();
+        //Clicks += ClickPower;
+        lobbyService.GetPlayerData(playername)?.Click();
+        OnClicksChanged();
     }
     
-    public bool BuyUpgrade(string playername)
+    public bool? BuyUpgrade(string playername)
     {
-        return lobbyService.getPlayerData(playername).upgrade();
+        OnClicksChanged();
+        return lobbyService.GetPlayerData(playername)?.Upgrade();
+    }
+    
+    public event EventHandler? ClicksChanged;
+    protected virtual void OnClicksChanged()
+    {
+        ClicksChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public int autoClickPower(string playername)
     {
-        return lobbyService.getPlayerData(playername).autoClickPower;
+        return lobbyService.GetPlayerData(playername).autoClickPower;
     }
 
     public int autoClickUpgradeCost(string playername)
     {
-        return lobbyService.getPlayerData(playername).autoClickUpgradeCost;
+        return lobbyService.GetPlayerData(playername).autoClickUpgradeCost;
     }
 
     public bool BuyAutoClickUpgrade(string playername)
     {
-        return lobbyService.getPlayerData(playername).upgradeAutoClicker();
+        return lobbyService.GetPlayerData(playername).upgradeAutoClicker();
     }
 }

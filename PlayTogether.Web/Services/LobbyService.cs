@@ -32,7 +32,7 @@ public class LobbyService
         return null;
     }
 
-    public Lobby findPlayerLobby(string playername)
+    public Lobby? FindPlayerLobby(string playername)
     {
         foreach (var lobby in Lobbies)
         {
@@ -41,13 +41,25 @@ public class LobbyService
         return null;
     }
 
-    public Playerdata getPlayerData(string playername)
+    public void RemovePlayerFromLobby(string playername)
     {
-        if(findPlayerLobby(playername) == null) return null;
-        return findPlayerLobby(playername).Players[playername];
+        FindPlayerLobby(playername)?.Players.Remove(playername);
+        Console.WriteLine("Player " + playername + " has left its lobby");
     }
 
-    public bool join(String name, String passwort, String spielername)
+    public Playerdata? GetPlayerData(string playername)
+    {
+        if(FindPlayerLobby(playername) == null) return null;
+        return FindPlayerLobby(playername)?.Players[playername];
+    }
+
+    /**
+     * <returns>1 -> Lobby nicht gefunden;   </returns>
+     * <returns>2 -> falsches Passwort;    </returns>
+     * <returns>3 -> player schon in der lobby;   </returns>
+     * <returns>0 -> erfolg!</returns>
+     */
+    public int Join(string name, string passwort, string spielername)
     {
         bool lobbyexists = false;
         Lobby existing = new Lobby();
@@ -65,69 +77,93 @@ public class LobbyService
         if (!lobbyexists || existing == null)
         {
             Console.WriteLine("Lobby not found");
-            return false;
+            return 1;
         }
         // lobby existiert
         
         if (passwort != existing.Password)
         {
             Console.WriteLine("Passwords do not match");
-            return false;
+            return 2;
         }
-        //passwort stimmt
+        // passwort stimmt
+
+        if (existing.Players.ContainsKey(spielername))
+        {
+            Console.WriteLine("Spieler ist bereits in der Lobby");
+            return 3;
+        }
+        // spieler ist noch nicht vorhanden
         
         existing.Players.Add(spielername, new Playerdata());
-        return true;
+        return 0;
+    }
+
+    /**
+     * <param name="lobby">An Instance of Lobby</param>
+     * <returns>A list of Tupels, format: ( playername, clicks )</returns>
+     */
+    public List<(string name, int score)> GetScoreboard(Lobby? lobby)
+    {
+        List<(string name, int score)> list = new();
+        
+        if (lobby == null) return list;
+        
+        foreach (var pair in lobby.Players)
+        {
+            list.Add((pair.Key, pair.Value.Clicks));
+        }
+
+        return list;
     }
 }
-
+// ______________________________LOBBY CLASS______________________________________
 public class Lobby
 {
     public string Name { get; set; } = "";
     public string Password { get; set; } = "";
-
-    //public List<String> Players = new List<String>();
-    public Dictionary<String, Playerdata> Players = new Dictionary<String, Playerdata>();
+    
+    public Dictionary<string, Playerdata> Players = new();
 }
 
+//____________________________________PLAYERDATA CLASS__________________________________
 public class Playerdata
-{
-    public string Name;
-    public int clicks = 0;
-    public int clickMultiplier = 1;
-    public int upgradeCost = 100;
-
+{   
+    // ________________________DATA_____________________
+    public string Name = "";
+    public int Clicks = 0;
+    public int ClickMultiplier = 1;
+    public int UpgradeCost = 100;
+    
     public int autoClickPower = 1;
     public int autoClickUpgradeCost = 100;
-
-    public void click()
+    
+    // ____________________PLAYER ACTIONS__________________
+    public void Click()
     {
-        clicks += clickMultiplier;
+        Clicks += ClickMultiplier;
     }
-
-    public bool upgrade()
+    
+    public bool Upgrade()
     {
-        if (clicks >= upgradeCost)
-        {
-            clicks -= upgradeCost;
-            clickMultiplier *= 2;
-            upgradeCost *= 2;
-
-            return true;
-        }
-        return false;
+        if(Clicks < UpgradeCost) return false;
+        
+        Clicks -= UpgradeCost;
+        ClickMultiplier *= 2;
+        UpgradeCost *= 2;
+        return true;
     }
-
+    
     public void autoClick()
     {
-        clicks += autoClickPower;
+        Clicks += autoClickPower;
     }
 
     public bool upgradeAutoClicker()
     {
-        if (clicks >= autoClickUpgradeCost)
+        if (Clicks >= autoClickUpgradeCost)
         {
-            clicks -= autoClickUpgradeCost;
+            Clicks -= autoClickUpgradeCost;
             autoClickPower++;
             autoClickUpgradeCost *= 2;
 

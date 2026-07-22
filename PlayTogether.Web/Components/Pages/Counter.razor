@@ -5,14 +5,18 @@
 @inject ClickerService Clicker
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @inject ProtectedLocalStorage ProtectedLocalStorage
+@inject LobbyService LobbyService
+@inject NavigationManager Navigation
 
 @if (PlayerName != "")
 {
+    <h1> Deine Lobby: @LobbyService.FindPlayerLobby(PlayerName)?.Name </h1>
+    
     <div class="clicker-container">
 
-        <h1>🍉 Clicker</h1>
+        <h2>🍉 Clicker</h2>
 
-        <h2>Clicks: @Clicker.clicks(PlayerName)</h2>
+        <h3>Clicks: @Clicker.Clicks(PlayerName)</h3>
 
         <div class="melon-area">
             <button class="click-button" @onclick="Click">
@@ -20,15 +24,41 @@
             </button>
         </div>
 
-        <p>Pro Klick: @Clicker.clickPower(PlayerName)</p>
+
+        <p>Pro Klick: @Clicker.ClickPower(PlayerName)</p>
         <p>Klicks jede 10 Sekunden: @Clicker.autoClickPower(PlayerName)</p>
 
         <a href="/shop">🛒 Shop öffnen</a>
 
     </div>
+    
+    <button class="click-button" @onclick="back">zurück</button>
+    
+    <p> </p>
+    
+    @foreach
+    (
+        var tupel in LobbyService.GetScoreboard
+        (
+            LobbyService.FindPlayerLobby(PlayerName)
+        )
+    )
+    {
+        <p> @tupel.name  @tupel.score</p>
+    }
 }
 
-@code {
+@code { 
+    
+    protected override void OnInitialized()
+    {
+        Clicker.ClicksChanged += this.Player_ClicksChanged;
+    }
+
+    private void Player_ClicksChanged(object? sender, EventArgs e)
+    {
+        InvokeAsync(StateHasChanged);
+    }
     
     private string PlayerName = "";
     private System.Threading.Timer? refreshTimer;
@@ -62,6 +92,11 @@
         Clicker.AddClick(PlayerName);
     }
 
+    private void back()
+    {
+        Navigation.NavigateTo("/LobbyList");
+        LobbyService.RemovePlayerFromLobby(PlayerName);
+    }
     public void Dispose()
     {
         refreshTimer?.Dispose();

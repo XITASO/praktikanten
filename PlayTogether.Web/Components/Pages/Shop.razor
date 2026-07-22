@@ -14,12 +14,12 @@
 {
     <h1>Shop</h1>
 
-    <h3>Deine Clicks: @Clicker.clicks(PlayerName)</h3>
+    <h3>Deine Clicks: @Clicker.Clicks(PlayerName)</h3>
 
-    <p>Stärke pro Klick: @Clicker.clickPower(PlayerName)</p>
+    <p>Stärke pro Klick: @Clicker.ClickPower(PlayerName)</p>
 
     <button class="btn btn-success" @onclick="BuyUpgrade" disabled="@(!CanAffordUpgrade)">
-        Upgrade kaufen (@Clicker.upgradeCost(PlayerName) Clicks)
+        Upgrade kaufen (@Clicker.UpgradeCost(PlayerName) Clicks)
     </button>
 
     <p>Anzahl an Klicks jede 10 Sekunden🧑🏻‍🌾: @Clicker.autoClickPower(PlayerName)</p>
@@ -40,21 +40,16 @@
     private System.Threading.Timer? refreshTimer;
 
     private bool CanAffordUpgrade =>
-        Clicker.clicks(PlayerName) >= Clicker.upgradeCost(PlayerName);
+        Clicker.Clicks(PlayerName) >= Clicker.UpgradeCost(PlayerName);
 
     private bool CanAffordAutoClickUpgrade =>
-        Clicker.clicks(PlayerName) >= Clicker.autoClickUpgradeCost(PlayerName);
+        Clicker.Clicks(PlayerName) >= Clicker.autoClickUpgradeCost(PlayerName);
 
     private void BuyUpgrade()
     {
-        if (Clicker.BuyUpgrade(PlayerName))
-        {
-            message = "Upgrade gekauft!";
-        }
-        else
-        {
-            message = "Nicht genug Clicks!";
-        }
+        if (Clicker.BuyUpgrade(PlayerName) == null) return;
+        if ((bool) Clicker.BuyUpgrade(PlayerName) ) message = "Upgrade gekauft!";
+        else message = "Nicht genug Clicks!";
     }
 
     private void BuyAutoClickUpgrade()
