@@ -4,14 +4,17 @@
 @inject ClickerService Clicker
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @inject ProtectedLocalStorage ProtectedLocalStorage
+@inject LobbyService LobbyService
 
 @if (PlayerName != "")
 {
+    <h1> Deine Lobby: @LobbyService.findPlayerLobby(PlayerName).Name </h1>
+    
     <div class="clicker-container">
 
-        <h1>🍉 Clicker</h1>
+        <h2>🍉 Clicker</h2>
 
-        <h2>Clicks: @Clicker.clicks(PlayerName)</h2>
+        <h3>Clicks: @Clicker.clicks(PlayerName)</h3>
 
 
         <div class="melon-area">
@@ -28,6 +31,16 @@
         <a href="/shop">🛒 Shop öffnen</a>
 
     </div>
+    @foreach
+    (
+        var tupel in LobbyService.getScoreboard
+        (
+            LobbyService.findPlayerLobby(PlayerName)
+        )
+    )
+    {
+        <p> @tupel.name  @tupel.score</p>
+    }
 }
 
 @code {

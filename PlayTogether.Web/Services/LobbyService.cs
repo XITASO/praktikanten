@@ -79,6 +79,17 @@ public class LobbyService
         existing.Players.Add(spielername, new Playerdata());
         return true;
     }
+
+    public List<(string name, int score)> getScoreboard(Lobby lobby)
+    {
+        List<(string name, int score)> List = new();
+        foreach (var pair in lobby.Players)
+        {
+            List.Add((pair.Key, pair.Value.clicks));
+        }
+
+        return List;
+    }
 }
 
 public class Lobby
@@ -87,7 +98,7 @@ public class Lobby
     public string Password { get; set; } = "";
 
     //public List<String> Players = new List<String>();
-    public Dictionary<String, Playerdata> Players = new Dictionary<String, Playerdata>();
+    public Dictionary<string, Playerdata> Players = new();
 }
 
 public class Playerdata
