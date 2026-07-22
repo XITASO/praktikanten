@@ -32,7 +32,7 @@ public class LobbyService
         return null;
     }
 
-    public Lobby findPlayerLobby(string playername)
+    public Lobby? FindPlayerLobby(string playername)
     {
         foreach (var lobby in Lobbies)
         {
@@ -41,10 +41,16 @@ public class LobbyService
         return null;
     }
 
-    public Playerdata getPlayerData(string playername)
+    public void RemovePlayerFromLobby(string playername)
     {
-        if(findPlayerLobby(playername) == null) return null;
-        return findPlayerLobby(playername).Players[playername];
+        FindPlayerLobby(playername)?.Players.Remove(playername);
+        Console.WriteLine("Player " + playername + " has left its lobby");
+    }
+
+    public Playerdata? GetPlayerData(string playername)
+    {
+        if(FindPlayerLobby(playername) == null) return null;
+        return FindPlayerLobby(playername)?.Players[playername];
     }
 
     /**
@@ -53,7 +59,7 @@ public class LobbyService
      * <returns>3 -> player schon in der lobby;   </returns>
      * <returns>0 -> erfolg!</returns>
      */
-    public int join(String name, String passwort, String spielername)
+    public int Join(string name, string passwort, string spielername)
     {
         bool lobbyexists = false;
         Lobby existing = new Lobby();
@@ -97,15 +103,18 @@ public class LobbyService
      * <param name="lobby">An Instance of Lobby</param>
      * <returns>A list of Tupels, format: ( playername, clicks )</returns>
      */
-    public List<(string name, int score)> getScoreboard(Lobby lobby)
+    public List<(string name, int score)> GetScoreboard(Lobby? lobby)
     {
-        List<(string name, int score)> List = new();
+        List<(string name, int score)> list = new();
+        
+        if (lobby == null) return list;
+        
         foreach (var pair in lobby.Players)
         {
-            List.Add((pair.Key, pair.Value.clicks));
+            list.Add((pair.Key, pair.Value.Clicks));
         }
 
-        return List;
+        return list;
     }
 }
 // ______________________________LOBBY CLASS______________________________________
@@ -121,26 +130,24 @@ public class Lobby
 public class Playerdata
 {   
     // ________________________DATA_____________________
-    public string Name;
-    public int clicks = 0;
-    public int clickMultiplier = 1;
-    public int upgradeCost = 100;
+    public string Name = "";
+    public int Clicks = 0;
+    public int ClickMultiplier = 1;
+    public int UpgradeCost = 100;
     
     // ____________________PLAYER ACTIONS__________________
-    public void click()
+    public void Click()
     {
-        clicks += clickMultiplier;
+        Clicks += ClickMultiplier;
     }
     
-    public bool upgrade()
+    public bool Upgrade()
     {
-        if (clicks >= upgradeCost)
-        {
-            clicks -= upgradeCost;
-            clickMultiplier *= 2;
-            upgradeCost *= 2;
-            return true;
-        }
-        return false;
+        if(Clicks < UpgradeCost) return false;
+        
+        Clicks -= UpgradeCost;
+        ClickMultiplier *= 2;
+        UpgradeCost *= 2;
+        return true;
     }
 }

@@ -107,7 +107,7 @@
             return;
         }
 
-        int success = LobbyService.join(selectedLobby.Name, enteredPassword, playerName);
+        int success = LobbyService.Join(selectedLobby.Name, enteredPassword, playerName);
 
         if (success == 0 || success == 3)
         {

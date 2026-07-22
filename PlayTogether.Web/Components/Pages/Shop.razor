@@ -13,12 +13,12 @@
 {
     <h1>Shop</h1>
 
-    <h3>Deine Clicks: @Clicker.clicks(PlayerName)</h3>
+    <h3>Deine Clicks: @Clicker.Clicks(PlayerName)</h3>
 
-    <p>Stärke pro Klick: @Clicker.clickPower(PlayerName)</p>
+    <p>Stärke pro Klick: @Clicker.ClickPower(PlayerName)</p>
 
     <button class="btn btn-success" @onclick="BuyUpgrade">
-        Upgrade kaufen (@Clicker.upgradeCost(PlayerName) Clicks)
+        Upgrade kaufen (@Clicker.UpgradeCost(PlayerName) Clicks)
     </button>
 
     <p>@message</p>
@@ -33,14 +33,9 @@
 
     private void BuyUpgrade()
     {
-        if (Clicker.BuyUpgrade(PlayerName))
-        {
-            message = "Upgrade gekauft!";
-        }
-        else
-        {
-            message = "Nicht genug Clicks!";
-        }
+        if (Clicker.BuyUpgrade(PlayerName) == null) return;
+        if ((bool) Clicker.BuyUpgrade(PlayerName) ) message = "Upgrade gekauft!";
+        else message = "Nicht genug Clicks!";
     }
     
     private string PlayerName = "";

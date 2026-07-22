@@ -5,16 +5,17 @@
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @inject ProtectedLocalStorage ProtectedLocalStorage
 @inject LobbyService LobbyService
+@inject NavigationManager Navigation
 
 @if (PlayerName != "")
 {
-    <h1> Deine Lobby: @LobbyService.findPlayerLobby(PlayerName).Name </h1>
+    <h1> Deine Lobby: @LobbyService.FindPlayerLobby(PlayerName)?.Name </h1>
     
     <div class="clicker-container">
 
         <h2>🍉 Clicker</h2>
 
-        <h3>Clicks: @Clicker.clicks(PlayerName)</h3>
+        <h3>Clicks: @Clicker.Clicks(PlayerName)</h3>
 
 
         <div class="melon-area">
@@ -26,7 +27,7 @@
         </div>
 
 
-        <p>Pro Klick: @Clicker.clickPower(PlayerName)</p>
+        <p>Pro Klick: @Clicker.ClickPower(PlayerName)</p>
 
         <a href="/shop">🛒 Shop öffnen</a>
 
@@ -38,9 +39,9 @@
     
     @foreach
     (
-        var tupel in LobbyService.getScoreboard
+        var tupel in LobbyService.GetScoreboard
         (
-            LobbyService.findPlayerLobby(PlayerName)
+            LobbyService.FindPlayerLobby(PlayerName)
         )
     )
     {
@@ -83,6 +84,7 @@
 
     private void back()
     {
-        
+        Navigation.NavigateTo("/LobbyList");
+        LobbyService.RemovePlayerFromLobby(PlayerName);
     }
 }
