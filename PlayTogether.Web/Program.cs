@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Services HIER hinzufügen
 builder.Services.AddSingleton<ClickerService>();
 builder.Services.AddSingleton<LobbyService>();
+builder.Services.AddHostedService<AutoClickBackgroundService>();
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();

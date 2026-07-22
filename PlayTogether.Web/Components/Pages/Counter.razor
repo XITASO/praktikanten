@@ -1,4 +1,5 @@
 ﻿@page "/counter"
+@implements IDisposable
 
 @using PlayTogether.Web.Services
 @inject ClickerService Clicker
@@ -13,17 +14,14 @@
 
         <h2>Clicks: @Clicker.clicks(PlayerName)</h2>
 
-
         <div class="melon-area">
-
             <button class="click-button" @onclick="Click">
                 <img src="/images/wassermelonen.png" alt="Click Button"/>
             </button>
-
         </div>
 
-
         <p>Pro Klick: @Clicker.clickPower(PlayerName)</p>
+        <p>Klicks jede 10 Sekunden: @Clicker.autoClickPower(PlayerName)</p>
 
         <a href="/shop">🛒 Shop öffnen</a>
 
@@ -33,6 +31,7 @@
 @code {
     
     private string PlayerName = "";
+    private System.Threading.Timer? refreshTimer;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -43,14 +42,29 @@
             {
                 PlayerName = result.Value;
                 StateHasChanged();
+
+                StartUiRefresh();
             }
         }
     }
 
+    private void StartUiRefresh()
+    {
+        refreshTimer = new System.Threading.Timer(_ =>
+        {
+            InvokeAsync(StateHasChanged);
+
+        }, null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+    }
 
     private void Click()
     {
         Clicker.AddClick(PlayerName);
+    }
+
+    public void Dispose()
+    {
+        refreshTimer?.Dispose();
     }
 
 }

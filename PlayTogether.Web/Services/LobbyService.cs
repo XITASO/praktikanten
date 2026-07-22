@@ -97,6 +97,9 @@ public class Playerdata
     public int clickMultiplier = 1;
     public int upgradeCost = 100;
 
+    public int autoClickPower = 1;
+    public int autoClickUpgradeCost = 100;
+
     public void click()
     {
         clicks += clickMultiplier;
@@ -109,6 +112,24 @@ public class Playerdata
             clicks -= upgradeCost;
             clickMultiplier *= 2;
             upgradeCost *= 2;
+
+            return true;
+        }
+        return false;
+    }
+
+    public void autoClick()
+    {
+        clicks += autoClickPower;
+    }
+
+    public bool upgradeAutoClicker()
+    {
+        if (clicks >= autoClickUpgradeCost)
+        {
+            clicks -= autoClickUpgradeCost;
+            autoClickPower++;
+            autoClickUpgradeCost *= 2;
 
             return true;
         }

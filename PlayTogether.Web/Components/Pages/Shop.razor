@@ -1,4 +1,5 @@
 ﻿@page "/shop"
+@implements IDisposable
 
 @using PlayTogether.Web.Services
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
@@ -17,8 +18,14 @@
 
     <p>Stärke pro Klick: @Clicker.clickPower(PlayerName)</p>
 
-    <button class="btn btn-success" @onclick="BuyUpgrade">
+    <button class="btn btn-success" @onclick="BuyUpgrade" disabled="@(!CanAffordUpgrade)">
         Upgrade kaufen (@Clicker.upgradeCost(PlayerName) Clicks)
+    </button>
+
+    <p>Anzahl an Klicks jede 10 Sekunden🧑🏻‍🌾: @Clicker.autoClickPower(PlayerName)</p>
+
+    <button class="btn btn-success" @onclick="BuyAutoClickUpgrade" disabled="@(!CanAffordAutoClickUpgrade)">
+        Upgrade kaufen (@Clicker.autoClickUpgradeCost(PlayerName) Clicks)
     </button>
 
     <p>@message</p>
@@ -29,7 +36,14 @@
 @code {
 
     private string message = "";
+    private string PlayerName = "";
+    private System.Threading.Timer? refreshTimer;
 
+    private bool CanAffordUpgrade =>
+        Clicker.clicks(PlayerName) >= Clicker.upgradeCost(PlayerName);
+
+    private bool CanAffordAutoClickUpgrade =>
+        Clicker.clicks(PlayerName) >= Clicker.autoClickUpgradeCost(PlayerName);
 
     private void BuyUpgrade()
     {
@@ -42,8 +56,18 @@
             message = "Nicht genug Clicks!";
         }
     }
-    
-    private string PlayerName = "";
+
+    private void BuyAutoClickUpgrade()
+    {
+        if (Clicker.BuyAutoClickUpgrade(PlayerName))
+        {
+            message = "Auto-Clicker Upgrade gekauft!";
+        }
+        else
+        {
+            message = "Nicht genug Clicks!";
+        }
+    }
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -54,10 +78,26 @@
             {
                 PlayerName = result.Value;
                 StateHasChanged();
+
+                StartUiRefresh();
             }
             else {
                 Navigation.NavigateTo("/");
             }
         }
+    }
+
+    private void StartUiRefresh()
+    {
+        refreshTimer = new System.Threading.Timer(_ =>
+        {
+            InvokeAsync(StateHasChanged);
+
+        }, null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+    }
+
+    public void Dispose()
+    {
+        refreshTimer?.Dispose();
     }
 }

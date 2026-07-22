@@ -21,12 +21,26 @@ public class ClickerService(LobbyService lobbyService)
     
     public void AddClick(string playername)
     {
-        //Clicks += ClickPower;
         lobbyService.getPlayerData(playername).click();
     }
     
     public bool BuyUpgrade(string playername)
     {
         return lobbyService.getPlayerData(playername).upgrade();
+    }
+
+    public int autoClickPower(string playername)
+    {
+        return lobbyService.getPlayerData(playername).autoClickPower;
+    }
+
+    public int autoClickUpgradeCost(string playername)
+    {
+        return lobbyService.getPlayerData(playername).autoClickUpgradeCost;
+    }
+
+    public bool BuyAutoClickUpgrade(string playername)
+    {
+        return lobbyService.getPlayerData(playername).upgradeAutoClicker();
     }
 }
