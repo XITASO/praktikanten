@@ -16,7 +16,7 @@
 
         <h2>🍉 Clicker</h2>
 
-        <h3>Clicks: @Clicker.Clicks(PlayerName)</h3>
+        <h3>Clicks: @FormatNumber(Clicker.Clicks(PlayerName))</h3>
 
         <div class="melon-area">
             <button class="click-button" @onclick="Click">
@@ -25,8 +25,8 @@
         </div>
 
 
-        <p>Pro Klick: @Clicker.ClickPower(PlayerName)</p>
-        <p>Klicks jede 10 Sekunden: @Clicker.autoClickPower(PlayerName)</p>
+        <p>Pro Klick: @FormatNumber(Clicker.ClickPower(PlayerName))</p>
+        <p>Klicks jede 10 Sekunden: @FormatNumber(Clicker.autoClickPower(PlayerName))</p>
 
         <a href="/shop">🛒 Shop öffnen</a>
 
@@ -44,7 +44,7 @@
         )
     )
     {
-        <p> @tupel.name  @tupel.score</p>
+        <p> @tupel.name  @FormatNumber(tupel.score)</p>
     }
 }
 
@@ -104,6 +104,11 @@
         }
 
         Navigation.NavigateTo("/LobbyList");
+    }
+
+    private string FormatNumber(int? number)
+    {
+        return (number ?? 0).ToString("N0", new System.Globalization.CultureInfo("de-DE"));
     }
 
     public void Dispose()
