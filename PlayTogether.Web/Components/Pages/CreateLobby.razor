@@ -30,7 +30,7 @@
 
 <p> </p>
 
-<a href="/LobbyList">Zurück zur Auswahl</a>
+<a href="/LobbyList">Bestehende Lobby beitreten</a>
 
 
 
@@ -40,6 +40,8 @@
     bool showError = false;
     string errorMessage = "";
 
+    private string PlayerName = "";
+    
     private void Create()
     {
         if (string.IsNullOrWhiteSpace(lobbyname))
@@ -62,9 +64,6 @@
         Navigation.NavigateTo("/LobbyList");
     }
     
-    
-    private string PlayerName = "";
-    
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -73,7 +72,7 @@
             if (result.Success &&  result.Value != null)
             {
                 PlayerName = result.Value;
-                
+                StateHasChanged();
             }
             else {
                 Navigation.NavigateTo("/");
