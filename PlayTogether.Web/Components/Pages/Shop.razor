@@ -54,7 +54,8 @@
 
     private void BuyAutoClickUpgrade()
     {
-        if (Clicker.BuyAutoClickUpgrade(PlayerName))
+        if (Clicker.BuyAutoClickUpgrade(PlayerName) == null) return;
+        if ((bool) Clicker.BuyAutoClickUpgrade(PlayerName))
         {
             message = "Auto-Clicker Upgrade gekauft!";
         }

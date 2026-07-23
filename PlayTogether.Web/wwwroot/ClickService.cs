@@ -38,18 +38,18 @@ public class ClickerService(LobbyService lobbyService)
         ClicksChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    public int autoClickPower(string playername)
+    public int? autoClickPower(string playername)
     {
-        return lobbyService.GetPlayerData(playername).autoClickPower;
+        return lobbyService.GetPlayerData(playername)?.autoClickPower;
     }
 
-    public int autoClickUpgradeCost(string playername)
+    public int? autoClickUpgradeCost(string playername)
     {
-        return lobbyService.GetPlayerData(playername).autoClickUpgradeCost;
+        return lobbyService.GetPlayerData(playername)?.autoClickUpgradeCost;
     }
 
-    public bool BuyAutoClickUpgrade(string playername)
+    public bool? BuyAutoClickUpgrade(string playername)
     {
-        return lobbyService.GetPlayerData(playername).upgradeAutoClicker();
+        return lobbyService.GetPlayerData(playername)?.upgradeAutoClicker();
     }
 }
