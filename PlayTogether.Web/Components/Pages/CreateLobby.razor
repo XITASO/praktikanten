@@ -12,14 +12,14 @@
 <p>Spieler: @PlayerName</p>
 
 <p>Lobby Name:</p>
-<input type="text" @bind="lobbyname" />
+<input type="text" maxlength="15" @bind="lobbyname" />
 
 <p>Lobby Code:</p>
 <input type="text" @bind="code" />
 
 @if (showError)
 {
-    <p class="error-text">Bitte einen Lobby-Namen eingeben!</p>
+    <p class="error-text">@errorMessage</p>
 }
 
 <br /><br />
@@ -38,11 +38,20 @@
     string lobbyname = "";
     string code = "";
     bool showError = false;
+    string errorMessage = "";
 
     private void Create()
     {
         if (string.IsNullOrWhiteSpace(lobbyname))
         {
+            errorMessage = "Bitte einen Lobby-Namen eingeben!";
+            showError = true;
+            return;
+        }
+
+        if (lobbyname.Length > 15)
+        {
+            errorMessage = "Lobby-Name darf maximal 15 Zeichen lang sein!";
             showError = true;
             return;
         }

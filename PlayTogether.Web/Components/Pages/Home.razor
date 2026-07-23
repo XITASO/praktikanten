@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using Microsoft.AspNetCore.WebUtilities
 
 @inject ProtectedLocalStorage ProtectedLocalStorage
 @inject NavigationManager Navigation
@@ -23,11 +24,20 @@
 @code {
 
     private string PlayerName = "";
-    
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+            bool wantsChange = QueryHelpers.ParseQuery(uri.Query)
+                .TryGetValue("change", out var value) && value == "true";
+
+            if (wantsChange)
+            {
+                return; // bleibt auf "/", keine automatische Weiterleitung
+            }
+
             var result = await ProtectedLocalStorage.GetAsync<string>("username");
             if (result.Success)
             {

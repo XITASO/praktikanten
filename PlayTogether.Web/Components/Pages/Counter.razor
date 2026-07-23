@@ -94,11 +94,21 @@
 
     private void back()
     {
+        try
+        {
+            LobbyService.RemovePlayerFromLobby(PlayerName);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Fehler beim Entfernen aus der Lobby: {ex.Message}");
+        }
+
         Navigation.NavigateTo("/LobbyList");
-        LobbyService.RemovePlayerFromLobby(PlayerName);
     }
+
     public void Dispose()
     {
+        Clicker.ClicksChanged -= this.Player_ClicksChanged;
         refreshTimer?.Dispose();
     }
 

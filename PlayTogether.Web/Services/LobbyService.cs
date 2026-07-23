@@ -134,9 +134,11 @@ public class Playerdata
     public int Clicks = 0;
     public int ClickMultiplier = 1;
     public int UpgradeCost = 100;
+    public int UpgradeLevel = 1;
     
     public int autoClickPower = 1;
     public int autoClickUpgradeCost = 100;
+    public int autoClickUpgradeLevel = 1;
     
     // ____________________PLAYER ACTIONS__________________
     public void Click()
@@ -146,11 +148,19 @@ public class Playerdata
     
     public bool Upgrade()
     {
-        if(Clicks < UpgradeCost) return false;
+        if (Clicks < UpgradeCost) return false;
         
         Clicks -= UpgradeCost;
-        ClickMultiplier *= 2;
-        UpgradeCost *= 2;
+
+        // Zuwachs flacht mit steigendem Level langsam ab (Wurzel-Wachstum)
+        int gain = (int)Math.Ceiling(Math.Sqrt(UpgradeLevel) * 2);
+        ClickMultiplier += gain;
+        UpgradeLevel++;
+
+        // Kosten wachsen prozentual mit steigendem Level etwas stärker (gedeckelt)
+        double growthRate = Math.Min(0.3 + UpgradeLevel * 0.015, 0.9);
+        UpgradeCost += (int)(UpgradeCost * growthRate);
+
         return true;
     }
     
@@ -161,14 +171,17 @@ public class Playerdata
 
     public bool upgradeAutoClicker()
     {
-        if (Clicks >= autoClickUpgradeCost)
-        {
-            Clicks -= autoClickUpgradeCost;
-            autoClickPower++;
-            autoClickUpgradeCost *= 2;
+        if (Clicks < autoClickUpgradeCost) return false;
+        
+        Clicks -= autoClickUpgradeCost;
 
-            return true;
-        }
-        return false;
+        int gain = (int)Math.Ceiling(Math.Sqrt(autoClickUpgradeLevel) * 2);
+        autoClickPower += gain;
+        autoClickUpgradeLevel++;
+
+        double growthRate = Math.Min(0.3 + autoClickUpgradeLevel * 0.015, 0.9);
+        autoClickUpgradeCost += (int)(autoClickUpgradeCost * growthRate);
+
+        return true;
     }
 }
