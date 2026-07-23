@@ -13,7 +13,7 @@ public class AutoClickBackgroundService : BackgroundService
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+            await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken);
 
             foreach (var lobby in _lobbyService.Lobbies)
             {
