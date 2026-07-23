@@ -21,7 +21,7 @@
     <button class="btn btn-success" @onclick="BuyUpgrade" disabled="@(!CanAffordUpgrade)">
         Upgrade kaufen (@Clicker.UpgradeCost(PlayerName) Clicks)
     </button>
-
+    <p>    </p>
     <p>Anzahl an Klicks jede 10 Sekunden🧑🏻‍🌾: @Clicker.autoClickPower(PlayerName)</p>
 
     <button class="btn btn-success" @onclick="BuyAutoClickUpgrade" disabled="@(!CanAffordAutoClickUpgrade)">
