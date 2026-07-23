@@ -8,44 +8,176 @@
 @inject LobbyService LobbyService
 @inject NavigationManager Navigation
 
+<style>
+    .counter-page {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #1e5631 0%, #2e8b57 50%, #a8e063 100%);
+        padding: 40px 20px;
+        text-align: center;
+        color: white;
+    }
+
+    .lobby-tag {
+        display: inline-block;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255,255,255,0.4);
+        border-radius: 50px;
+        padding: 10px 28px;
+        font-weight: 600;
+        margin-bottom: 30px;
+    }
+
+    .clicker-container {
+        background: rgba(255, 255, 255, 0.95);
+        color: #1e5631;
+        border-radius: 24px;
+        padding: 36px;
+        max-width: 480px;
+        margin: 0 auto;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+        border: 4px solid #a8e063;
+    }
+
+    .clicker-container h2 {
+        font-size: 2.2rem;
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .clicker-container h3 {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #2e8b57;
+        margin-bottom: 20px;
+    }
+
+    .melon-area {
+        margin: 20px 0;
+    }
+
+    .click-button {
+        background: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    .click-button img {
+        width: 220px;
+        height: auto;
+        display: block;
+        margin: auto;
+        transition: transform 0.1s;
+        filter: drop-shadow(0 8px 15px rgba(0,0,0,0.3));
+    }
+
+    .click-button:active img {
+        transform: scale(0.9);
+    }
+
+    .clicker-container p {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 8px 0;
+    }
+
+    .shop-link {
+        display: inline-block;
+        margin-top: 20px;
+        background: #2e8b57;
+        color: white;
+        text-decoration: none;
+        font-weight: 700;
+        padding: 12px 28px;
+        border-radius: 14px;
+        box-shadow: 0 6px 0 #1e5631;
+        transition: all 0.15s ease;
+    }
+
+    .shop-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 0 #1e5631;
+        color: white;
+    }
+
+    .leave-button {
+        display: inline-block;
+        margin-top: 30px;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255,255,255,0.4);
+        border-radius: 50px;
+        padding: 10px 24px;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.25s ease;
+    }
+
+    .leave-button:hover {
+        background: rgba(255,255,255,0.3);
+        transform: translateY(-2px);
+    }
+
+    .scoreboard {
+        max-width: 480px;
+        margin: 24px auto 0;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255,255,255,0.4);
+        border-radius: 20px;
+        padding: 16px 24px;
+    }
+
+    .scoreboard p {
+        font-weight: 600;
+        margin: 6px 0;
+    }
+</style>
+
 @if (PlayerName != "")
 {
-    <h1> Deine Lobby: @LobbyService.FindPlayerLobby(PlayerName)?.Name </h1>
-    
-    <div class="clicker-container">
+    <div class="counter-page">
 
-        <h2>🍉 Clicker</h2>
+        <div class="lobby-tag">🏠 @LobbyService.FindPlayerLobby(PlayerName)?.Name</div>
 
-        <h3>Clicks: @FormatNumber(Clicker.Clicks(PlayerName))</h3>
+        <div class="clicker-container">
 
-        <div class="melon-area">
-            <button class="click-button" @onclick="Click">
-                <img src="/images/wassermelonen.png" alt="Click Button"/>
-            </button>
+            <h2>🍉 Clicker</h2>
+
+            <h3>Clicks: @FormatNumber(Clicker.Clicks(PlayerName))</h3>
+
+            <div class="melon-area">
+                <button class="click-button" @onclick="Click">
+                    <img src="/images/wassermelonen.png" alt="Click Button"/>
+                </button>
+            </div>
+
+
+            <p>Pro Klick: @FormatNumber(Clicker.ClickPower(PlayerName))</p>
+            <p>Klicks jede Sekunde: @FormatNumber(Clicker.autoClickPower(PlayerName))</p>
+
+            <a href="/shop" class="shop-link">🛒 Shop öffnen</a>
+
         </div>
 
+        <button class="leave-button" @onclick="back">← Lobby verlassen</button>
 
-        <p>Pro Klick: @FormatNumber(Clicker.ClickPower(PlayerName))</p>
-        <p>Klicks jede Sekunde: @FormatNumber(Clicker.autoClickPower(PlayerName))</p>
-
-        <a href="/shop">🛒 Shop öffnen</a>
+        <div class="scoreboard">
+            @foreach
+            (
+                var tupel in LobbyService.GetScoreboard
+                (
+                    LobbyService.FindPlayerLobby(PlayerName)
+                )
+            )
+            {
+                <p>@tupel.name — @FormatNumber(tupel.score)</p>
+            }
+        </div>
 
     </div>
-    
-    <button class="click-button" @onclick="back">Lobby verlassen</button>
-    
-    <p> </p>
-    
-    @foreach
-    (
-        var tupel in LobbyService.GetScoreboard
-        (
-            LobbyService.FindPlayerLobby(PlayerName)
-        )
-    )
-    {
-        <p> @tupel.name  @FormatNumber(tupel.score)</p>
-    }
 }
 
 @code { 

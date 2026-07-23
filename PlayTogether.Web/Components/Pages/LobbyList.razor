@@ -5,35 +5,209 @@
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @inject NavigationManager Navigation
 
-<h3>LobbyList</h3>
+<style>
+    .lobby-page {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #1e5631 0%, #2e8b57 50%, #a8e063 100%);
+        padding: 40px 20px;
+        text-align: center;
+        color: white;
+    }
 
-<a href="/CreateLobby">Lobby erstellen</a>
+    .lobby-title {
+        font-size: 3rem;
+        font-weight: 800;
+        text-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+        margin-bottom: 30px;
+        letter-spacing: 2px;
+    }
 
-<p> </p>
+    .lobby-title::before {
+        content: "🍉 ";
+    }
 
-<a href="/?change=true" class="click-button">Change Username</a>
+    .top-links {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 40px;
+        flex-wrap: wrap;
+    }
 
-<p> </p>
+    .funky-link {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        border-radius: 50px;
+        padding: 12px 28px;
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.25s ease;
+        display: inline-block;
+    }
 
-<title>Lobbies:</title>
+    .funky-link:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        color: white;
+    }
 
-@foreach (var Lobby in LobbyService.Lobbies)
-{
-    <button class="click-button" @onclick="() => OpenPasswordDialog(Lobby)">
-        @Lobby.Name
-    </button>
-    <p></p>
-}
+    .lobby-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .lobby-card {
+        background: rgba(255, 255, 255, 0.95);
+        color: #1e5631;
+        border: none;
+        border-radius: 20px;
+        padding: 24px 36px;
+        font-size: 1.3rem;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 6px 0 #1e5631, 0 10px 20px rgba(0,0,0,0.25);
+        transition: all 0.15s ease;
+    }
+
+    .lobby-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 0 #1e5631, 0 15px 25px rgba(0,0,0,0.3);
+    }
+
+    .lobby-card:active {
+        transform: translateY(3px);
+        box-shadow: 0 3px 0 #1e5631, 0 5px 10px rgba(0,0,0,0.25);
+    }
+
+    .funky-modal-overlay {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.6);
+        backdrop-filter: blur(4px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .funky-modal-box {
+        background: white;
+        color: #1e5631;
+        padding: 32px;
+        border-radius: 24px;
+        min-width: 320px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        border: 4px solid #a8e063;
+        animation: popIn 0.25s ease;
+    }
+
+    @@keyframes popIn {
+        from { transform: scale(0.8); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    .funky-modal-box h4 {
+        font-weight: 800;
+        margin-bottom: 16px;
+    }
+
+    .funky-input {
+        width: 100%;
+        padding: 12px 16px;
+        border-radius: 12px;
+        border: 2px solid #a8e063;
+        margin-bottom: 12px;
+        font-size: 1rem;
+        box-sizing: border-box;
+    }
+
+    .funky-input:focus {
+        outline: none;
+        border-color: #2e8b57;
+    }
+
+    .funky-error {
+        color: #d1495b;
+        font-weight: 600;
+    }
+
+    .funky-modal-buttons {
+        display: flex;
+        gap: 12px;
+        margin-top: 16px;
+    }
+
+    .btn-join {
+        flex: 1;
+        background: #2e8b57;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .btn-join:hover {
+        background: #1e5631;
+    }
+
+    .btn-cancel {
+        flex: 1;
+        background: #eee;
+        color: #333;
+        border: none;
+        border-radius: 12px;
+        padding: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .btn-cancel:hover {
+        background: #ddd;
+    }
+</style>
+
+<div class="lobby-page">
+
+    <h1 class="lobby-title">Lobbies</h1>
+
+    <div class="top-links">
+        <a href="/CreateLobby" class="funky-link">➕ Lobby erstellen</a>
+        <a href="/?change=true" class="funky-link">👤 Change Username</a>
+    </div>
+
+    <div class="lobby-grid">
+        @foreach (var Lobby in LobbyService.Lobbies)
+        {
+            <button class="lobby-card" @onclick="() => OpenPasswordDialog(Lobby)">
+                🍉 @Lobby.Name
+            </button>
+        }
+    </div>
+
+</div>
 
 @if (selectedLobby is not null)
 {
-    <div class="modal-overlay">
-        <div class="modal-box">
-            <h4>Lobby "@selectedLobby.Name" beitreten</h4>
+    <div class="funky-modal-overlay">
+        <div class="funky-modal-box">
+            <h4>🔒 "@selectedLobby.Name" beitreten</h4>
 
             @if (string.IsNullOrWhiteSpace(playerName))
             {
                 <input type="text"
+                       class="funky-input"
                        @bind="playerNameInput"
                        @bind:event="oninput"
                        placeholder="Dein Name" />
@@ -44,6 +218,7 @@
             }
 
             <input type="password"
+                   class="funky-input"
                    @bind="enteredPassword"
                    @bind:event="oninput"
                    placeholder="Passwort eingeben"
@@ -51,12 +226,12 @@
 
             @if (showError)
             {
-                <p class="error-text">@ErrorMessage</p>
+                <p class="funky-error">@ErrorMessage</p>
             }
 
-            <div class="modal-buttons">
-                <button @onclick="ConfirmPassword">Beitreten</button>
-                <button @onclick="CloseDialog">Abbrechen</button>
+            <div class="funky-modal-buttons">
+                <button class="btn-join" @onclick="ConfirmPassword">Beitreten</button>
+                <button class="btn-cancel" @onclick="CloseDialog">Abbrechen</button>
             </div>
         </div>
     </div>

@@ -9,28 +9,169 @@
 @inject NavigationManager Navigation
 @inject ProtectedLocalStorage ProtectedLocalStorage
 
+<style>
+    .shop-page {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #1e5631 0%, #2e8b57 50%, #a8e063 100%);
+        padding: 40px 20px;
+        text-align: center;
+        color: white;
+    }
+
+    .shop-title {
+        font-size: 3rem;
+        font-weight: 800;
+        text-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+        margin-bottom: 8px;
+        letter-spacing: 2px;
+    }
+
+    .shop-title::before {
+        content: "🛒 ";
+    }
+
+    .shop-clicks {
+        font-size: 1.4rem;
+        font-weight: 700;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(10px);
+        display: inline-block;
+        padding: 10px 28px;
+        border-radius: 50px;
+        margin-bottom: 40px;
+        border: 2px solid rgba(255,255,255,0.4);
+    }
+
+    .shop-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 24px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .shop-card {
+        background: rgba(255, 255, 255, 0.95);
+        color: #1e5631;
+        border-radius: 20px;
+        padding: 28px;
+        width: 280px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        border: 3px solid #a8e063;
+    }
+
+    .shop-card-icon {
+        font-size: 2.5rem;
+        margin-bottom: 8px;
+    }
+
+    .shop-card-label {
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-bottom: 4px;
+    }
+
+    .shop-card-value {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: #2e8b57;
+        margin-bottom: 18px;
+    }
+
+    .shop-buy-button {
+        width: 100%;
+        background: #2e8b57;
+        color: white;
+        border: none;
+        border-radius: 14px;
+        padding: 14px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 6px 0 #1e5631;
+        transition: all 0.15s ease;
+    }
+
+    .shop-buy-button:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 0 #1e5631;
+    }
+
+    .shop-buy-button:active:not(:disabled) {
+        transform: translateY(4px);
+        box-shadow: 0 2px 0 #1e5631;
+    }
+
+    .shop-buy-button:disabled {
+        background: #bbb;
+        box-shadow: 0 6px 0 #888;
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+
+    .shop-message {
+        margin-top: 28px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        min-height: 1.5rem;
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-top: 24px;
+        color: white;
+        font-weight: 600;
+        text-decoration: none;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255,255,255,0.4);
+        border-radius: 50px;
+        padding: 10px 24px;
+        transition: all 0.25s ease;
+    }
+
+    .back-link:hover {
+        background: rgba(255,255,255,0.3);
+        transform: translateY(-2px);
+        color: white;
+    }
+</style>
 
 @if (PlayerName != "")
 {
-    <h1>Shop</h1>
+    <div class="shop-page">
 
-    <h3>Deine Clicks: @Clicker.Clicks(PlayerName)</h3>
+        <h1 class="shop-title">Shop</h1>
+        <div class="shop-clicks">🍉 @Clicker.Clicks(PlayerName) Clicks</div>
 
-    <p>Stärke pro Klick: @Clicker.ClickPower(PlayerName)</p>
+        <div class="shop-grid">
 
-    <button class="btn btn-success" @onclick="BuyUpgrade" disabled="@(!CanAffordUpgrade)">
-        Upgrade kaufen (@Clicker.UpgradeCost(PlayerName) Clicks)
-    </button>
-    <p>    </p>
-    <p>Anzahl an Klicks jede 10 Sekunden🧑🏻‍🌾: @Clicker.autoClickPower(PlayerName)</p>
+            <div class="shop-card">
+                <div class="shop-card-icon">👆</div>
+                <div class="shop-card-label">Stärke pro Klick</div>
+                <div class="shop-card-value">@Clicker.ClickPower(PlayerName)</div>
+                <button class="shop-buy-button" @onclick="BuyUpgrade" disabled="@(!CanAffordUpgrade)">
+                    Upgrade (@Clicker.UpgradeCost(PlayerName) Clicks)
+                </button>
+            </div>
 
-    <button class="btn btn-success" @onclick="BuyAutoClickUpgrade" disabled="@(!CanAffordAutoClickUpgrade)">
-        Upgrade kaufen (@Clicker.autoClickUpgradeCost(PlayerName) Clicks)
-    </button>
+            <div class="shop-card">
+                <div class="shop-card-icon">🧑🏻‍🌾</div>
+                <div class="shop-card-label">Klicks alle 10 Sekunden</div>
+                <div class="shop-card-value">@Clicker.autoClickPower(PlayerName)</div>
+                <button class="shop-buy-button" @onclick="BuyAutoClickUpgrade" disabled="@(!CanAffordAutoClickUpgrade)">
+                    Upgrade (@Clicker.autoClickUpgradeCost(PlayerName) Clicks)
+                </button>
+            </div>
 
-    <p>@message</p>
+        </div>
 
-    <a href="/counter">Zurück zum Clicker</a>
+        <p class="shop-message">@message</p>
+
+        <a href="/counter" class="back-link">← Zurück zum Clicker</a>
+
+    </div>
 }
 
 @code {
@@ -47,22 +188,16 @@
 
     private void BuyUpgrade()
     {
-        if (Clicker.BuyUpgrade(PlayerName) == null) return;
-        if ((bool) Clicker.BuyUpgrade(PlayerName) ) message = "Upgrade gekauft!";
-        else message = "Nicht genug Clicks!";
+        var result = Clicker.BuyUpgrade(PlayerName);
+        if (result == null) return;
+        message = result.Value ? "Upgrade gekauft!" : "Nicht genug Clicks!";
     }
 
     private void BuyAutoClickUpgrade()
     {
-        if (Clicker.BuyAutoClickUpgrade(PlayerName) == null) return;
-        if ((bool) Clicker.BuyAutoClickUpgrade(PlayerName))
-        {
-            message = "Auto-Clicker Upgrade gekauft!";
-        }
-        else
-        {
-            message = "Nicht genug Clicks!";
-        }
+        var result = Clicker.BuyAutoClickUpgrade(PlayerName);
+        if (result == null) return;
+        message = result.Value ? "Auto-Clicker Upgrade gekauft!" : "Nicht genug Clicks!";
     }
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
