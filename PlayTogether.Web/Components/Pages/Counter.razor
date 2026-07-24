@@ -7,7 +7,7 @@
 @inject ProtectedLocalStorage ProtectedLocalStorage
 @inject LobbyService LobbyService
 @inject NavigationManager Navigation
-@inject IJSRuntime JSRuntime
+@inject IJSRuntime JS
 
 <style>
     .counter-page {
@@ -150,14 +150,14 @@
             <h3>Clicks: @FormatNumber(Clicker.Clicks(PlayerName))</h3>
 
             <div class="melon-area">
-                <button class="click-button" @onclick="Click">
+                <button id="melon-click-button" class="click-button" @onclick="Click">
                     <img src="/images/wassermelonen.png" alt="Click Button"/>
                 </button>
             </div>
 
 
             <p>Pro Klick: @FormatNumber(Clicker.ClickPower(PlayerName))</p>
-            <p>Klicks jede Sekunde: @FormatNumber(Clicker.autoClickPower(PlayerName))</p>
+            <p id="autoclick-display">Klicks jede Sekunde: @FormatNumber(Clicker.autoClickPower(PlayerName))</p>
 
             <a href="/shop" class="shop-link">🛒 Shop öffnen</a>
 
@@ -195,6 +195,7 @@
     
     private string PlayerName = "";
     private System.Threading.Timer? refreshTimer;
+    private System.Threading.Timer? autoClickDisplayTimer;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -207,6 +208,7 @@
                 StateHasChanged();
 
                 StartUiRefresh();
+                StartAutoClickDisplay();
             }
         }
     }
@@ -220,10 +222,26 @@
         }, null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
     }
 
-    private async void Click()
+    private void StartAutoClickDisplay()
     {
-        await JSRuntime.InvokeVoidAsync("playClickSound");
+        autoClickDisplayTimer = new System.Threading.Timer(async _ =>
+        {
+            double power = Clicker.autoClickPower(PlayerName) ?? 0;
+            if (power <= 0) return;
+
+            await InvokeAsync(async () =>
+            {
+                await JS.InvokeVoidAsync("spawnAutoClickText", "autoclick-display", FormatNumber(power));
+            });
+
+        }, null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+    }
+
+    private async Task Click(MouseEventArgs e)
+    {
+        double power = Clicker.ClickPower(PlayerName) ?? 0;
         Clicker.AddClick(PlayerName);
+        await JS.InvokeVoidAsync("spawnClickText", e.ClientX, e.ClientY, FormatNumber(power));
     }
 
     private void back()
@@ -262,6 +280,7 @@
     {
         Clicker.ClicksChanged -= this.Player_ClicksChanged;
         refreshTimer?.Dispose();
+        autoClickDisplayTimer?.Dispose();
     }
 
 }

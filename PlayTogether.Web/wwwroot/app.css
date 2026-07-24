@@ -1,6 +1,6 @@
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #1e5732
+    background-color: #2e8b57;
 }
 
 a, .btn-link {
@@ -73,20 +73,10 @@ h1:focus {
     margin-top: 40px;
 }
 
-
 .clicker-container h2 {
     font-size: 40px;
     margin-bottom: 30px;
 }
-
-
-.click-button {
-    background: transparent;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-}
-
 
 .click-button img {
     width: 600px;
@@ -95,12 +85,6 @@ h1:focus {
     margin: auto;
     transition: transform 0.1s;
 }
-
-
-.click-button:active img {
-    transform: scale(0.9);
-}
-
 
 .clicker-container p {
     font-size: 24px;
@@ -152,6 +136,39 @@ h1:focus {
     }
     100% {
         transform: translateY(-80px) scale(1.3);
+        opacity: 0;
+    }
+}
+
+.floating-click-text {
+    position: fixed;
+    font-size: 22px;
+    font-weight: 800;
+    color: #2ecc40;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+    pointer-events: none;
+    z-index: 9999;
+    animation: clickTextUp 0.8s ease-out forwards;
+}
+
+.floating-autoclick-text {
+    position: fixed;
+    font-size: 20px;
+    font-weight: 800;
+    color: #1e90ff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+    pointer-events: none;
+    z-index: 9999;
+    animation: clickTextUp 1s ease-out forwards;
+}
+
+@keyframes clickTextUp {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-50px);
         opacity: 0;
     }
 }
