@@ -240,9 +240,22 @@
         Navigation.NavigateTo("/LobbyList");
     }
 
-    private string FormatNumber(int? number)
+    private string FormatNumber(double? number)
     {
-        return (number ?? 0).ToString("N0", new System.Globalization.CultureInfo("de-DE"));
+        double n = number ?? 0;
+        string[] suffixes = { "", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc" };
+        int index = 0;
+
+        while (n >= 1000 && index < suffixes.Length - 1)
+        {
+            n /= 1000;
+            index++;
+        }
+
+        if (index == 0)
+            return ((long)n).ToString("N0", new System.Globalization.CultureInfo("de-DE"));
+
+        return n.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) + suffixes[index];
     }
 
     public void Dispose()

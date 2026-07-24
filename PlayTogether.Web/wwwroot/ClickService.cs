@@ -4,32 +4,32 @@ using PlayTogether.Web.Services;
 
 public class ClickerService(LobbyService lobbyService)
 {
-    public int? Clicks(string playername)
+    public double? Clicks(string playername)
     {
         return lobbyService.GetPlayerData(playername)?.Clicks;
     }
 
-    public int? ClickPower(string playername)
+    public double? ClickPower(string playername)
     {
         return lobbyService.GetPlayerData(playername)?.ClickMultiplier;
     }
 
-    public int? UpgradeCost(string playername)
+    public double? UpgradeCost(string playername)
     {
         return lobbyService.GetPlayerData(playername)?.UpgradeCost;
     }
     
     public void AddClick(string playername)
     {
-        //Clicks += ClickPower;
         lobbyService.GetPlayerData(playername)?.Click();
         OnClicksChanged();
     }
     
     public bool? BuyUpgrade(string playername)
     {
+        var result = lobbyService.GetPlayerData(playername)?.Upgrade();
         OnClicksChanged();
-        return lobbyService.GetPlayerData(playername)?.Upgrade();
+        return result;
     }
     
     public event EventHandler? ClicksChanged;
@@ -38,12 +38,12 @@ public class ClickerService(LobbyService lobbyService)
         ClicksChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    public int? autoClickPower(string playername)
+    public double? autoClickPower(string playername)
     {
         return lobbyService.GetPlayerData(playername)?.autoClickPower;
     }
 
-    public int? autoClickUpgradeCost(string playername)
+    public double? autoClickUpgradeCost(string playername)
     {
         return lobbyService.GetPlayerData(playername)?.autoClickUpgradeCost;
     }

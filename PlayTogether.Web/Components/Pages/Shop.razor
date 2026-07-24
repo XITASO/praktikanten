@@ -143,16 +143,16 @@
     <div class="shop-page">
 
         <h1 class="shop-title">Shop</h1>
-        <div class="shop-clicks">🍉 @Clicker.Clicks(PlayerName) Clicks</div>
+        <div class="shop-clicks">🍉 @FormatNumber(Clicker.Clicks(PlayerName)) Clicks</div>
 
         <div class="shop-grid">
 
             <div class="shop-card">
                 <div class="shop-card-icon">👆</div>
                 <div class="shop-card-label">Stärke pro Klick</div>
-                <div class="shop-card-value">@Clicker.ClickPower(PlayerName)</div>
+                <div class="shop-card-value">@FormatNumber(Clicker.ClickPower(PlayerName))</div>
                 <button class="shop-buy-button" @onclick="BuyUpgrade" disabled="@(!CanAffordUpgrade)">
-                    Upgrade (@Clicker.UpgradeCost(PlayerName) Clicks)
+                    Upgrade (@FormatNumber(Clicker.UpgradeCost(PlayerName)) Clicks)
                 </button>
             </div>
 
@@ -161,7 +161,7 @@
                 <div class="shop-card-label">Klicks pro Sekunde</div>
                 <div class="shop-card-value">@Clicker.autoClickPower(PlayerName)</div>
                 <button class="shop-buy-button" @onclick="BuyAutoClickUpgrade" disabled="@(!CanAffordAutoClickUpgrade)">
-                    Upgrade (@Clicker.autoClickUpgradeCost(PlayerName) Clicks)
+                    Upgrade (@FormatNumber(Clicker.autoClickUpgradeCost(PlayerName)) Clicks)
                 </button>
             </div>
 
@@ -188,16 +188,22 @@
 
     private void BuyUpgrade()
     {
-        var result = Clicker.BuyUpgrade(PlayerName);
-        if (result == null) return;
-        message = result.Value ? "Upgrade gekauft!" : "Nicht genug Clicks!";
+        if (Clicker.BuyUpgrade(PlayerName) == null) return;
+        if ((bool) Clicker.BuyUpgrade(PlayerName) ) message = "Upgrade gekauft!";
+        else message = "Nicht genug Clicks!";
     }
 
     private void BuyAutoClickUpgrade()
     {
-        var result = Clicker.BuyAutoClickUpgrade(PlayerName);
-        if (result == null) return;
-        message = result.Value ? "Auto-Clicker Upgrade gekauft!" : "Nicht genug Clicks!";
+        if (Clicker.BuyAutoClickUpgrade(PlayerName) == null) return;
+        if ((bool) Clicker.BuyAutoClickUpgrade(PlayerName))
+        {
+            message = "Auto-Clicker Upgrade gekauft!";
+        }
+        else
+        {
+            message = "Nicht genug Clicks!";
+        }
     }
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -225,6 +231,24 @@
             InvokeAsync(StateHasChanged);
 
         }, null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+    }
+
+    private string FormatNumber(double? number)
+    {
+        double n = number ?? 0;
+        string[] suffixes = { "", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc" };
+        int index = 0;
+
+        while (n >= 1000 && index < suffixes.Length - 1)
+        {
+            n /= 1000;
+            index++;
+        }
+
+        if (index == 0)
+            return ((long)n).ToString("N0", new System.Globalization.CultureInfo("de-DE"));
+
+        return n.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) + suffixes[index];
     }
 
     public void Dispose()

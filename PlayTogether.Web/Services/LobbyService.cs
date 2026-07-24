@@ -53,12 +53,6 @@ public class LobbyService
         return FindPlayerLobby(playername)?.Players[playername];
     }
 
-    /**
-     * <returns>1 -> Lobby nicht gefunden;   </returns>
-     * <returns>2 -> falsches Passwort;    </returns>
-     * <returns>3 -> player schon in der lobby;   </returns>
-     * <returns>0 -> erfolg!</returns>
-     */
     public int Join(string name, string passwort, string spielername)
     {
         bool lobbyexists = false;
@@ -79,33 +73,26 @@ public class LobbyService
             Console.WriteLine("Lobby not found");
             return 1;
         }
-        // lobby existiert
         
         if (passwort != existing.Password)
         {
             Console.WriteLine("Passwords do not match");
             return 2;
         }
-        // passwort stimmt
 
         if (existing.Players.ContainsKey(spielername))
         {
             Console.WriteLine("Spieler ist bereits in der Lobby");
             return 3;
         }
-        // spieler ist noch nicht vorhanden
         
         existing.Players.Add(spielername, new Playerdata());
         return 0;
     }
 
-    /**
-     * <param name="lobby">An Instance of Lobby</param>
-     * <returns>A list of Tupels, format: ( playername, clicks )</returns>
-     */
-    public List<(string name, int score)> GetScoreboard(Lobby? lobby)
+    public List<(string name, double score)> GetScoreboard(Lobby? lobby)
     {
-        List<(string name, int score)> list = new();
+        List<(string name, double score)> list = new();
         
         if (lobby == null) return list;
         
@@ -117,7 +104,7 @@ public class LobbyService
         return list;
     }
 }
-// ______________________________LOBBY CLASS______________________________________
+
 public class Lobby
 {
     public string Name { get; set; } = "";
@@ -126,21 +113,18 @@ public class Lobby
     public Dictionary<string, Playerdata> Players = new();
 }
 
-//____________________________________PLAYERDATA CLASS__________________________________
 public class Playerdata
 {   
-    // ________________________DATA_____________________
     public string Name = "";
-    public int Clicks = 0;
-    public int ClickMultiplier = 1;
-    public int UpgradeCost = 100;
+    public double Clicks = 0;
+    public double ClickMultiplier = 1;
+    public double UpgradeCost = 100;
     public int UpgradeLevel = 1;
     
-    public int autoClickPower = 1;
-    public int autoClickUpgradeCost = 100;
+    public double autoClickPower = 1;
+    public double autoClickUpgradeCost = 100;
     public int autoClickUpgradeLevel = 1;
     
-    // ____________________PLAYER ACTIONS__________________
     public void Click()
     {
         Clicks += ClickMultiplier;
@@ -152,14 +136,12 @@ public class Playerdata
         
         Clicks -= UpgradeCost;
 
-        // Zuwachs flacht mit steigendem Level langsam ab (Wurzel-Wachstum)
-        int gain = (int)Math.Ceiling(Math.Sqrt(UpgradeLevel) * 2);
+        double gain = Math.Ceiling(Math.Sqrt(UpgradeLevel) * 2);
         ClickMultiplier += gain;
         UpgradeLevel++;
 
-        // Kosten wachsen prozentual mit steigendem Level etwas stärker (gedeckelt)
         double growthRate = Math.Min(0.3 + UpgradeLevel * 0.015, 0.9);
-        UpgradeCost += (int)(UpgradeCost * growthRate);
+        UpgradeCost += UpgradeCost * growthRate;
 
         return true;
     }
@@ -175,13 +157,13 @@ public class Playerdata
         
         Clicks -= autoClickUpgradeCost;
 
-        int gain = (int)Math.Ceiling(Math.Sqrt(autoClickUpgradeLevel) * 2);
+        double gain = Math.Ceiling(Math.Sqrt(autoClickUpgradeLevel) * 2);
         autoClickPower += gain;
         autoClickUpgradeLevel++;
 
         double growthRate = Math.Min(0.3 + autoClickUpgradeLevel * 0.015, 0.9);
-        autoClickUpgradeCost += (int)(autoClickUpgradeCost * growthRate);
+        autoClickUpgradeCost += autoClickUpgradeCost * growthRate;
 
         return true;
     }
-} 
+}
