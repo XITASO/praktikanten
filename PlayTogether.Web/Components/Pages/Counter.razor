@@ -237,11 +237,26 @@
         }, null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
     }
 
-    private async Task Click(MouseEventArgs e)
+    private void Click(MouseEventArgs e)
     {
-        double power = Clicker.ClickPower(PlayerName) ?? 0;
-        Clicker.AddClick(PlayerName);
-        await JS.InvokeVoidAsync("spawnClickText", e.ClientX, e.ClientY, FormatNumber(power));
+        double? amount = Clicker.AddClick(PlayerName);
+        if(amount == null) return;
+        
+        bool critical = amount > Clicker.ClickPower(PlayerName);
+        
+        playClickSound();
+        
+        showClickText(e, (double) amount, critical);
+    }
+
+    private async void playClickSound()
+    {
+        await JS.InvokeVoidAsync("playClickSound");
+    }
+
+    private async Task showClickText(MouseEventArgs e, double clickPower, bool critical)
+    {
+        await JS.InvokeVoidAsync("spawnClickText", e.ClientX, e.ClientY, FormatNumber(clickPower), critical);
     }
 
     private void back()

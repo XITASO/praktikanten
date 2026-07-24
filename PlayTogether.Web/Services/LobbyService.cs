@@ -114,8 +114,11 @@ public class Lobby
 }
 
 public class Playerdata
-{   
+{
+    private Random random = new();
+    
     public string Name = "";
+    
     public double Clicks = 0;
     public double ClickMultiplier = 1;
     public double UpgradeCost = 100;
@@ -124,10 +127,21 @@ public class Playerdata
     public double autoClickPower = 1;
     public double autoClickUpgradeCost = 100;
     public int autoClickUpgradeLevel = 1;
+
+    public double criticalClickChance = 0.05; // 5 %
+    public double criticalClickMultiplier = 2;
     
-    public void Click()
+    public double Click()
     {
+        double random = this.random.NextDouble();
+
+        if (random <= criticalClickChance)  // crit
+        {
+            Clicks += ClickMultiplier *  criticalClickMultiplier;
+            return ClickMultiplier * criticalClickMultiplier;
+        }
         Clicks += ClickMultiplier;
+        return ClickMultiplier;
     }
     
     public bool Upgrade()

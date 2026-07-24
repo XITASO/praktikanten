@@ -19,9 +19,9 @@ public class ClickerService(LobbyService lobbyService)
         return lobbyService.GetPlayerData(playername)?.UpgradeCost;
     }
     
-    public void AddClick(string playername)
+    public double? AddClick(string playername)
     {
-        lobbyService.GetPlayerData(playername)?.Click();
+        return lobbyService.GetPlayerData(playername)?.Click();
         OnClicksChanged();
     }
     

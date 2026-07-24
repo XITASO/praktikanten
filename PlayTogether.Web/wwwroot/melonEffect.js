@@ -1,7 +1,16 @@
-window.spawnClickText = (x, y, amount) => {
+window.spawnClickText = (x, y, amount, critical) => {
     const text = document.createElement("div");
     text.className = "floating-click-text";
     text.textContent = "+" + amount;
+
+    if (critical) {
+        text.style.color = "#FFB700";
+        text.style.fontSize = "2em";      // größer
+        text.style.fontWeight = "bold";   // fetter
+        text.style.textShadow = "0 0 10px red";
+    } else {
+        text.style.color = "limegreen";
+    }
 
     const offsetX = (Math.random() - 0.5) * 30;
     text.style.left = (x + offsetX) + "px";
